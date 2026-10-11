@@ -18,7 +18,7 @@ header,.panel,.result{background:rgba(255,255,255,.94);border:1px solid rgba(255
 .pill{display:inline-block;background:#eaf0ff;color:#2447a5;border-radius:999px;padding:5px 11px;font-size:13px;font-weight:800}
 h1{font-size:24px;margin:10px 0 5px}h2{font-size:20px;margin:0 0 10px}
 .progress-wrap{display:flex;align-items:center;gap:12px;margin-top:10px}.progress{height:10px;flex:1;background:#e5eaf4;border-radius:99px;overflow:hidden}.bar{width:0;height:100%;background:linear-gradient(90deg, #2b65ff, #5f7af7, #8f5ce6);transition:width .25s ease}
-.question-meta{display:flex;justify-content:space-between;margin-bottom:12px}.count{font-size:14px;font-weight:900;color:#fff;background:#253e8e;border-radius:8px;padding:5px 10px}
+.question-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.count{font-size:14px;font-weight:900;color:#fff;background:#253e8e;border-radius:8px;padding:5px 10px}
 #prompt{font-size:20px;font-weight:800;margin:0 0 15px}.options{display:grid;gap:10px}
 label.option{display:flex;gap:10px;align-items:flex-start;padding:12px;border:2px solid #e1e7f1;background:#fff;border-radius:12px;cursor:pointer;transition:.15s ease}
 label.option:hover{border-color:#90aaf1}label.option:has(input:checked){border-color:#416de0;background:#f0f4ff}
@@ -26,14 +26,15 @@ input{margin-top:5px;accent-color:#315ed0;transform:scale(1.1)}
 .feedback{padding:12px;border-radius:10px;margin-top:12px;font-weight:600;display:none}
 .feedback.good{background:#e3f8e9;color:#135c36;border:1px solid #a6e3b8}
 .feedback.bad{background:#fff0ed;color:#85241e;border:1px solid #ffb8ad}
-.controls{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+.controls{display:flex;justify-content:space-between;gap:10px;margin-top:16px;align-items:center}
 button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;transition:.12s ease}
-.primary{background:#244fc0;color:white}.secondary{background:#e9edf5;color:#25354d}.check{background:#172f70;color:#fff}.sound{background:#fff;color:#243b73;border:1px solid #d4dced}button:disabled{opacity:.4;cursor:not-allowed}
+.primary{background:#244fc0;color:white}.secondary{background:#e9edf5;color:#25354d}.check{background:#172f70;color:#fff}.danger{background:#c64545;color:white}.sound{background:#fff;color:#243b73;border:1px solid #d4dced}button:disabled{opacity:.4;cursor:not-allowed}
 .result{display:none;text-align:center}.score{font-size:26px;font-weight:900}
 .send-status{font-weight:bold;margin-top:12px;padding:10px;border-radius:8px}
 .send-success{background:#e3f8e9;color:#135c36}
 .send-loading{background:#fff8e6;color:#b78103}
 .send-error{background:#fdeaea;color:#9e2a2a}
+#quitBtn{margin-left:auto}
 </style>
 </head>
 <body data-theme="0">
@@ -59,6 +60,7 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
       <div class="question-meta">
         <span id="count" class="count">Питання 1 із 30</span>
         <span style="font-size:13px;color:#58657a;font-weight:700" id="sectionTitle"></span>
+        <button type="button" id="quitBtn" class="danger" style="padding:6px 12px;font-size:14px">❌ Завершити</button>
       </div>
       <p id="prompt"></p>
       <div id="answerArea" class="options"></div>
@@ -77,6 +79,7 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
       <div id="score" class="score"></div>
       <div id="grade" style="font-size:20px;font-weight:800;margin-top:5px"></div>
       <div id="sendStatus" class="send-status"></div>
+      <button type="button" id="restartBtn" class="primary" style="margin-top:20px;padding:12px 24px">Почати заново 🔄</button>
     </section>
   </main>
 
@@ -114,7 +117,7 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
         {type:'radio',q:'Що таке «гасіння вапна»?',options:[['a','Взаємодія CaO з водою'],['b','Заливання вапняку'],['c','Реакція з HCl']],correct:'a',why:'Гасіння вапна — це взаємодія оксиду кальцію з водою.'},
         {type:'radio',q:'Де переважно використовують гашене вапно?',options:[['a','У будівництві'],['b','У ракетному паливі'],['c','Для очищення води']],correct:'a',why:'Гашене вапно застосовують у будівництві та штукатурці.'},
         {type:'radio',q:'NaOH використовують для виробництва:',options:[['a','Мила та мийних засобів'],['b','Азотних добрив'],['c','Заліза']],correct:'a',why:'NaOH застосовують у виробництві мила та мийних засобів.'},
-        {type:'radio',q:'Чому NaOH називають «їдким натром»?',options:[['a','Він роз’їдає шкіру й тканини'],['b','Він дуже солоний'],['c','Він має сильний запах']],correct:'a',why:'NaOH — сильна лугова речовина, яка руйнує тканини.'},
+        {type:'radio',q:'Чому NaOH називають «їдким натром»?',options:[['a','Він роз'їдає шкіру й тканини'],['b','Він дуже солоний'],['c','Він має сильний запах']],correct:'a',why:'NaOH — сильна лугова речовина, яка руйнує тканини.'},
         {type:'radio',q:'Який із наведених варіантів є лугом?',options:[['a','CaO'],['b','KOH'],['c','H₂SO₄']],correct:'b',why:'Гідроксид калію — луг.'},
         {type:'radio',q:'Що відбувається з лакмусовим папірцем у лужному середовищі?',options:[['a','Становиться синім'],['b','Червоніє'],['c','Залишається без змін']],correct:'a',why:'Лакмус синіє в лужному середовищі.'},
         {type:'radio',q:'Яка формула гідроксиду калію?',options:[['a','KOH'],['b','K₂O'],['c','K(OH)₂']],correct:'a',why:'Калій одновалентний: KOH.'},
@@ -328,6 +331,19 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
       });
     }
 
+    function resetQuiz() {
+      state.currentSection = 0;
+      state.currentQuestion = 0;
+      state.answers = new Array(totalQuestions).fill(undefined);
+      state.started = false;
+      state.checked = false;
+      startScreen.style.display = 'block';
+      gameSection.style.display = 'none';
+      resultSection.style.display = 'none';
+      progressTextEl.textContent = `0 із ${totalQuestions}`;
+      barEl.style.width = '0%';
+    }
+
     document.getElementById('start').addEventListener('click', () => {
       startScreen.style.display = 'none';
       gameSection.style.display = 'block';
@@ -337,6 +353,14 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
       state.answers = new Array(totalQuestions).fill(undefined);
       goToQuestion(0, 0);
     });
+
+    document.getElementById('quitBtn').addEventListener('click', () => {
+      if (confirm('Ви впевнені, що хочете завершити тест? Результат буде розраховано за відповідями, які ви вже дали.')) {
+        finishQuiz();
+      }
+    });
+
+    document.getElementById('restartBtn').addEventListener('click', resetQuiz);
 
     document.getElementById('checkAnswer').addEventListener('click', checkAnswer);
     document.getElementById('next').addEventListener('click', nextQuestion);
