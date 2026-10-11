@@ -9,12 +9,11 @@
         h1 { color: #2c3e50; border-bottom: 2px solid #ee5253; padding-bottom: 10px; margin-top: 0; text-align: center; }
         ul { list-style: none; padding: 0; }
         li { margin: 12px 0; }
-        a { display: block; padding: 14px; background: #10ac84; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; transition: 0.2s; border-left: 5px solid #0f9b74; }
+        a { display: block; padding: 14px; background: #10ac84; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; transition: 0.2s; border-left: 5px solid #0f9b74; text-align: center; }
         a:hover { background: #0f9b74; transform: translateX(5px); }
         .input-group { background: #f1f2f6; padding: 15px; border-radius: 6px; margin-bottom: 25px; border-left: 5px solid #ff4757; }
         label { display: block; font-weight: bold; margin-bottom: 8px; color: #57606f; }
         input[type="text"] { width: 100%; padding: 11px; border: 1px solid #ced4da; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
-        .hint { font-size: 14px; color: #ff4757; font-weight: bold; margin-top: 8px; display: none; }
     </style>
 </head>
 <body>
@@ -23,13 +22,12 @@
     <div class="input-group">
         <label for="studentName">Введіть ваше Прізвище та Ім'я перед початком:</label>
         <input type="text" id="studentName" placeholder="Наприклад: Іванов Сергій" oninput="saveName()">
-        <div id="nameHint" class="hint">⚠️ Спочатку введіть Прізвище та Ім'я! Без цього вправи не відкриються.</div>
     </div>
     <p style="font-weight: bold; color: #2c3e50;">Оберіть вправу для проходження:</p>
-    <ul id="exercisesList">
-        <li><a href="osnovy_luhy_avtoperevirka (1).html" onclick="return checkName()">• osnovy_ — містить 12 запитань.</a></li>
-        <li><a href="osnovy_luhy_avtoperevirka.html" onclick="return checkName()">• osnovy_ — містить 30 завдань.</a></li>
-        <li><a href="osnovy_luhy_avtoperevirka (2).html" onclick="return checkName()">• osnovy_ — містить 30 запитань (інтерактивна гра)</a></li>
+    <ul>
+        <li><a href="osnovy_luhy_avtoperevirka (1).html">• osnovy_ — містить 12 запитань.</a></li>
+        <li><a href="osnovy_luhy_avtoperevirka.html">• osnovy_ — містить 30 завдань.</a></li>
+        <li><a href="osnovy_luhy_avtoperevirka (2).html">• osnovy_ — містить 30 запитань (інтерактивна гра)</a></li>
     </ul>
 </div>
 <script>
@@ -40,14 +38,6 @@
     }
     function saveName() { 
         localStorage.setItem('chemistry_student_name', document.getElementById('studentName').value.trim()); 
-    }
-    function checkName() {
-        var name = document.getElementById('studentName').value.trim();
-        if(name.length === 0) {
-            document.getElementById('nameHint').style.display = 'block'; 
-            return false;
-        }
-        return true;
     }
 </script>
 </body>
