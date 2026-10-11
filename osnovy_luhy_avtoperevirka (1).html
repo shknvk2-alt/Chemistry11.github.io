@@ -17,6 +17,9 @@ select{font:inherit;padding:8px 10px;border:1px solid #b9c6d8;border-radius:7px;
 .actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}button{border:0;border-radius:9px;padding:11px 17px;font:inherit;font-weight:700;cursor:pointer}.primary{background:var(--blue);color:white}.secondary{background:#e8eef7;color:var(--ink)}button:hover{filter:brightness(.96)}
 .feedback{font-size:14px;margin:8px 0 0;color:#42536b}.correct{background:#eaf7ef!important;border-left:4px solid var(--green);padding-left:10px!important}.incorrect{background:#fff0ee!important;border-left:4px solid var(--red);padding-left:10px!important}
 #result{display:none;border:2px solid var(--blue);padding:20px;margin-top:18px}.score{font-size:26px;font-weight:800}.grade{font-size:20px;font-weight:700;margin-top:4px}
+.send-status { font-weight: bold; margin-top: 10px; padding: 10px; border-radius: 6px; display: none; }
+.send-success { background: #eaf7ef; color: var(--green); }
+.send-loading { background: #fff8e6; color: #b78103; }
 @media(max-width:600px){.section{padding:14px}header{padding:18px}select{width:100%}}
 </style>
 </head>
@@ -31,7 +34,13 @@ select{font:inherit;padding:8px 10px;border:1px solid #b9c6d8;border-radius:7px;
 </header>
 <form id="quiz"></form>
 <div class="actions"><button type="button" class="primary" id="check">Перевірити відповіді</button><button type="button" class="secondary" id="reset">Почати спочатку</button></div>
-<div id="result" aria-live="polite"><div class="score" id="score"></div><div class="grade" id="grade"></div><p id="comment"></p><p class="small">Кожне завдання оцінюється в 1 бал. У завданнях із кількома правильними відповідями бал нараховується лише тоді, коли вибрано всі правильні варіанти й не вибрано жодного неправильного. Оцінка за 12-бальною шкалою є пропорційним перерахунком результату.</p></div>
+<div id="result" aria-live="polite">
+    <div class="score" id="score"></div>
+    <div class="grade" id="grade"></div>
+    <p id="comment"></p>
+    <div id="sendStatus" class="send-status"></div>
+    <p class="small">Кожне завдання оцінюється в 1 бал. У завданнях із кількома правильними відповідями бал нараховується лише тоді, коли вибрано всі правильні варіанти й не вибрано жодного неправильного. Оцінка за 12-бальною шкалою є пропорційним перерахунком результату.</p>
+</div>
 </main>
 <script>
 const sections = [
@@ -52,79 +61,50 @@ const sections = [
   {type:'radio',q:'Які речовини утворюються в реакції NaOH + HCl?',options:[['a','NaCl і H₂O'],['b','Na₂O і H₂'],['c','Na₂CO₃ і O₂']],correct:'a',why:'Рівняння: NaOH + HCl → NaCl + H₂O.'},
   {type:'radio',q:'Яке рівняння нейтралізації кальцій гідроксиду хлоридною кислотою записано правильно?',options:[['a','Ca(OH)₂ + HCl → CaCl₂ + H₂O'],['b','Ca(OH)₂ + 2HCl → CaCl₂ + 2H₂O'],['c','CaOH + HCl → CaCl + H₂']],correct:'b',why:'Зрівняне рівняння: Ca(OH)₂ + 2HCl → CaCl₂ + 2H₂O.'},
   {type:'radio',q:'Що спостерігають, коли вуглекислий газ пропускають через вапняну воду?',options:[['a','Розчин мутніє через утворення осаду CaCO₃'],['b','Розчин стає фіолетовим'],['c','Виділяється натрій']],correct:'a',why:'CO₂ реагує з Ca(OH)₂ з утворенням малорозчинного кальцій карбонату: CO₂ + Ca(OH)₂ → CaCO₃↓ + H₂O.'},
-  {type:'multi',q:'Яких правил потрібно дотримуватися під час роботи з лугами в кабінеті хімії?',options:[['a','Користуватися захисними окулярами й відповідними рукавичками'],['b','Не допускати потрапляння речовини на шкіру та в очі'],['c','Пробувати речовину на смак'],['d','Виконувати вказівки вчителя й правила лабораторної безпеки']],correct:['a','b','d'],why:'Луги їдкі. Потрібні засоби захисту та дотримання інструкцій; куштувати реактиви заборонено.'},
+  {type:'multi',q:'Яких правил потрібно дотримуватися під час роботи з лугами в кабінеті хімії?',options:[['a','Користуватися захисними окулярами й відповідними рукавичками'],['b','Не допускати потрапляння речовини на шкіру та в очі'],['c','Пробувати речовину на смак'],['d','Виконувати вказівки вчителя й правила лабораторної безпеки']],correct:['a','b','d'],why:'Луги їдкі. Потрібні засоби захисту та дотримка інструкцій; куштувати реактиви заборонено.'},
   {type:'radio',q:'Що потрібно зробити, якщо розчин лугу потрапив на шкіру?',options:[['a','Негайно промивати уражене місце великою кількістю проточної води й повідомити вчителя'],['b','Витерти насухо та продовжити роботу'],['c','Нанести іншу хімічну речовину для нейтралізації без вказівки вчителя']],correct:'a',why:'Потрібно негайно промивати шкіру великою кількістю води та повідомити вчителя; далі діяти за правилами безпеки.'}
- ]},
- {title:'Частина 3. Поширення та одержання', questions:[
-  {type:'radio',q:'У яких природних породах поширений кальцій карбонат CaCO₃?',options:[['a','У крейді, вапняку та мармурі'],['b','У чистому повітрі як основний газ'],['c','Лише у кам’яній солі']],correct:'a',why:'Крейда й вапняк переважно складаються з CaCO₃; мармур утворився внаслідок перетворення карбонатних порід.'},
-  {type:'radio',q:'Як промислово добувають натрій гідроксид?',options:[['a','Електролізом водного розчину натрій хлориду'],['b','Подрібненням крейди'],['c','Змішуванням кухонної солі з піском']],correct:'a',why:'NaOH промислово отримують, зокрема, електролізом водного розчину NaCl.'},
-  {type:'radio',q:'Яка речовина утворюється під час взаємодії кальцій оксиду з водою?',options:[['a','Ca(OH)₂'],['b','CaCl₂'],['c','NaOH']],correct:'a',why:'CaO + H₂O → Ca(OH)₂. Реакція супроводжується виділенням теплоти.'},
-  {type:'radio',q:'Як називають кальцій оксид CaO у побуті та будівництві?',options:[['a','Негашене вапно'],['b','Гашене вапно'],['c','Вапняна вода']],correct:'a',why:'Кальцій оксид CaO — негашене вапно; після взаємодії з водою утворюється гашене вапно Ca(OH)₂.'},
-  {type:'radio',q:'Що називають гашеним вапном?',options:[['a','Кальцій гідроксид Ca(OH)₂'],['b','Натрій гідроксид NaOH'],['c','Кальцій карбонат CaCO₃']],correct:'a',why:'Гашене вапно — кальцій гідроксид Ca(OH)₂.'},
-  {type:'radio',q:'Чим є вапняна вода?',options:[['a','Прозорим насиченим водним розчином Ca(OH)₂'],['b','Суспензією піску у воді'],['c','Розчином натрій гідроксиду']],correct:'a',why:'Вапняна вода — прозорий насичений розчин кальцій гідроксиду.'},
-  {type:'radio',q:'Що називають вапняним молоком?',options:[['a','Водну суспензію кальцій гідроксиду'],['b','Прозорий розчин натрій хлориду'],['c','Розплав кальцій карбонату']],correct:'a',why:'Вапняне молоко — суспензія частинок Ca(OH)₂ у воді; вона каламутна.'}
- ]},
- {title:'Частина 4. Використання та застосування знань', questions:[
-  {type:'multi',q:'Для чого використовують натрій гідроксид у промисловості?',options:[['a','Виробництво мила'],['b','Виробництво паперу'],['c','У деяких засобах для очищення труб'],['d','Як харчову приправу для вільного додавання']],correct:['a','b','c'],why:'NaOH застосовують у виробництві мила й паперу та в деяких засобах для очищення труб. Він їдкий і не призначений для безконтрольного використання.'},
-  {type:'multi',q:'Оберіть можливі сфери використання кальцій гідроксиду.',options:[['a','Будівельні розчини та побілка'],['b','Зменшення кислотності ґрунтів за відповідних агрономічних рекомендацій'],['c','Очищення води в окремих технологічних процесах'],['d','Виготовлення електричних дротів із чистої міді']],correct:['a','b','c'],why:'Ca(OH)₂ використовують у будівництві, для вапнування кислих ґрунтів і в деяких процесах очищення води.'},
-  {type:'radio',q:'Для чого в лабораторії використовують вапняну воду?',options:[['a','Для виявлення вуглекислого газу'],['b','Для виявлення кисню за допомогою тліючої скіпки'],['c','Для вимірювання маси речовини']],correct:'a',why:'Помутніння вапняної води є якісною ознакою наявності CO₂.'},
-  {type:'radio',q:'Чому Ca(OH)₂ застосовують для зменшення кислотності ґрунтів?',options:[['a','Він нейтралізує надлишкову кислотність'],['b','Він перетворює ґрунт на чистий пісок'],['c','Він додає до ґрунту вуглекислий газ']],correct:'a',why:'Кальцій гідроксид є основою, яка нейтралізує кислотність. Норми вапнування визначають за властивостями ґрунту.'},
-  {type:'radio',q:'Яке твердження правильно порівнює розчинність NaOH і Ca(OH)₂ у воді?',options:[['a','NaOH добре розчинний, а Ca(OH)₂ малорозчинний'],['b','Ca(OH)₂ добре розчинний, а NaOH нерозчинний'],['c','Обидві речовини зовсім не розчиняються']],correct:'a',why:'Натрій гідроксид добре розчинний у воді; кальцій гідроксид — малорозчинний.'},
-  {type:'radio',q:'Яка з наведених речовин НЕ є основою?',options:[['a','NaOH'],['b','Ca(OH)₂'],['c','CaCO₃']],correct:'c',why:'CaCO₃ — кальцій карбонат, сіль; NaOH і Ca(OH)₂ належать до основ.'},
-  {type:'select',q:'Оберіть правильне рівняння гасіння вапна.',options:[['','Оберіть відповідь…'],['a','CaO + H₂O → Ca(OH)₂'],['b','NaOH + HCl → NaCl + H₂'],['c','CaCO₃ → NaOH + CO₂']],correct:'a',why:'Негашене вапно CaO реагує з водою з утворенням гашеного вапна Ca(OH)₂.'}
  ]}
 ];
-const allQuestions=sections.flatMap((s,si)=>s.questions.map(q=>({...q,sectionIndex:si})));
-const quiz=document.getElementById('quiz');
-sections.forEach((s,si)=>{
- const sec=document.createElement('section');sec.className='section';
- const h=document.createElement('h2');h.textContent=s.title;sec.appendChild(h);
- s.questions.forEach((q,localIndex)=>{
-  // Номер завдання відповідає його позиції в загальному тесті.
-  const globalIndex=sections.slice(0,si).reduce((n,x)=>n+x.questions.length,0)+localIndex;
-  const card=document.createElement('div');card.className='question';card.dataset.index=globalIndex;card.dataset.type=q.type;
-  const title=document.createElement('div');title.className='qtitle';title.textContent=`${globalIndex+1}. ${q.q}`;card.appendChild(title);
-  if(q.type==='radio'||q.type==='multi'){
-   q.options.forEach(([value,label])=>{
-    const lab=document.createElement('label');lab.className='option';
-    const inp=document.createElement('input');inp.type=q.type==='radio'?'radio':'checkbox';inp.name='q'+globalIndex;inp.value=value;
-    const span=document.createElement('span');span.textContent=label;lab.append(inp,span);card.appendChild(lab);
-   });
-  }else{
-   const sel=document.createElement('select');sel.name='q'+globalIndex;
-   q.options.forEach(([value,label])=>{const op=document.createElement('option');op.value=value;op.textContent=label;sel.appendChild(op)});
-   card.appendChild(sel);
-  }
-  sec.appendChild(card);
- });
- quiz.appendChild(sec);
+
+// Ініціалізація та генерація тесту
+const form = document.getElementById('quiz');
+let totalQuestionsCount = 0;
+
+sections.forEach((section, sIdx) => {
+    const sBox = document.createElement('div');
+    sBox.className = 'section';
+    sBox.innerHTML = `<h2>${section.title}</h2>`;
+    
+    section.questions.forEach((q, qIdx) => {
+        totalQuestionsCount++;
+        const qBox = document.createElement('div');
+        qBox.className = 'question';
+        qBox.id = `q_${sIdx}_${qIdx}`;
+        qBox.innerHTML = `<p class="qtitle">${totalQuestionsCount}. ${q.q}</p>`;
+        
+        q.options.forEach(([val, label]) => {
+            const inputId = `opt_${sIdx}_${qIdx}_${val}`;
+            const type = q.type === 'radio' ? 'radio' : 'checkbox';
+            const name = `name_${sIdx}_${qIdx}`;
+            
+            qBox.innerHTML += `
+                <label class="option" for="${inputId}">
+                    <input type="${type}" id="${inputId}" name="${name}" value="${val}" onchange="updateProgress()">
+                    <span>${label}</span>
+                </label>
+            `;
+        });
+        qBox.innerHTML += `<p class="feedback" id="fb_${sIdx}_${qIdx}" style="display:none;"></p>`;
+        sBox.appendChild(qBox);
+    });
+    form.appendChild(sBox);
 });
-const cards=[...document.querySelectorAll('.question')];
-function isAnswered(card){if(card.dataset.type==='select')return card.querySelector('select').value!=='';return !!card.querySelector('input:checked')}
-function updateProgress(){const done=cards.filter(isAnswered).length;document.getElementById('bar').style.width=(done/cards.length*100)+'%';document.getElementById('progressText').textContent=`Виконано завдань: ${done} із ${cards.length}`}
-quiz.addEventListener('change',updateProgress);
-function getActual(q,card){if(q.type==='radio'||q.type==='select'){const inp=card.querySelector('input:checked');return q.type==='radio'?(inp?inp.value:''):card.querySelector('select').value}return [...card.querySelectorAll('input:checked')].map(x=>x.value).sort().join(',')}
-function getCorrect(q){return Array.isArray(q.correct)?q.correct.slice().sort().join(','):q.correct}
-function correctText(q){if(Array.isArray(q.correct))return q.options.filter(([v])=>q.correct.includes(v)).map(([,t])=>t).join('; ');const entry=q.options.find(([v])=>v===q.correct);return entry?entry[1]:''}
-document.getElementById('check').addEventListener('click',()=>{
- let points=0;
- cards.forEach((card,i)=>{
-  card.classList.remove('correct','incorrect');const old=card.querySelector('.feedback');if(old)old.remove();
-  const q=allQuestions[i];const ok=getActual(q,card)===getCorrect(q);if(ok)points++;
-  card.classList.add(ok?'correct':'incorrect');const f=document.createElement('p');f.className='feedback';
-  f.textContent=ok?'Правильно. '+(q.why||''):`Неправильно. Правильна відповідь: ${correctText(q)}. ${q.why||''}`;card.appendChild(f);
- });
- const grade=Math.max(1,Math.min(12,Math.round(points/cards.length*12)));
- document.getElementById('score').textContent=`Результат: ${points} із ${cards.length} балів`;
- document.getElementById('grade').textContent=`Орієнтовна оцінка: ${grade} із 12 балів`;
- document.getElementById('comment').textContent=points===cards.length?'Чудово! Усі відповіді правильні.':points/cards.length>=.8?'Добрий результат. Перегляньте пояснення до завдань із помилками.':points/cards.length>=.5?'Повторіть властивості, реакції та використання NaOH і Ca(OH)₂, звертаючи увагу на пояснення.':'Радимо повторити визначення основ і лугів, формули речовин, властивості та правила безпеки.';
- const result=document.getElementById('result');result.style.display='block';result.scrollIntoView({behavior:'smooth',block:'start'});
-});
-document.getElementById('reset').addEventListener('click',()=>{
- quiz.reset();cards.forEach(c=>{c.classList.remove('correct','incorrect');const f=c.querySelector('.feedback');if(f)f.remove()});
- document.getElementById('result').style.display='none';updateProgress();window.scrollTo({top:0,behavior:'smooth'});
-});
-updateProgress();
-</script>
-</body>
-</html>
+
+function updateProgress() {
+    let answered = 0;
+    sections.forEach((section, sIdx) => {
+        section.questions.forEach((q, qIdx) => {
+            const checked = form.querySelectorAll(`input[name="name_${sIdx}_${qIdx}"]:checked`);
+            if (checked.length > 0) answered++;
+        });
+    });
