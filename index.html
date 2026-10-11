@@ -30,19 +30,17 @@
 
     <p style="font-weight: bold; color: #2c3e50;">Оберіть вправу для проходження:</p>
     <ul id="exercisesList">
-        <!-- Сюди автоматично виведуться всі ваші вправи -->
+        <!-- Сюди автоматично виведуться всі вправи з точними назвами -->
     </ul>
 </div>
 
 <script>
-    // ✍️ СПИСОК ВПРАВ (Назви змінено точно за вашим шаблоном)
     const exercises = {
         "osnovy_luhy_avtoperevirka.html": "• osnovy_ — містить 30 завдань.",
         "osnovy_luhy_avtoperevirka (1).html": "• osnovy_ — містить 12 запитань.",
         "osnovy_luhy_avtoperevirka (2).html": "• osnovy_ — містить 30 запитань (інтерактивна гра)"
     };
 
-    // Автоматично створюємо список на екрані з безпечним кодуванням посилань
     window.onload = function() {
         const listContainer = document.getElementById('exercisesList');
         for (const [file, displayName] of Object.entries(exercises)) {
@@ -51,7 +49,6 @@
             listContainer.appendChild(li);
         }
 
-        // Автозаповнення імені, якщо учень заходить повторно
         if(localStorage.getItem('chemistry_student_name')) {
             document.getElementById('studentName').value = localStorage.getItem('chemistry_student_name');
         }
