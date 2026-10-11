@@ -1,177 +1,40 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Основи — інтерактивна гра</title>
-  <style>
-    :root {
-      --ink: #19253a;
-      --blue: #2357c6;
-      --line: #d9e1ee;
-      --green: #167044;
-      --red: #a62424;
-    }
-
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--ink);
-      font: 16px/1.5 Arial, sans-serif;
-      background: linear-gradient(135deg, #d7f5ff, #e8e2ff, #ffe3ed);
-      transition: background .35s;
-    }
-    body[data-theme="0"] { background: linear-gradient(135deg, #c5f4ff, #dbe8ff, #eee0ff); }
-    body[data-theme="1"] { background: linear-gradient(135deg, #d7f9e8, #e9f7bc, #fff0cf); }
-    body[data-theme="2"] { background: linear-gradient(135deg, #ffe0e8, #ffd8c7, #fff1b8); }
-    body[data-theme="3"] { background: linear-gradient(135deg, #d9dcff, #e9d7ff, #fbdcf3); }
-    body[data-theme="4"] { background: linear-gradient(135deg, #c9f5e9, #cae8ff, #d9e0ff); }
-    body[data-theme="5"] { background: linear-gradient(135deg, #fff0c9, #ffdfda, #e4ddff); }
-
-    main {
-      width: min(850px, 100%);
-      margin: 0 auto;
-      padding: 18px 14px 36px;
-    }
-    header, .panel, .result {
-      background: rgba(255,255,255,.94);
-      border: 1px solid rgba(255,255,255,.85);
-      border-radius: 20px;
-      box-shadow: 0 12px 35px rgba(33,45,84,.12);
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-    .topline {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .pill {
-      display: inline-block;
-      background: #eaf0ff;
-      color: #2447a5;
-      border-radius: 999px;
-      padding: 5px 11px;
-      font-size: 13px;
-      font-weight: 800;
-    }
-    h1 { font-size: 24px; margin: 10px 0 5px; }
-    h2 { font-size: 20px; margin: 0 0 10px; }
-    .progress-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    .progress {
-      height: 10px;
-      flex: 1;
-      background: #e5eaf4;
-      border-radius: 99px;
-      overflow: hidden;
-    }
-    .bar {
-      width: 0;
-      height: 100%;
-      background: linear-gradient(90deg, #2b65ff, #5f7af7, #8f5ce6);
-      transition: width .25s ease;
-    }
-    .question-meta {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
-    .count {
-      font-size: 14px;
-      font-weight: 900;
-      color: #fff;
-      background: #253e8e;
-      border-radius: 8px;
-      padding: 5px 10px;
-    }
-    #prompt {
-      font-size: 20px;
-      font-weight: 800;
-      margin: 0 0 15px;
-    }
-    .options { display: grid; gap: 10px; }
-    label.option {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      padding: 12px;
-      border: 2px solid #e1e7f1;
-      background: #fff;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: .15s ease;
-    }
-    label.option:hover { border-color: #90aaf1; }
-    label.option:has(input:checked) {
-      border-color: #416de0;
-      background: #f0f4ff;
-    }
-    input {
-      margin-top: 5px;
-      accent-color: #315ed0;
-      transform: scale(1.1);
-    }
-    .feedback {
-      padding: 12px;
-      border-radius: 10px;
-      margin-top: 12px;
-      font-weight: 600;
-      display: none;
-    }
-    .feedback.good {
-      background: #e3f8e9;
-      color: #135c36;
-      border: 1px solid #a6e3b8;
-    }
-    .feedback.bad {
-      background: #fff0ed;
-      color: #85241e;
-      border: 1px solid #ffb8ad;
-    }
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-top: 16px;
-    }
-    button {
-      font: inherit;
-      font-weight: 800;
-      border: 0;
-      border-radius: 10px;
-      padding: 10px 16px;
-      cursor: pointer;
-      transition: .12s ease;
-    }
-    .primary { background: #244fc0; color: #fff; }
-    .secondary { background: #e9edf5; color: #25354d; }
-    .check { background: #172f70; color: #fff; }
-    .sound {
-      background: #fff;
-      color: #243b73;
-      border: 1px solid #d4dced;
-    }
-    button:disabled { opacity: .4; cursor: not-allowed; }
-    .result { display: none; text-align: center; }
-    .score { font-size: 26px; font-weight: 900; }
-    .send-status {
-      font-weight: bold;
-      margin-top: 12px;
-      padding: 10px;
-      border-radius: 8px;
-    }
-    .send-success { background: #e3f8e9; color: #135c36; }
-    .send-loading { background: #fff8e6; color: #b78103; }
-    .send-error { background: #fdeaea; color: #9e2a2a; }
-  </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Основи — інтерактивна гра</title>
+<style>
+:root{--ink:#19253a;--blue:#2357c6;--line:#d9e1ee;--green:#167044;--red:#a62424}*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font:16px/1.5 Arial,sans-serif;background:linear-gradient(135deg,#d7f5ff,#e8e2ff,#ffe3ed);transition:background .35s}
+body[data-theme="0"]{background:linear-gradient(135deg,#c5f4ff,#dbe8ff,#eee0ff)}
+body[data-theme="1"]{background:linear-gradient(135deg,#d7f9e8,#e9f7bc,#fff0cf)}
+body[data-theme="2"]{background:linear-gradient(135deg,#ffe0e8,#ffd8c7,#fff1b8)}
+body[data-theme="3"]{background:linear-gradient(135deg,#d9dcff,#e9d7ff,#fbdcf3)}
+body[data-theme="4"]{background:linear-gradient(135deg,#c9f5e9,#cae8ff,#d9e0ff)}
+body[data-theme="5"]{background:linear-gradient(135deg,#fff0c9,#ffdfda,#e4ddff)}
+main{width:min(850px,100%);margin:0 auto;padding:18px 14px 36px}
+header,.panel,.result{background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.85);border-radius:20px;box-shadow:0 12px 35px rgba(33,45,84,.12);padding:20px;margin-bottom:16px}
+.topline{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.pill{display:inline-block;background:#eaf0ff;color:#2447a5;border-radius:999px;padding:5px 11px;font-size:13px;font-weight:800}
+h1{font-size:24px;margin:10px 0 5px}h2{font-size:20px;margin:0 0 10px}
+.progress-wrap{display:flex;align-items:center;gap:12px;margin-top:10px}.progress{height:10px;flex:1;background:#e5eaf4;border-radius:99px;overflow:hidden}.bar{width:0;height:100%;background:linear-gradient(90deg, #2b65ff, #5f7af7, #8f5ce6);transition:width .25s ease}
+.question-meta{display:flex;justify-content:space-between;margin-bottom:12px}.count{font-size:14px;font-weight:900;color:#fff;background:#253e8e;border-radius:8px;padding:5px 10px}
+#prompt{font-size:20px;font-weight:800;margin:0 0 15px}.options{display:grid;gap:10px}
+label.option{display:flex;gap:10px;align-items:flex-start;padding:12px;border:2px solid #e1e7f1;background:#fff;border-radius:12px;cursor:pointer;transition:.15s ease}
+label.option:hover{border-color:#90aaf1}label.option:has(input:checked){border-color:#416de0;background:#f0f4ff}
+input{margin-top:5px;accent-color:#315ed0;transform:scale(1.1)}
+.feedback{padding:12px;border-radius:10px;margin-top:12px;font-weight:600;display:none}
+.feedback.good{background:#e3f8e9;color:#135c36;border:1px solid #a6e3b8}
+.feedback.bad{background:#fff0ed;color:#85241e;border:1px solid #ffb8ad}
+.controls{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;transition:.12s ease}
+.primary{background:#244fc0;color:white}.secondary{background:#e9edf5;color:#25354d}.check{background:#172f70;color:#fff}.sound{background:#fff;color:#243b73;border:1px solid #d4dced}button:disabled{opacity:.4;cursor:not-allowed}
+.result{display:none;text-align:center}.score{font-size:26px;font-weight:900}
+.send-status{font-weight:bold;margin-top:12px;padding:10px;border-radius:8px}
+.send-success{background:#e3f8e9;color:#135c36}
+.send-loading{background:#fff8e6;color:#b78103}
+.send-error{background:#fdeaea;color:#9e2a2a}
+</style>
 </head>
 <body data-theme="0">
   <main>
@@ -219,54 +82,45 @@
   </main>
 
   <script>
-    const GOOGLE_SHEET_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+    const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyiB8IlMdR9ZAdnDoUMsFn4wju8divAt911SZkZN-unTdwl1tw7k3jvmqSK5w_pCvl9ZQ/exec';
 
     const sections = [
-      {
-        title: 'Частина 1. Теорія та формули',
-        questions: [
-          { type: 'radio', q: 'Що називають основами?', options: [['a','Сполуки металу з киснем'],['b','Речовини, що містять катіони металу та гідроксид-іони'],['c','Солі у воді']], correct: 'b', why: 'Основи — це гідроксиди металів, що містять гідроксид-іони OH⁻.' },
-          { type: 'radio', q: 'Яка формула натрій гідроксиду?', options: [['a','NaOH'],['b','Na₂O'],['c','Na(OH)₂']], correct: 'a', why: 'Натрій одновалентний, тому формула — NaOH.' },
-          { type: 'radio', q: 'Яка формула кальцій гідроксиду?', options: [['a','CaOH'],['b','Ca(OH)₂'],['c','Ca₂OH']], correct: 'b', why: 'Кальцій двовалентний, тому потрібні два OH-групи.' },
-          { type: 'radio', q: 'Яка з наведених речовин є лугом?', options: [['a','Cu(OH)₂'],['b','Fe(OH)₃'],['c','NaOH']], correct: 'c', why: 'NaOH — розчинна основа, тобто луг.' },
-          { type: 'radio', q: 'Яке твердження про Ca(OH)₂ правильне?', options: [['a','Це малорозчинна основа'],['b','Це розчинна сіль'],['c','Це луг, що частково розчиняється в воді']], correct: 'c', why: 'Кальцій гідроксид є малорозчинним лугом.' },
-          { type: 'radio', q: 'Який колір набуває фенолфталеїн у лугах?', options: [['a','Малиновий'],['b','Безбарвний'],['c','Синій']], correct: 'a', why: 'Фенолфталеїн у лужному середовищі стає малиновим.' },
-          { type: 'radio', q: 'Що відбувається з червоним лакмусом у лугах?', options: [['a','Стає синім'],['b','Червоніє'],['c','Жовтіє']], correct: 'a', why: 'Лакмус у лужному середовищі синіє.' },
-          { type: 'radio', q: 'Скільки гідроксид-іонів у Ca(OH)₂?', options: [['a','Один'],['b','Два'],['c','Три']], correct: 'b', why: 'У формулі Ca(OH)₂ є дві групи OH⁻.' },
-          { type: 'radio', q: 'Яка молекулярна маса NaOH?', options: [['a','40'],['b','23'],['c','56']], correct: 'a', why: '23 + 16 + 1 = 40.' },
-          { type: 'radio', q: 'Яка технічна назва NaOH?', options: [['a','Каустична сода'],['b','Гашене вапно'],['c','Питна сода']], correct: 'a', why: 'NaOH називають каустичною содою.' }
-        ]
-      },
-      {
-        title: 'Частина 2. Хімічні властивості',
-        questions: [
-          { type: 'radio', q: 'Що характерно для розчинення NaOH у воді?', options: [['a','Виділення тепла'],['b','Повне замерзання'],['c','Утворення газу']], correct: 'a', why: 'Розчинення лугів в воді супроводжується виділенням тепла.' },
-          { type: 'radio', q: 'Які продукти утворюються в реакції NaOH + HCl?', options: [['a','NaCl і H₂O'],['b','Na₂O і H₂'],['c','Cl₂ і NaOH']], correct: 'a', why: 'Це реакція нейтралізації: утворюються сіль і вода.' },
-          { type: 'radio', q: 'Яке рівняння нейтралізації Ca(OH)₂ записано правильно?', options: [['a','Ca(OH)₂ + HCl → CaCl₂ + H₂O'],['b','Ca(OH)₂ + 2HCl → CaCl₂ + 2H₂O'],['c','Ca(OH)₂ + H₂SO₄ → CaSO₄ + H₂']], correct: 'b', why: 'Для нейтралізації двох гідроксильних груп потрібно 2HCl.' },
-          { type: 'radio', q: 'Вапняна вода мутніє під дією якого газу?', options: [['a','Вуглекислого (CO₂)'],['b','Кисню (O₂)'],['c','Водню (H₂)']], correct: 'a', why: 'CO₂ реагує з Ca(OH)₂, утворюючи CaCO₃ — осад.' },
-          { type: 'radio', q: 'Що робити при потраплянні лугу на шкіру?', options: [['a','Промити великою кількістю води'],['b','Витерти насухо'],['c','Змазати соняшниковою олією']], correct: 'a', why: 'Промивання водою зменшує концентрацію лугу.' },
-          { type: 'radio', q: 'З якими оксидами реагують луги?', options: [['a','З кислотними'],['b','З основними'],['c','Не реагують']], correct: 'a', why: 'Луги реагують з кислотними оксидами, утворюючи сіль і воду.' },
-          { type: 'radio', q: 'Який осад випаде при взаємодії Ca(OH)₂ з Na₂CO₃?', options: [['a','CaCO₃'],['b','NaOH'],['c','Осаду не буде']], correct: 'a', why: 'Кальцій карбонат утворює білий осад.' },
-          { type: 'radio', q: 'Луги НЕ взаємодіють з:', options: [['a','Барій оксидом (BaO)'],['b','Кислотами'],['c','Кислотними оксидами']], correct: 'a', why: 'Луги реагують з кислотами і кислотними оксидами, а не з основним оксидом BaO.' },
-          { type: 'radio', q: 'Який колір має осад Cu(OH)₂?', options: [['a','Блакитний'],['b','Червоний'],['c','Чорний']], correct: 'a', why: 'Гідроксид міді(II) має блакитний осад.' },
-          { type: 'radio', q: 'Який колір має метилоранж у лужному середовищі?', options: [['a','Жовтий'],['b','Рожевий'],['c','Безбарвний']], correct: 'a', why: 'Метилоранж у лужному середовищі жовтий.' }
-        ]
-      },
-      {
-        title: 'Частина 3. Використання та безпека',
-        questions: [
-          { type: 'radio', q: 'Як називають прозорий розчин Ca(OH)₂?', options: [['a','Вапняна вода'],['b','Каустик'],['c','Рідке скло']], correct: 'a', why: 'Прозорий розчин кальцій гідроксиду називають вапняною водою.' },
-          { type: 'radio', q: 'Яку сполуку називають негашеним вапном?', options: [['a','CaO'],['b','Ca(OH)₂'],['c','CaCO₃']], correct: 'a', why: 'CaO — негашене вапно.' },
-          { type: 'radio', q: 'Що таке «гасіння вапна»?', options: [['a','Взаємодія CaO з водою'],['b','Заливання вапняку'],['c','Реакція з HCl']], correct: 'a', why: 'Гасіння вапна — це взаємодія оксиду кальцію з водою.' },
-          { type: 'radio', q: 'Де переважно використовують гашене вапно?', options: [['a','У будівництві'],['b','У ракетному паливі'],['c','Для очищення води']], correct: 'a', why: 'Гашене вапно застосовують у будівництві та штукатурці.' },
-          { type: 'radio', q: 'NaOH використовують для виробництва:', options: [['a','Мила та мийних засобів'],['b','Азотних добрив'],['c','Заліза']], correct: 'a', why: 'NaOH застосовують у виробництві мила та мийних засобів.' },
-          { type: 'radio', q: 'Чому NaOH називають «їдким натром»?', options: [['a','Він роз’їдає шкіру й тканини'],['b','Він дуже солоний'],['c','Він має сильний запах']], correct: 'a', why: 'NaOH — сильна лугова речовина, яка руйнує тканини.' },
-          { type: 'radio', q: 'Який із наведених варіантів є лугом?', options: [['a','CaO'],['b','KOH'],['c','H₂SO₄']], correct: 'b', why: 'Гідроксид калію — луг.' },
-          { type: 'radio', q: 'Що відбувається з лакмусовим папірцем у лужному середовищі?', options: [['a','Становиться синім'],['b','Червоніє'],['c','Залишається без змін']], correct: 'a', why: 'Лакмус синіє в лужному середовищі.' },
-          { type: 'radio', q: 'Яка формула гідроксиду калію?', options: [['a','KOH'],['b','K₂O'],['c','K(OH)₂']], correct: 'a', why: 'Калій одновалентний: KOH.' },
-          { type: 'radio', q: 'Чому в лабораторії луги зберігають у закритих посудинах?', options: [['a','Бо вони поглинають вуглекислий газ і воду з повітря'],['b','Бо вони дуже легко загораються'],['c','Бо вони є газами']], correct: 'a', why: 'Луги реагують з CO₂ і вмістом вологи з повітря.' }
-        ]
-      }
+      {title:'Частина 1. Теорія та формули',questions:[
+        {type:'radio',q:'Що називають основами?',options:[['a','Сполуки металу з киснем'],['b','Речовини, що містять катіони металу та гідроксид-іони'],['c','Солі у воді']],correct:'b',why:'Основи — це гідроксиди металів, що містять гідроксид-іони OH⁻.'},
+        {type:'radio',q:'Яка формула натрій гідроксиду?',options:[['a','NaOH'],['b','Na₂O'],['c','Na(OH)₂']],correct:'a',why:'Натрій одновалентний, тому формула — NaOH.'},
+        {type:'radio',q:'Яка формула кальцій гідроксиду?',options:[['a','CaOH'],['b','Ca(OH)₂'],['c','Ca₂OH']],correct:'b',why:'Кальцій двовалентний, тому потрібні два OH-групи.'},
+        {type:'radio',q:'Яка з наведених речовин є лугом?',options:[['a','Cu(OH)₂'],['b','Fe(OH)₃'],['c','NaOH']],correct:'c',why:'NaOH — розчинна основа, тобто луг.'},
+        {type:'radio',q:'Яке твердження про Ca(OH)₂ правильне?',options:[['a','Це малорозчинна основа'],['b','Це розчинна сіль'],['c','Це луг, що частково розчиняється в воді']],correct:'c',why:'Кальцій гідроксид є малорозчинним лугом.'},
+        {type:'radio',q:'Який колір набуває фенолфталеїн у лугах?',options:[['a','Малиновий'],['b','Безбарвний'],['c','Синій']],correct:'a',why:'Фенолфталеїн у лужному середовищі стає малиновим.'},
+        {type:'radio',q:'Що відбувається з червоним лакмусом у лугах?',options:[['a','Стає синім'],['b','Червоніє'],['c','Жовтіє']],correct:'a',why:'Лакмус у лужному середовищі синіє.'},
+        {type:'radio',q:'Скільки гідроксид-іонів у Ca(OH)₂?',options:[['a','Один'],['b','Два'],['c','Три']],correct:'b',why:'У формулі Ca(OH)₂ є дві групи OH⁻.'},
+        {type:'radio',q:'Яка молекулярна маса NaOH?',options:[['a','40'],['b','23'],['c','56']],correct:'a',why:'23 + 16 + 1 = 40.'},
+        {type:'radio',q:'Яка технічна назва NaOH?',options:[['a','Каустична сода'],['b','Гашене вапно'],['c','Питна сода']],correct:'a',why:'NaOH називають каустичною содою.'}
+      ]},
+      {title:'Частина 2. Хімічні властивості',questions:[
+        {type:'radio',q:'Що характерно для розчинення NaOH у воді?',options:[['a','Виділення тепла'],['b','Повне замерзання'],['c','Утворення газу']],correct:'a',why:'Розчинення лугів в воді супроводжується виділенням тепла.'},
+        {type:'radio',q:'Які продукти утворюються в реакції NaOH + HCl?',options:[['a','NaCl і H₂O'],['b','Na₂O і H₂'],['c','Cl₂ і NaOH']],correct:'a',why:'Це реакція нейтралізації: утворюються сіль і вода.'},
+        {type:'radio',q:'Яке рівняння нейтралізації Ca(OH)₂ записано правильно?',options:[['a','Ca(OH)₂ + HCl → CaCl₂ + H₂O'],['b','Ca(OH)₂ + 2HCl → CaCl₂ + 2H₂O'],['c','Ca(OH)₂ + H₂SO₄ → CaSO₄ + H₂']],correct:'b',why:'Для нейтралізації двох гідроксильних груп потрібно 2HCl.'},
+        {type:'radio',q:'Вапняна вода мутніє під дією якого газу?',options:[['a','Вуглекислого (CO₂)'],['b','Кисню (O₂)'],['c','Водню (H₂)']],correct:'a',why:'CO₂ реагує з Ca(OH)₂, утворюючи CaCO₃ — осад.'},
+        {type:'radio',q:'Що робити при потраплянні лугу на шкіру?',options:[['a','Промити великою кількістю води'],['b','Витерти насухо'],['c','Змазати соняшниковою олією']],correct:'a',why:'Промивання водою зменшує концентрацію лугу.'},
+        {type:'radio',q:'З якими оксидами реагують луги?',options:[['a','З кислотними'],['b','З основними'],['c','Не реагують']],correct:'a',why:'Луги реагують з кислотними оксидами, утворюючи сіль і воду.'},
+        {type:'radio',q:'Який осад випаде при взаємодії Ca(OH)₂ з Na₂CO₃?',options:[['a','CaCO₃'],['b','NaOH'],['c','Осаду не буде']],correct:'a',why:'Кальцій карбонат утворює білий осад.'},
+        {type:'radio',q:'Луги НЕ взаємодіють з:',options:[['a','Барій оксидом (BaO)'],['b','Кислотами'],['c','Кислотними оксидами']],correct:'a',why:'Луги реагують з кислотами і кислотними оксидами, а не з основним оксидом BaO.'},
+        {type:'radio',q:'Який колір має осад Cu(OH)₂?',options:[['a','Блакитний'],['b','Червоний'],['c','Чорний']],correct:'a',why:'Гідроксид міді(II) має блакитний осад.'},
+        {type:'radio',q:'Який колір має метилоранж у лужному середовищі?',options:[['a','Жовтий'],['b','Рожевий'],['c','Безбарвний']],correct:'a',why:'Метилоранж у лужному середовищі жовтий.'}
+      ]},
+      {title:'Частина 3. Використання та безпека',questions:[
+        {type:'radio',q:'Як називають прозорий розчин Ca(OH)₂?',options:[['a','Вапняна вода'],['b','Каустик'],['c','Рідке скло']],correct:'a',why:'Прозорий розчин кальцій гідроксиду називають вапняною водою.'},
+        {type:'radio',q:'Яку сполуку називають негашеним вапном?',options:[['a','CaO'],['b','Ca(OH)₂'],['c','CaCO₃']],correct:'a',why:'CaO — негашене вапно.'},
+        {type:'radio',q:'Що таке «гасіння вапна»?',options:[['a','Взаємодія CaO з водою'],['b','Заливання вапняку'],['c','Реакція з HCl']],correct:'a',why:'Гасіння вапна — це взаємодія оксиду кальцію з водою.'},
+        {type:'radio',q:'Де переважно використовують гашене вапно?',options:[['a','У будівництві'],['b','У ракетному паливі'],['c','Для очищення води']],correct:'a',why:'Гашене вапно застосовують у будівництві та штукатурці.'},
+        {type:'radio',q:'NaOH використовують для виробництва:',options:[['a','Мила та мийних засобів'],['b','Азотних добрив'],['c','Заліза']],correct:'a',why:'NaOH застосовують у виробництві мила та мийних засобів.'},
+        {type:'radio',q:'Чому NaOH називають «їдким натром»?',options:[['a','Він роз’їдає шкіру й тканини'],['b','Він дуже солоний'],['c','Він має сильний запах']],correct:'a',why:'NaOH — сильна лугова речовина, яка руйнує тканини.'},
+        {type:'radio',q:'Який із наведених варіантів є лугом?',options:[['a','CaO'],['b','KOH'],['c','H₂SO₄']],correct:'b',why:'Гідроксид калію — луг.'},
+        {type:'radio',q:'Що відбувається з лакмусовим папірцем у лужному середовищі?',options:[['a','Становиться синім'],['b','Червоніє'],['c','Залишається без змін']],correct:'a',why:'Лакмус синіє в лужному середовищі.'},
+        {type:'radio',q:'Яка формула гідроксиду калію?',options:[['a','KOH'],['b','K₂O'],['c','K(OH)₂']],correct:'a',why:'Калій одновалентний: KOH.'},
+        {type:'radio',q:'Чому в лабораторії луги зберігають у закритих посудинах?',options:[['a','Бо вони поглинають вуглекислий газ і воду з повітря'],['b','Бо вони дуже легко загораються'],['c','Бо вони є газами']],correct:'a',why:'Луги реагують з CO₂ і вмістом вологи з повітря.'}
+      ]}
     ];
 
     const state = {
@@ -300,9 +154,7 @@
 
     function getQuestionIndex() {
       let idx = 0;
-      for (let i = 0; i < state.currentSection; i++) {
-        idx += sections[i].questions.length;
-      }
+      for (let i = 0; i < state.currentSection; i++) idx += sections[i].questions.length;
       return idx + state.currentQuestion;
     }
 
@@ -333,7 +185,6 @@
     function renderQuestion() {
       const q = getCurrentQuestion();
       const questionNumber = getQuestionIndex() + 1;
-
       countEl.textContent = `Питання ${questionNumber} із ${totalQuestions}`;
       sectionTitleEl.textContent = sections[state.currentSection].title;
       promptEl.textContent = q.q;
@@ -342,19 +193,13 @@
       q.options.forEach(([key, text]) => {
         const label = document.createElement('label');
         label.className = 'option';
-
         const checked = state.answers[getQuestionIndex()] === key ? 'checked' : '';
-        label.innerHTML = `
-          <input type="radio" name="answer" value="${key}" ${checked} />
-          <span>${key}) ${text}</span>
-        `;
-
+        label.innerHTML = `<input type="radio" name="answer" value="${key}" ${checked} /><span>${key}) ${text}</span>`;
         label.addEventListener('change', () => {
           state.answers[getQuestionIndex()] = key;
           feedbackEl.style.display = 'none';
           state.checked = false;
         });
-
         answerArea.appendChild(label);
       });
 
@@ -403,12 +248,10 @@
     function nextQuestion() {
       const qIndex = getQuestionIndex();
       if (!state.started) return;
-
       if (!state.checked && typeof state.answers[qIndex] === 'string') {
         checkAnswer();
         return;
       }
-
       if (state.currentSection < sections.length - 1 || state.currentQuestion < sections[state.currentSection].questions.length - 1) {
         if (state.currentQuestion < sections[state.currentSection].questions.length - 1) {
           state.currentQuestion += 1;
@@ -445,33 +288,34 @@
     }
 
     function sendResultToGoogleSheet(result) {
+      const formData = new FormData();
+      formData.append('studentName', result.studentName || 'Анонімний учень');
+      formData.append('quizType', String(result.quizType || 'game'));
+      formData.append('score', String(result.score || 0));
+      formData.append('total', String(result.total || 0));
+      formData.append('percent', String(result.percent || 0));
+      formData.append('grade', result.grade || '');
+      formData.append('answers', JSON.stringify(result.answers || []));
+
       sendStatusEl.className = 'send-status send-loading';
       sendStatusEl.textContent = 'Надсилаємо результат до Google Таблиці...';
 
-      if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes('PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL')) {
-        sendStatusEl.className = 'send-status send-error';
-        sendStatusEl.textContent = 'Google Sheet URL не підключено. Додайте URL Apps Script у змінну GOOGLE_SHEET_URL.';
-        return;
-      }
-
       fetch(GOOGLE_SHEET_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(result)
+        body: formData
       })
         .then(response => {
-          if (!response.ok) {
-            throw new Error('Запит повернув помилку: ' + response.status);
-          }
+          if (!response.ok) throw new Error('HTTP ' + response.status);
           return response.text();
         })
-        .then(() => {
+        .then(text => {
           sendStatusEl.className = 'send-status send-success';
-          sendStatusEl.textContent = 'Результат успішно збережено у Google Таблиці.';
+          sendStatusEl.textContent = '✅ Результат успішно збережено у Google Таблиці!';
+          console.log('Google Sheets OK:', text);
         })
         .catch(error => {
           sendStatusEl.className = 'send-status send-error';
-          sendStatusEl.textContent = 'Не вдалося відправити результат у Google Таблицю. Перевірте Apps Script URL.';
+          sendStatusEl.textContent = '❌ Помилка при надіслані результату. Спробуйте пізніше.';
           console.error('Google Sheets send error:', error);
         });
     }
@@ -481,26 +325,27 @@
       resultSection.style.display = 'block';
 
       let correct = 0;
-      for (let i = 0; i < totalQuestions; i++) {
-        const q = sections.flatMap(section => section.questions)[i];
+      const flatQuestions = sections.flatMap(section => section.questions);
+      for (let i = 0; i < flatQuestions.length; i++) {
         const selected = state.answers[i];
-        if (selected === q.correct) correct += 1;
+        if (selected === flatQuestions[i].correct) correct += 1;
       }
 
-      const scoreText = `${correct} із ${totalQuestions}`;
-      scoreEl.textContent = scoreText;
-      gradeEl.textContent = calculateGrade(correct, totalQuestions);
+      const total = flatQuestions.length;
+      const grade = calculateGrade(correct, total);
+      const percent = Math.round((correct / total) * 100);
+      scoreEl.textContent = `${correct} із ${total}`;
+      gradeEl.textContent = grade + ' (' + percent + '%)';
 
-      const payload = {
-        date: new Date().toISOString(),
+      sendResultToGoogleSheet({
+        studentName: localStorage.getItem('chemistry_student_name') || 'Анонімний учень',
+        quizType: 'game',
         score: correct,
-        total: totalQuestions,
-        percent: Math.round((correct / totalQuestions) * 100),
-        grade: calculateGrade(correct, totalQuestions),
+        total: total,
+        percent: percent,
+        grade: grade,
         answers: state.answers
-      };
-
-      sendResultToGoogleSheet(payload);
+      });
     }
 
     document.getElementById('start').addEventListener('click', () => {
