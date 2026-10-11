@@ -126,10 +126,7 @@ function send(g,s){
     const name = localStorage.getItem('chemistry_student_name') || "Анонімний учень";
     const scriptUrl = "https://google.com";
     const d = document.getElementById('sendStatus'); d.style.display='block'; d.className='send-status send-loading'; d.innerText='⏳ Надсилання у журнал вчителя...';
-    
-    // НАЗВИ ЗМІННИХ ЗМІНЕНО ПІД ВАШ КЛАСИЧНИЙ ДОПОСТ СТОВПЧИКІВ ИМ'Я ТА ОЦІНКА:
     const url = scriptUrl + '?studentName=' + encodeURIComponent(name) + '&studentScore=' + encodeURIComponent(g + ' балів (Тест 12п: ' + s + '/12)');
-    
     fetch(url,{method:'POST',mode:'no-cors'}).then(()=>{d.className='send-status send-success';d.innerText='✅ Результат успішно збережено!';}).catch(()=>{d.innerText='❌ Помилка надсилання.';});
 }
 
