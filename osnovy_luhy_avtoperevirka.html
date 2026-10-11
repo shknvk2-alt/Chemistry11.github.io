@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Основи. Натрій гідроксид і кальцій гідроксид</title>
+<style>
+:root{--ink:#203047;--blue:#2457a7;--pale:#eef5ff;--green:#187548;--red:#b42318;--line:#d5deea}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7fb;color:var(--ink);font:16px/1.5 Arial,sans-serif}
+main{max-width:950px;margin:24px auto;padding:0 16px 40px}
+header{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:18px}
+h1{font-size:clamp(24px,4vw,34px);line-height:1.2;margin:0 0 10px}
+h2{font-size:21px;margin:0 0 12px}
+.intro{margin:0;color:#42536b}
+.progress{height:8px;background:#e0e7f0;border-radius:20px;overflow:hidden;margin-top:16px}
+#bar{height:100%;width:0;background:var(--blue);transition:width .2s}
+section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0}
+.question{padding:14px 0;border-top:1px solid #e8edf4}
+.question:first-of-type{border-top:0}
+.qtitle{font-weight:700;margin-bottom:8px}
+label.option{display:flex;gap:9px;align-items:flex-start;padding:7px 9px;border-radius:8px;cursor:pointer}
+label.option:hover{background:#f4f7fc}
+input{margin-top:5px;accent-color:var(--blue)}
+select, input[type=text]{font:inherit;padding:8px 10px;border:1px solid #b9c6d8;border-radius:7px;max-width:100%}
+select{min-width:180px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+button{border:0;border-radius:9px;padding:11px 17px;font:inherit;font-weight:700;cursor:pointer}
+.primary{background:var(--blue);color:white}
+.secondary{background:#e8eef7;color:var(--ink)}
+button:hover{filter:brightness(.96)}
+.feedback{font-size:14px;margin:7px 0 0;color:#526178}
+.correct{background:#eaf7ef!important;border-left:4px solid var(--green);padding-left:10px!important}
+.incorrect{background:#fff0ee!important;border-left:4px solid var(--red);padding-left:10px!important}
+#result{display:none;background:#fff;border:2px solid var(--blue);border-radius:14px;padding:20px;margin-top:18px}
+.score{font-size:28px;font-weight:800}
+.small{font-size:14px;color:#526178}
+.pill{display:inline-block;background:var(--pale);padding:3px 8px;border-radius:6px;font-size:13px}
+@media(max-width:600px){section{padding:14px}header{padding:18px}select{width:100%}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <span class="pill">Інтерактивна робота · автоперевірка</span>
+  <h1>Основи. Натрій гідроксид і кальцій гідроксид</h1>
+  <p class="intro">Завдання про склад і властивості основ, луги, поширення та використання NaOH і Ca(OH)₂. Оберіть відповіді, а потім натисніть «Перевірити».</p>
+  <div class="progress"><div id="bar"></div></div>
+  <p class="small" id="progressText">Виконано завдань: 0 із 12</p>
+</header>
+
+<form id="quiz">
+<section>
+<h2>1. Оберіть одну правильну відповідь</h2>
+<div class="question" data-type="radio" data-answer="b">
+<div class="qtitle">1. Які речовини належать до основ?</div>
+<label class="option"><input type="radio" name="q1" value="a"> Речовини, що складаються лише з атомів металу й Оксигену</label>
+<label class="option"><input type="radio" name="q1" value="b"> Складні речовини, що містять катіони металу та гідроксид-іони OH⁻</label>
+<label class="option"><input type="radio" name="q1" value="c"> Складні речовини, що містять атоми Гідрогену й кислотний залишок</label>
+</div>
+<div class="question" data-type="radio" data-answer="c">
+<div class="qtitle">2. Яка з наведених основ є лугом?</div>
+<label class="option"><input type="radio" name="q2" value="a"> Cu(OH)₂</label>
+<label class="option"><input type="radio" name="q2" value="b"> Fe(OH)₃</label>
+<label class="option"><input type="radio" name="q2" value="c"> NaOH</label>
+</div>
+<div class="question" data-type="radio" data-answer="a">
+<div class="qtitle">3. Яка формула кальцій гідроксиду?</div>
+<label class="option"><input type="radio" name="q3" value="a"> Ca(OH)₂</label>
+<label class="option"><input type="radio" name="q3" value="b"> CaOH</label>
+<label class="option"><input type="radio" name="q3" value="c"> Ca₂OH</label>
+</div>
+<div class="question" data-type="radio" data-answer="b">
+<div class="qtitle">4. Який індикатор у лужному середовищі стає малиновим?</div>
+<label class="option"><input type="radio" name="q4" value="a"> Метилоранж</label>
+<label class="option"><input type="radio" name="q4" value="b"> Фенолфталеїн</label>
+<label class="option"><input type="radio" name="q4" value="c"> Лакмус стає червоним</label>
+</div>
+</section>
+
+<section>
+<h2>2. Позначте всі правильні відповіді</h2>
+<div class="question" data-type="multi" data-answer="a,c,d">
+<div class="qtitle">5. Які твердження про натрій гідроксид правильні?</div>
+<label class="option"><input type="checkbox" name="q5" value="a"> Це тверда біла речовина за звичайних умов</label>
+<label class="option"><input type="checkbox" name="q5" value="b"> Він безпечний для шкіри, тому що не спричиняє опіків</label>
+<label class="option"><input type="checkbox" name="q5" value="c"> Добре розчиняється у воді</label>
+<label class="option"><input type="checkbox" name="q5" value="d"> Є їдкою речовиною, що може спричинити хімічні опіки</label>
+</div>
+<div class="question" data-type="multi" data-answer="a,b,d">
+<div class="qtitle">6. Які твердження про кальцій гідроксид правильні?</div>
+<label class="option"><input type="checkbox" name="q6" value="a"> Його водну суспензію називають вапняним молоком</label>
+<label class="option"><input type="checkbox" name="q6" value="b"> Прозорий насичений розчин називають вапняною водою</label>
+<label class="option"><input type="checkbox" name="q6" value="c"> Він необмежено розчиняється у воді</label>
+<label class="option"><input type="checkbox" name="q6" value="d"> Його використовують у будівництві для приготування вапняних розчинів</label>
+</div>
+<div class="question" data-type="multi" data-answer="a,c">
+<div class="qtitle">7. Які дії відповідають правилам безпеки під час роботи з лугами?</div>
+<label class="option"><input type="checkbox" name="q7" value="a"> Працювати в захисних окулярах і рукавичках</label>
+<label class="option"><input type="checkbox" name="q7" value="b"> Торкатися речовини пальцями, щоб перевірити її властивості</label>
+<label class="option"><input type="checkbox" name="q7" value="c"> Уникати потрапляння речовини на шкіру та в очі</label>
+<label class="option"><input type="checkbox" name="q7" value="d"> Пробувати речовини на смак</label>
+</div>
+</section>
+
+<section>
+<h2>3. Установіть відповідність</h2>
+<div class="question" data-type="selects" data-answers="b,a,c">
+<div class="qtitle">8. Поєднайте речовину з її характеристикою.</div>
+<p>Натрій гідроксид (NaOH): <select name="q8a"><option value="">Оберіть…</option><option value="a">Малорозчинна основа</option><option value="b">Добре розчинний у воді луг</option><option value="c">Основний компонент крейди</option></select></p>
+<p>Кальцій гідроксид (Ca(OH)₂): <select name="q8b"><option value="">Оберіть…</option><option value="a">Малорозчинна у воді основа</option><option value="b">Добре розчинний у воді луг</option><option value="c">Основний компонент крейди</option></select></p>
+<p>Кальцій карбонат (CaCO₃): <select name="q8c"><option value="">Оберіть…</option><option value="a">Малорозчинна основа</option><option value="b">Добре розчинний у воді луг</option><option value="c">Речовина, з якої складаються крейда й вапняк</option></select></p>
+<p class="small">Увага: кальцій карбонат — не основа, а сіль.</p>
+</div>
+<div class="question" data-type="selects" data-answers="c,a,b">
+<div class="qtitle">9. Установіть відповідність між речовиною та її використанням.</div>
+<p>NaOH: <select name="q9a"><option value="">Оберіть…</option><option value="a">Вапнування кислих ґрунтів</option><option value="b">Виявлення вуглекислого газу вапняною водою</option><option value="c">Виробництво мила, паперу та деяких мийних засобів</option></select></p>
+<p>Ca(OH)₂: <select name="q9b"><option value="">Оберіть…</option><option value="a">Вапнування кислих ґрунтів</option><option value="b">Виявлення вуглекислого газу вапняною водою</option><option value="c">Виробництво мила, паперу та деяких мийних засобів</option></select></p>
+<p>Вапняна вода: <select name="q9c"><option value="">Оберіть…</option><option value="a">Вапнування кислих ґрунтів</option><option value="b">Виявлення вуглекислого газу</option><option value="c">Виробництво паперу</option></select></p>
+</div>
+</section>
+
+<section>
+<h2>4. Властивості та поширення</h2>
+<div class="question" data-type="radio" data-answer="a">
+<div class="qtitle">10. Що спостерігають, якщо пропускати вуглекислий газ через вапняну воду?</div>
+<label class="option"><input type="radio" name="q10" value="a"> Розчин мутніє через утворення кальцій карбонату</label>
+<label class="option"><input type="radio" name="q10" value="b"> Розчин стає синім через утворення міді</label>
+<label class="option"><input type="radio" name="q10" value="c"> Виділяється натрій</label>
+</div>
+<div class="question" data-type="radio" data-answer="c">
+<div class="qtitle">11. Де в природі поширені сполуки Кальцію, з яких отримують вапно?</div>
+<label class="option"><input type="radio" name="q11" value="a"> Переважно у складі повітря</label>
+<label class="option"><input type="radio" name="q11" value="b"> Лише в морській воді</label>
+<label class="option"><input type="radio" name="q11" value="c"> У вапняку, крейді та мармурі, основою яких є CaCO₃</label>
+</div>
+<div class="question" data-type="radio" data-answer="b">
+<div class="qtitle">12. Який вислів про натрій гідроксид і кальцій гідроксид правильний?</div>
+<label class="option"><input type="radio" name="q12" value="a"> Обидві речовини можна безпечно куштувати в малих кількостях</label>
+<label class="option"><input type="radio" name="q12" value="b"> Обидві речовини мають лужні властивості, але відрізняються розчинністю у воді</label>
+<label class="option"><input type="radio" name="q12" value="c"> Обидві речовини є кислотами</label>
+</div>
+</section>
+<div class="actions">
+<button type="button" class="primary" id="check">Перевірити відповіді</button>
+<button type="button" class="secondary" id="reset">Почати спочатку</button>
+</div>
+</form>
+<div id="result" aria-live="polite">
+<div class="score" id="score"></div>
+<p id="comment"></p>
+<p class="small">Кожне завдання оцінюється в 1 бал. Для завдань із кількома правильними відповідями потрібно позначити всі правильні варіанти й не позначати неправильні.</p>
+</div>
+</main>
+<script>
+const quiz=document.getElementById('quiz');
+const questions=[...document.querySelectorAll('.question')];
+const result=document.getElementById('result');
+function chosen(q){return [...q.querySelectorAll('input:checked')].map(x=>x.value).sort().join(',')}
+function expected(q){
+ if(q.dataset.type==='radio') return q.dataset.answer;
+ if(q.dataset.type==='multi') return q.dataset.answer.split(',').sort().join(',');
+ return q.dataset.answers.split(',').join('|');
+}
+function actual(q){
+ if(q.dataset.type==='radio'||q.dataset.type==='multi') return chosen(q);
+ return [...q.querySelectorAll('select')].map(s=>s.value).join('|');
+}
+function updateProgress(){
+ let done=questions.filter(q=>q.querySelector('input:checked')||[...q.querySelectorAll('select')].some(s=>s.value)).length;
+ document.getElementById('bar').style.width=(done/questions.length*100)+'%';
+ document.getElementById('progressText').textContent=`Виконано завдань: ${done} із ${questions.length}`;
+}
+quiz.addEventListener('change',updateProgress);
+document.getElementById('check').addEventListener('click',()=>{
+ let points=0;
+ questions.forEach(q=>{
+  q.classList.remove('correct','incorrect');
+  let old=q.querySelector('.feedback'); if(old)old.remove();
+  let ok=actual(q)===expected(q);
+  if(ok)points++;
+  q.classList.add(ok?'correct':'incorrect');
+  let f=document.createElement('p'); f.className='feedback';
+  f.textContent=ok?'Правильно.':'Потрібно виправити відповідь.';
+  q.appendChild(f);
+ });
+ result.style.display='block';
+ document.getElementById('score').textContent=`Результат: ${points} із ${questions.length} балів`;
+ let percent=points/questions.length;
+ document.getElementById('comment').textContent=percent===1?'Чудово! Усі відповіді правильні.':percent>=.75?'Добрий результат. Перегляньте завдання, у яких є помилки.':percent>=.5?'Повторіть властивості та використання NaOH і Ca(OH)₂, а потім спробуйте ще раз.':'Радимо повторити визначення основ і лугів, властивості речовин та правила безпеки.';
+ result.scrollIntoView({behavior:'smooth',block:'start'});
+});
+document.getElementById('reset').addEventListener('click',()=>{
+ quiz.reset(); questions.forEach(q=>{q.classList.remove('correct','incorrect');let f=q.querySelector('.feedback');if(f)f.remove()});
+ result.style.display='none';updateProgress();window.scrollTo({top:0,behavior:'smooth'});
+});
+</script>
+</body>
+</html>
