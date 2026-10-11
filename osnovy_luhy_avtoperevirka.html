@@ -39,14 +39,19 @@ button{border:0;border-radius:8px;padding:10px 16px;font:inherit;font-weight:700
   <div class="section" id="part2"><h2>Частина 2. Хімічні Властивості</h2></div>
   <div class="section" id="part3"><h2>Частина 3. Використання та Безпека</h2></div>
 </form>
-<div class="actions"><button type="button" class="primary" id="check">Перевірити відповіді</button><button type="button" class="secondary" id="reset">Почати спочатку</button></div>
+<div class="actions">
+  <button type="button" class="primary" id="check">Перевірити відповіді</button>
+  <button type="button" class="secondary" id="reset">Почати спочатку</button>
+</div>
 <div id="result" aria-live="polite">
-    <div class="score" id="score"></div><div class="grade" id="grade"></div><div id="sendStatus" class="send-status"></div>
+  <div class="score" id="score"></div>
+  <div class="grade" id="grade"></div>
+  <div id="sendStatus" class="send-status"></div>
 </div>
 </main>
 <script>
 const quizData = [
-  {p:1,c:"b",q:"Що називають основами?",o:["Сполуки металу з Оксигену","Речовини з катіонами металу та гідроксид-іонами OH⁻","Речовини, що містять Гідроген"]},
+  {p:1,c:"b",q:"Що називають основами?",o:["Сполуки металу з Оксигену","Речовини з катіонами металу та гідроксид-іонами","Соління кислот"]},
   {p:1,c:"a",q:"Яка формула натрій гідроксиду?",o:["NaOH","Na₂O","Na(OH)₂"]},
   {p:1,c:"b",q:"Яка формула кальцій гідроксиду?",o:["CaOH","Ca(OH)₂","Ca₂OH"]},
   {p:1,c:"c",q:"Яка з наведених речовин є лугом?",o:["Cu(OH)₂","Fe(OH)₃","NaOH"]},
@@ -58,7 +63,7 @@ const quizData = [
   {p:1,c:"a",q:"Яка технічна назва NaOH?",o:["Каустична сода","Гашене вапно","Питна сода"]},
   {p:2,c:"a",q:"Що характерно для розчинення NaOH у воді?",o:["Виділення тепла","Повне замерзання","Утворення кисню"]},
   {p:2,c:"a",q:"Які продукти утворюються в реакції NaOH + HCl?",o:["NaCl і H₂O","Na₂O і H₂","Cl₂"]},
-  {p:2,c:"b",q:"Яке рівняння нейтралізації Ca(OH)₂ записано правильно?",o:["Ca(OH)₂ + HCl -> CaCl₂ + H₂O","Ca(OH)₂ + 2HCl -> CaCl₂ + 2H₂O","CaOH + HCl -> CaCl + H₂"]},
+  {p:2,c:"b",q:"Яке рівняння нейтралізації Ca(OH)₂ записано правильно?",o:["Ca(OH)₂ + HCl -> CaCl₂ + H₂O","Ca(OH)₂ + 2HCl -> CaCl₂ + 2H₂O","CaOH + HCl -> CaCl + H₂O"]},
   {p:2,c:"a",q:"Вапняна вода мутніє під дією якого газу?",o:["Вуглекислого (CO₂)","Кисню (O₂)","Водню (H₂)"]},
   {p:2,c:"a",q:"Що робити при потраплянні лугу на шкіру?",o:["Промити великою кількістю води","Витерти насухо","Залити кислотою"]},
   {p:2,c:"a",q:"З якими оксидами реагують луги?",o:["З кислотними","З основними","Не реагують"]},
@@ -71,62 +76,98 @@ const quizData = [
   {p:3,c:"a",q:"Що таке «гасіння вапна»?",o:["Взаємодія CaO з водою","Заливання вапняку","Реакція з HCl"]},
   {p:3,c:"a",q:"Де переважно використовують гашене вапно?",o:["У будівництві","У ракетному паливі","Для плавлення металу"]},
   {p:3,c:"a",q:"NaOH використовують для виробництва:",o:["Мила та мийних засобів","Азотних добрив","Заліза"]},
-  {p:3,c:"a",q:"Чому NaOH називають «їдким натром»?",o:["Він роз’їдає шкіру й тканини","Він дуже солоний","Він кислий"]},
+  {p:3,c:"a",q:"Чому NaOH називають «їдким натром»?",o:["Він роз'їдає шкіру й тканини","Він дуже солоний","Він кислий"]},
   {p:3,c:"a",q:"Яким папірцем виявляють луги?",o:["Червоним лакмусовим","Синім лакмусовим","Звичайним білим"]},
   {p:3,c:"a",q:"Яка основа утвориться при взаємодії натрію з водою?",o:["NaOH","Ca(OH)₂","Na₂O"]},
   {p:3,c:"a",q:"Які мінерали складаються з CaCO₃?",o:["Крейда, мармур, вапняк","Граніт і пісок","Сіль"]},
-  {p:3,c:"a",q:"Які засоби безпеки обов’язакові з твердим NaOH?",o:["Окуляри та рукавички","Вогнетривкий костюм","Нічого не потрібно"]}
+  {p:3,c:"a",q:"Які засоби безпеки обов'язкові з твердим NaOH?",o:["Окуляри та рукавички","Вогнетривкий костюм","Нічого не потрібно"]}
 ];
 
 quizData.forEach((data, idx) => {
-    const qNum = idx + 1;
-    const targetBlock = document.getElementById(`part${data.p}`);
-    const qDiv = document.createElement('div');
-    qDiv.className = 'question'; qDiv.id = `q_${qNum}`; qDiv.setAttribute('data-cor', data.c);
-    
-    let opts = ''; const keys = ['a','b','c'];
-    data.o.forEach((o, oIdx) => {
-        opts += `<label class="option"><input type="radio" name="m${qNum}" value="${keys[oIdx]}" onchange="up()"> ${o}</label>`;
-    });
-    qDiv.innerHTML = `<div class="qtitle">${qNum}. ${data.q}</div>${opts}<div class="feedback"></div>`;
-    targetBlock.appendChild(qDiv);
+  const qNum = idx + 1;
+  const targetBlock = document.getElementById(`part${data.p}`);
+  const qDiv = document.createElement('div');
+  qDiv.className = 'question';
+  qDiv.id = `q_${qNum}`;
+  qDiv.setAttribute('data-cor', data.c);
+
+  let opts = '';
+  const keys = ['a','b','c'];
+  data.o.forEach((o, oIdx) => {
+    opts += `<label class="option"><input type="radio" name="m${qNum}" value="${keys[oIdx]}" onchange="up()"> ${o}</label>`;
+  });
+
+  qDiv.innerHTML = `<div class="qtitle">${qNum}. ${data.q}</div>${opts}<div class="feedback"></div>`;
+  targetBlock.appendChild(qDiv);
 });
 
 function up(){
-    let ans = 0; for(let i=1;i<=30;i++){if(document.querySelector(`input[name="m${i}"]:checked`)) ans++}
-    document.querySelector('.bar').style.width=(ans/30*100)+'%';
-    document.getElementById('progressText').innerText=`Виконано завдань: ${ans} із 30`;
+  let ans = 0;
+  for (let i = 1; i <= 30; i++) {
+    if (document.querySelector(`input[name="m${i}"]:checked`)) ans++;
+  }
+  document.querySelector('.bar').style.width = (ans / 30 * 100) + '%';
+  document.getElementById('progressText').innerText = `Виконано завдань: ${ans} із 30`;
 }
 
-document.getElementById('check').addEventListener('click',()=>{
-    let score = 0;
-    for(let i=1;i<=30;i++){
-        const q = document.getElementById(`q_${i}`); if(!q)continue;
-        const fb = q.querySelector('.feedback'), ch = q.querySelector('input:checked'), cor = q.getAttribute('data-cor');
-        const isCor = ch && ch.value === cor;
-        if(isCor){q.className='question correct'; fb.innerText='✅ Правильно!'; score++}
-        else{q.className='question incorrect'; fb.innerText='❌ Неправильно.'}
-        fb.style.display='block';
+document.getElementById('check').addEventListener('click', () => {
+  let score = 0;
+  for (let i = 1; i <= 30; i++) {
+    const q = document.getElementById(`q_${i}`);
+    if (!q) continue;
+
+    const fb = q.querySelector('.feedback');
+    const ch = q.querySelector('input:checked');
+    const cor = q.getAttribute('data-cor');
+    const isCor = ch && ch.value === cor;
+
+    if (isCor) {
+      q.className = 'question correct';
+      fb.innerText = '✅ Правильно!';
+      score++;
+    } else {
+      q.className = 'question incorrect';
+      fb.innerText = '❌ Неправильно.';
     }
-    const grade = Math.round((score/30)*12);
-    document.getElementById('score').innerText=`Ваш результат: ${score} з 30 балів`;
-    document.getElementById('grade').innerText=`Оцінка: ${grade} балів за 12-бальною шкалою`;
-    document.getElementById('result').style.display='block';
-    document.getElementById('result').scrollIntoView({behavior:'smooth'});
-    send(grade,score);
+    fb.style.display = 'block';
+  }
+
+  const grade = Math.round((score / 30) * 12);
+  document.getElementById('score').innerText = `Ваш результат: ${score} з 30 балів`;
+  document.getElementById('grade').innerText = `Оцінка: ${grade} балів за 12-бальною шкалою`;
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+
+  send(grade, score);
 });
 
-function send(g,s){
-    const name = localStorage.getItem('chemistry_student_name') || "Анонімний учень";
-    const scriptUrl = "https://google.com";
-    const d = document.getElementById('sendStatus'); d.style.display='block'; d.className='send-status send-loading'; d.innerText='⏳ Надсилання у журнал вчителя...';
-    const url = `${scriptUrl}?studentName=${encodeURIComponent(name)}&studentScore=${encodeURIComponent(g+' балів (Тест 30п: '+s+'/30)')}`;
-    fetch(url,{method:'POST',mode:'no-cors'}).then(()=>{d.className='send-status send-success';d.innerText='✅ Результат успішно збережено!';}).catch(()=>{d.innerText='❌ Помилка надсилання.';});
+function send(g, s) {
+  const name = localStorage.getItem('chemistry_student_name') || 'Анонімний учень';
+  const scriptUrl = 'https://script.google.com/macros/s/AKfycbypbxM-HpIaxsMuoSAH2QPPuUx9IXp_6eUi31y-FmvL2wbHU190rJ3Aza3U7tK63mtNsw/exec';
+  const d = document.getElementById('sendStatus');
+  d.style.display = 'block';
+  d.className = 'send-status send-loading';
+  d.innerText = '⏳ Надсилання у журнал вчителя...';
+
+  const url = `${scriptUrl}?studentName=${encodeURIComponent(name)}&studentScore=${encodeURIComponent(g + ' балів (Тест 30п: ' + s + '/30)')}`;
+
+  fetch(url, { method: 'GET', mode: 'no-cors' })
+    .then(() => {
+      d.className = 'send-status send-success';
+      d.innerText = '✅ Результат успішно збережено!';
+    })
+    .catch(() => {
+      d.className = 'send-status';
+      d.innerText = '❌ Помилка надсилання. Перевірте URL веб-скрипта у Google Apps Script.';
+    });
 }
 
-document.getElementById('reset').addEventListener('click',()=>{
-    document.getElementById('quiz').reset(); document.getElementById('result').style.display='none';
-    document.querySelectorAll('.question').forEach(q=>q.className='question'); document.querySelectorAll('.feedback').forEach(f=>f.style.display='none'); up();
+document.getElementById('reset').addEventListener('click', () => {
+  document.getElementById('quiz').reset();
+  document.getElementById('result').style.display = 'none';
+  document.querySelectorAll('.question').forEach(q => q.className = 'question');
+  document.querySelectorAll('.feedback').forEach(f => f.style.display = 'none');
+  up();
 });
 </script>
 </body>
