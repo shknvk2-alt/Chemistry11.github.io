@@ -8,9 +8,9 @@
 *{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:var(--ink);font:16px/1.5 Arial,sans-serif}
 main{max-width:850px;margin:24px auto;padding:0 16px 40px}
 header,.section,#result{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}
-h1{font-size:24px;margin:0 0 10px}h2{font-size:20px;margin:0 0 10px}
+h1{font-size:24px;margin:0 0 10px}h2{font-size:18px;color:var(--blue);margin:0 0 10px}
 .progress{height:8px;background:#e0e7f0;border-radius:20px;overflow:hidden;margin:12px 0}
-#bar{height:100%;width:0;background:var(--blue);transition:width .2s}
+.bar{height:100%;width:0;background:var(--blue);transition:width .2s}
 .question{padding:12px 0;border-top:1px solid #e8edf4}.question:first-of-type{border-top:0}
 .qtitle{font-weight:700;margin-bottom:6px}
 label.option{display:flex;gap:8px;align-items:flex-start;padding:6px;border-radius:6px;cursor:pointer}
@@ -18,7 +18,7 @@ label.option:hover{background:#f4f7fc}input{margin-top:5px;accent-color:var(--bl
 .actions{display:flex;gap:10px;margin:16px 0}
 button{border:0;border-radius:8px;padding:10px 16px;font:inherit;font-weight:700;cursor:pointer}
 .primary{background:var(--blue);color:white}.secondary{background:#e8eef7;color:var(--ink)}
-.feedback{font-size:14px;margin-top:6px;font-weight:bold;display:none}
+.feedback{font-size:14px;margin-top:4px;font-weight:bold;display:none}
 .correct{background:#eaf7ef!important;border-left:4px solid var(--green);padding-left:8px!important}
 .incorrect{background:#fff0ee!important;border-left:4px solid var(--red);padding-left:8px!important}
 #result{display:none;border:2px solid var(--blue);padding:20px}.score{font-size:24px;font-weight:800}
@@ -31,7 +31,7 @@ button{border:0;border-radius:8px;padding:10px 16px;font:inherit;font-weight:700
 <main>
 <header>
   <h1>Основи. Натрій гідроксид і кальцій гідроксид (30 завдань)</h1>
-  <div class="progress"><div id="bar"></div></div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
   <p id="progressText" style="font-size:14px;margin:0">Виконано завдань: 0 із 30</p>
 </header>
 <form id="quiz"></form>
@@ -41,58 +41,108 @@ button{border:0;border-radius:8px;padding:10px 16px;font:inherit;font-weight:700
 </div>
 </main>
 <script>
-const sections = [
- {title:'Частина 1. Теорія та Формули', questions:[
-  {type:'radio',q:'Що називають основами?',options:[['a','Сполуки металу з Оксигеном'],['b','Речовини з катіонами металу та гідроксид-іонами OH⁻'],['c','Речовини, що містять Гідроген і кислотний залишок']],correct:'b',why:'Основи складаються з металу та OH⁻ груп.'},
-  {type:'radio',q:'Яка формула натрій гідроксиду?',options:[['a','NaOH'],['b','Na₂O'],['c','Na(OH)₂']],correct:'a',why:'Натрій одновалентний — NaOH.'},
-  {type:'radio',q:'Яка формула кальцій гідроксиду?',options:[['a','CaOH'],['b','Ca(OH)₂'],['c','Ca₂OH']],correct:'b',why:'Кальцій двовалентний — Ca(OH)₂.'},
-  {type:'radio',q:'Яка з наведених речовин є лугом?',options:[['a','Cu(OH)₂'],['b','Fe(OH)₃'],['c','NaOH']],correct:'c',why:'NaOH розчинний у воді, тому це луг.'},
-  {type:'radio',q:'Яке твердження про Са(ОН)₂ правильне?',options:[['a','Це малорозчинна основа'],['b','Це летка кислота'],['c','Це розчинна сіль']],correct:'a',why:'Кальцій гідроксид малорозчинний у воді.'},
-  {type:'radio',q:'Який колір набуває фенолфталеїн у лугах?',options:[['a','Малиновий'],['b','Безбарвний'],['c','Жовтий']],correct:'a',why:'Фенолфталеїн у лужному середовищі стає малиновим.'},
-  {type:'radio',q:'Що відбувається з червоним лакмусом у лугах?',options:[['a','Стає синім'],['b','Червоніє більше'],['c','Знебарвлюється']],correct:'a',why:'Луги змінюють колір червоного лакмусу на синій.'},
-  {type:'radio',q:'Скільки гідроксид-іонів у Ca(OH)₂?',options:[['a','Один'],['b','Два'],['c','Три']],correct:'b',why:'Індекс 2 вказує на дві групи OH.'},
-  {type:'radio',q:'Яка молекулярна маса NaOH?',options:[['a','40'],['b','23'],['c','56']],correct:'a',why:'23 + 16 + 1 = 40.'},
-  {type:'radio',q:'Яка технічна назва NaOH?',options:[['a','Каустична сода'],['b','Гашене вапно'],['c','Питна сода']],correct:'a',why:'NaOH — каустична сода або їдкий натр.'}
- ]},
- {title:'Частина 2. Хімічні Властивості', questions:[
-  {type:'multi',q:'Оберіть правильні твердження про NaOH:',options:[['a','Тверда біла речовина'],['b','Цілком безпечний для шкіри'],['c','Добре розчиняється у воді'],['d','Може викликати хімічні опіки']],correct:['a','c','d'],why:'NaOH білий, розчинний і дуже їдкий.'},
-  {type:'radio',q:'Що характерно для розчинення NaOH у воді?',options:[['a','Виділення великої кількості тепла'],['b','Замерзання розчину'],['c','Виділення фіолетового газу']],correct:'a',why:'Розчинення лугу — екзотермічний процес.'},
-  {type:'radio',q:'Які продукти утворюються в реакції NaOH + HCl?',options:[['a','NaCl і H₂O'],['b','Na₂O і H₂'],['c','Лише чистий хлор']],correct:'a',why:'Утворюється сіль і вода: NaCl + H₂O.'},
-  {type:'radio',q:'Яке рівняння нейтралізації Ca(OH)₂ хлоридною кислотою правильне?',options:[['a','Ca(OH)₂ + HCl -> CaCl₂ + H₂O'],['b','Ca(OH)₂ + 2HCl -> CaCl₂ + 2H₂O'],['c','CaOH + HCl -> CaCl + H₂']],correct:'b',why:'Зрівняне рівняння містить коефіцієнт 2 перед HCl та H₂O.'},
-  {type:'radio',q:'Вапняна вода мутніє під дією якого газу?',options:[['a','Вуглекислого газу (CO₂)'],['b','Кисню (O₂)'],['c','Водню (H₂)']],correct:'a',why:'Утворюється осад кальцій карбонату CaCO₃.'},
-  {type:'multi',q:'Які правила безпеки обов’язкові з лугами?',options:[['a','Працювати в окулярах та рукавичках'],['b','Уникати потрапляння на шкіру'],['c','Куштувати реактиви на смак'],['d','Виконувати вказівки вчителя']],correct:['a','b','d'],why:'Луги їдкі, пробувати їх на смак суворо заборонено.'},
-  {type:'radio',q:'Що робити при потраплянні лугу на шкіру?',options:[['a','Змити великою кількістю води'],['b','Витерти серветкою і мовчати'],['c','Нанести концентровану кислоту']],correct:'a',why:'Перша допомога — негайне промивання проточною водою.'},
-  {type:'radio',q:'З якими оксидами реагують луги?',options:[['a','З кислотними'],['b','З основними'],['c','Не реагують з оксидами']],correct:'a',why:'Розчинні основи реагують з кислотними оксидами.'},
-  {type:'radio',q:'Який осад випаде при взаємодії Ca(OH)₂ з Na₂CO₃?',options:[['a','Кальцій карбонат (CaCO₃)'],['b','Натрій гідроксид'],['c','Осаду не буде']],correct:'a',why:'CaCO₃ — білий нерозчинний осад.'},
-  {type:'radio',q:'Луги НЕ взаємодіють з:',options:[['a','Барій оксидом (ВаО)'],['b','Сульфур(VІ) оксидом'],['c','Сульфатною кислотою']],correct:'a',why:'Основні оксиди не реагують з основами.'}
- ]},
- {title:'Частина 3. Використання та Поширення', questions:[
-  {type:'radio',q:'Як у промисловості називають прозорий розчин Ca(OH)₂?',options:[['a','Вапняна вода'],['b','Каустик'],['c','Рідке скло']],correct:'a',why:'Прозорий профільтрований розчин — це вапняна вода.'
-  },{type:'radio',q:'Яку сполуку називають негашеним вапном?',options:[['a','Кальцій оксид (CaO)'],['b','Кальцій гідроксид'],['c','Крейду']],correct:'a',why:'Негашене вапно — це оксид CaO.'
-  },{type:'radio',q:'Що таке «гасіння вапна»?',options:[['a','Взаємодія CaO з водою'],['b','Заливання багаття'],['c','Розчин NaOH']],correct:'a',why:'CaO + H₂O -> Ca(OH)₂ з виділенням тепла.'
-  },{type:'radio',q:'Де переважно використовують гашене вапно?',options:[['a','У будівництві'],['b','Як ракетне паливо'],['c','Для виготовлення золота']],correct:'a',why:'З нього роблять будівельні скріплюючі розчини.'
-  },{type:'radio',q:'Натрій гідроксид є важливою сировиною для виробництва:',options:[['a','Мила та мийних засобів'],['b','Мінеральних добрив'],['c','Залізних руд']],correct:'a',why:'NaOH використовують для омилення жирів.'
-  },{type:'radio',q:'Чому NaOH називають «їдким натром»?',options:[['a','Він руйнує шкіру та тканини'],['b','Він дуже солоний'],['c','Він швидко киснене']],correct:'a',why:'Речовина роз’їдає більшість органічних матеріалів.'
-  },{type:'radio',q:'Яким папірцем виявляють лужне середовище?',options:[['a','Червоним лакмусовим'],['b','Синім лакмусовим'],['c','Звичайним білим']],correct:'a',why:'У лужному середовищі червоний лакмус синіє.'
-  },{type:'radio',q:'Яка основа утвориться при взаємодії металу натрію з водою?',options:[['a','Натрій гідроксид'],['b','Кальцій гідроксид'],['c','Гідроген пероксид']],correct:'a',why:'2Na + 2H₂O -> 2NaOH + H₂.'
-  },{type:'radio',q:'Які мінерали складаються з кальцій карбонату?',options:[['a','Крейда, мармур, вапняк'],['b','Граніт і кварц'],['c','Кухонна сіль']],correct:'a',why:'Основою крейди та мармуру є CaCO₃.'
-  },{type:'radio',q:'Який колір має осад Cu(OH)₂, що утворюється під дією лугу на солі Міді?',options:[['a','Блакитний'],['b','Яскраво-червоний'],['c','Чорний']],correct:'a',why:'Купрум(ІІ) гідроксид — це бірюзово-блакитний осад.'}
- ]}
+const quizData = [
+  {q:"Що називають основами?",o:["Сполуки металу з Оксигену","Речовини з катіонами металу та гідроксид-іонами OH⁻","Речовини, що містять Гідроген"],c:"b"},
+  {q:"Яка формула натрій гідроксиду?",o:["NaOH","Na₂O","Na(OH)₂"],c:"a"},
+  {q:"Яка формула кальцій гідроксиду?",o:["CaOH","Ca(OH)₂","Ca₂OH"],c:"b"},
+  {q:"Яка з наведених речовин є лугом?",o:["Cu(OH)₂","Fe(OH)₃","NaOH"],c:"c"},
+  {q:"Яке твердження про Са(ОН)₂ правильне?",o:["Це малорозчинна основа","Це розчинна сіль","Це кислота"],c:"a"},
+  {q:"Який колір набуває фенолфталеїн у лугах?",o:["Малиновий","Безбарвний","Синій"],c:"a"},
+  {q:"Що відбувається з червоним лакмусом у лугах?",o:["Стає синім","Червоніє","Жовтіє"],c:"a"},
+  {q:"Скільки гідроксид-іонів у Ca(OH)₂?",o:["Один","Два","Три"],c:"b"},
+  {q:"Яка молекулярна маса NaOH?",o:["40","23","56"],c:"a"},
+  {q:"Яка технічна назва NaOH?",o:["Каустична сода","Гашене вапно","Питна сода"],c:"a"},
+  {q:"Що характерно для розчинення NaOH у воді?",o:["Виділення тепла","Повне замерзання","Утворення кисню"],c:"a"},
+  {q:"Які продукти утворюються в реакції NaOH + HCl?",o:["NaCl і H₂O","Na₂O і H₂","Cl₂"],c:"a"},
+  {q:"Яке рівняння нейтралізації Ca(OH)₂ записано правильно?",o:["Ca(OH)₂ + HCl -> CaCl₂ + H₂O","Ca(OH)₂ + 2HCl -> CaCl₂ + 2H₂O","CaOH + HCl -> CaCl + H₂"],c:"b"},
+  {q:"Вапняна вода мутніє під дією якого газу?",o:["Вуглекислого (CO₂)","Kисню (O₂)","Водню (H₂)"],c:"a"},
+  {q:"Що робити при потраплянні лугу на шкіру?",o:["Промити великою кількістю води","Витерти насухо","Залити кислотою"],c:"a"},
+  {q:"З якими оксидами реагують луги?",o:["З кислотними","З основними","Не реагують"],c:"a"},
+  {q:"Який осад випаде при взаємодії Ca(OH)₂ з Na₂CO₃?",o:["CaCO₃","NaOH","Осаду не буде"],c:"a"},
+  {q:"Луги НЕ взаємодіють з:",o:["Барій оксидом (ВаО)","Кислотами","Кислотними оксидами"],c:"a"},
+  {q:"Який колір має осад Cu(OH)₂?",o:["Блакитний","Червоний","Чорний"],c:"a"},
+  {q:"Який колір має метилоранж у лугах?",o:["Жовтий","Рожевий","Безбарвний"],c:"a"},
+  {q:"Як називають прозорий розчин Ca(OH)₂?",o:["Вапняна вода","Каустик","Рідке скло"],c:"a"},
+  {q:"Яку сполуку називають негашеним вапном?",o:["CaO","Ca(OH)₂","CaCO₃"],c:"a"},
+  {q:"Що таке «гасіння вапна»?",o:["Взаємодія CaO з водою","Заливання вапняку","Реакція з HCl"],c:"a"},
+  {q:"Де переважно використовують гашене вапно?",o:["У будівництві","У ракетному паливі","Для плавлення металу"],c:"a"},
+  {q:"NaOH використовують для виробництва:",o:["Мила та мийних засобів","Азотних добрив","Заліза"],c:"a"},
+  {q:"Чому NaOH називають «їдким натром»?",o:["Він роз’їдає шкіру й тканини","Він дуже солоний","Він кислий"],c:"a"},
+  {q:"Яким папірцем виявляють луги?",o:["Червоним лакмусовим","Синім лакмусовим","Звичайним білим"],c:"a"},
+  {q:"Яка основа утвориться при взаємодії натрію з водою?",o:["NaOH","Ca(OH)₂","Na₂O"],c:"a"},
+  {q:"Які мінерали складаються з CaCO₃?",o:["Крейда, мармур, вапняк","Граніт і пісок","Сіль"],c:"a"},
+  {q:"Які засоби безпеки обов’язакові з твердим NaOH?",o:["Окуляри та рукавички","Вогнетривкий костюм","Нічого не потрібно"],c:"a"}
 ];
 
-const form = document.getElementById('quiz');
-let totalQuestionsCount = 0;
+const quizForm = document.getElementById('quiz');
+quizData.forEach((data, index) => {
+    const qIdx = index + 1;
+    const qDiv = document.createElement('div');
+    qDiv.className = 'question';
+    qDiv.id = `question_${qIdx}`;
+    qDiv.setAttribute('data-correct', data.c);
+    
+    let optionsHtml = '';
+    const labels = ['a', 'b', 'c'];
+    data.o.forEach((option, oIdx) => {
+        optionsHtml += `<label class="option"><input type="radio" name="m${qIdx}" value="${labels[oIdx]}" onchange="updateProgress()"> ${option}</label>`;
+    });
 
-sections.forEach((section, sIdx) => {
-    const sBox = document.createElement('div');
-    sBox.className = 'section';
-    sBox.innerHTML = `<h2>${section.title}</h2>`;
-    section.questions.forEach((q, qIdx) => {
-        totalQuestionsCount++;
-        const qBox = document.createElement('div');
-        qBox.className = 'question';
-        qBox.id = `q_${sIdx}_${qIdx}`;
-        qBox.innerHTML = `<p class="qtitle">${totalQuestionsCount}. ${q.q}</p>`;
-        q.options.forEach(([val, label]) => {
-            const inputId = `opt_${sIdx}_${qIdx}_${val}`;
-            const type = q.type === 'radio' ? 'radio' : 'checkbox';
+    qDiv.innerHTML = `<div class="qtitle">${qIdx}. ${data.q}</div>${optionsHtml}<div class="feedback"></div>`;
+    quizForm.appendChild(qDiv);
+});
+
+function updateProgress(){
+    let answered = 0;
+    for(let i=1; i<=30; i++){if(document.querySelector(`input[name="m${i}"]:checked`)) answered++}
+    document.getElementById('bar').style.width = (answered / 30 * 100) + '%';
+    document.getElementById('progressText').innerText = `Виконано завдань: ${answered} із 30`;
+}
+
+document.getElementById('check').addEventListener('click', () => {
+    let score = 0;
+    for(let i=1; i<=30; i++) {
+        const qDiv = document.getElementById(`question_${i}`);
+        const feedback = qDiv.querySelector('.feedback');
+        const checked = qDiv.querySelector('input:checked');
+        const correctAns = qDiv.getAttribute('data-correct');
+        
+        const isCorrect = checked && checked.value === correctAns;
+        if(isCorrect) {
+            qDiv.className = 'question correct';
+            feedback.innerText = '✅ Правильно!';
+            score++;
+        } else {
+            qDiv.className = 'question incorrect';
+            feedback.innerText = '❌ Неправильно.';
+        }
+        feedback.style.display = 'block';
+    }
+    const grade = Math.round((score / 30) * 12);
+    document.getElementById('score').innerText = `Ваш результат: ${score} з 30 балів`;
+    document.getElementById('grade').innerText = `Оцінка: ${grade} балів за 12-бальною шкалою`;
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+    sendResultsToGoogle(grade, score);
+});
+
+function sendResultsToGoogle(grade, score) {
+    const studentName = localStorage.getItem('chemistry_student_name') || "Анонімний учень";
+    const scriptUrl = "https://google.com";
+    const statusDiv = document.getElementById('sendStatus');
+    statusDiv.style.display = 'block'; statusDiv.className = 'send-status send-loading';
+    statusDiv.innerText = '⏳ Надсилання оцінки в журнал вчителя...';
+    const urlWithParams = `${scriptUrl}?studentName=${encodeURIComponent(studentName)}&studentScore=${encodeURIComponent(grade + ' балів (Тест 30п: ' + score + '/30)')}`;
+    fetch(urlWithParams, { method: 'POST', mode: 'no-cors' }).then(() => {
+        statusDiv.className = 'send-status send-success'; statusDiv.innerText = '✅ Результат успішно збережено в журналі вчителя!';
+    }).catch(() => { statusDiv.innerText = '❌ Помилка надсилання.'; });
+}
+
+document.getElementById('reset').addEventListener('click', () => {
+    quizForm.reset(); document.getElementById('result').style.display = 'none';
+    document.querySelectorAll('.question').forEach(q => q.className = 'question');
+    document.querySelectorAll('.feedback').forEach(f => f.style.display = 'none'); updateProgress();
+});
+</script>
+</body>
+</html>
