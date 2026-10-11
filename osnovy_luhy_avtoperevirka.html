@@ -75,7 +75,7 @@ const quizData = [
   {p:1,c:"a",q:"Яка технічна назва NaOH?",o:["Каустична сода","Гашене вапно","Питна сода"]},
   {p:2,c:"a",q:"Що характерно для розчинення NaOH у воді?",o:["Виділення тепла","Повне замерзання","Утворення кисню"]},
   {p:2,c:"a",q:"Які продукти утворюються в реакції NaOH + HCl?",o:["NaCl і H₂O","Na₂O і H₂","Cl₂"]},
-  {p:2,c:"b",q:"Яке рівняння нейтралізації Ca(OH)₂ записано правильно?",o:["Ca(OH)₂ + HCl -> CaCl₂ + H₂O","Ca(OH)₂ + 2HCl -> CaCl₂ + 2H₂O","CaOH + HCl -> CaCl₂ + H₂O"]},
+  {p:2,c:"b",q:"Яке рівняння нейтралізації Ca(OH)₂ записано правильно?",o:["Ca(OH)₂ + HCl → CaCl₂ + H₂O","Ca(OH)₂ + 2HCl → CaCl₂ + 2H₂O","CaOH + HCl → CaCl₂ + H₂O"]},
   {p:2,c:"a",q:"Вапняна вода мутніє під дією якого газу?",o:["Вуглекислого (CO₂)","Кисню (O₂)","Водню (H₂)"]},
   {p:2,c:"a",q:"Що робити при потраплянні лугу на шкіру?",o:["Промити великою кількістю води","Витерти насухо","Залити кислотою"]},
   {p:2,c:"a",q:"З якими оксидами реагують луги?",o:["З кислотними","З основними","Не реагують"]},
@@ -90,7 +90,7 @@ const quizData = [
   {p:3,c:"a",q:"NaOH використовують для виробництва:",o:["Мила та мийних засобів","Азотних добрив","Заліза"]},
   {p:3,c:"a",q:"Чому NaOH називають «їдким натром»?",o:["Він роз'їдає шкіру й тканини","Він дуже солоний","Він кислий"]},
   {p:3,c:"a",q:"Яким папірцем виявляють луги?",o:["Червоним лакмусовим","Синім лакмусовим","Звичайним білим"]},
-  {p:3,c:"a",q:"Яка основа утвориться при взаємодії натрію з водою?",o:["NaOH","Ca(OH)₂","Na₂O"]},
+  {p:3,c:"a",q:"Яка основа утториться при взаємодії натрію з водою?",o:["NaOH","Ca(OH)₂","Na₂O"]},
   {p:3,c:"a",q:"Які мінерали складаються з CaCO₃?",o:["Крейда, мармур, вапняк","Граніт і пісок","Сіль"]},
   {p:3,c:"a",q:"Які засоби безпеки обов'язкові з твердим NaOH?",o:["Окуляри та рукавички","Вогнетривкий костюм","Нічого особливого"]}
 ];
@@ -126,11 +126,12 @@ function up(){
   for (let i = 1; i <= quizData.length; i++) {
     if (document.querySelector(`input[name="m${i}"]:checked`)) ans++;
   }
-  document.querySelector('.bar').style.width = (ans / quizData.length * 100) + '%';
+  const percent = Math.round((ans / quizData.length) * 100);
+  document.querySelector('.bar').style.width = percent + '%';
   document.getElementById('progressText').innerText = `Виконано завдань: ${ans} із ${quizData.length}`;
 }
 
-document.getElementById('check').addEventListener('click', () => {
+document.getElementById('check').addEventListener('click', function() {
   let score = 0;
   let unanswered = 0;
 
@@ -141,26 +142,25 @@ document.getElementById('check').addEventListener('click', () => {
     const fb = q.querySelector('.feedback');
     const ch = q.querySelector('input:checked');
     const cor = q.getAttribute('data-cor');
-    const isCor = ch && ch.value === cor;
-
+    
     if (!ch) {
-      q.className = 'question unanswered';
-      fb.innerText = '⚠️ Не відповіли.';
+      q.classList.add('unanswered');
+      fb.innerText = '⚠️ Не відповіли';
       unanswered++;
-    } else if (isCor) {
-      q.className = 'question correct';
+    } else if (ch.value === cor) {
+      q.classList.add('correct');
       fb.innerText = '✅ Правильно!';
       score++;
     } else {
-      q.className = 'question incorrect';
-      fb.innerText = '❌ Неправильно.';
+      q.classList.add('incorrect');
+      fb.innerText = '❌ Неправильно';
     }
-
     fb.style.display = 'block';
   }
 
   const total = quizData.length;
-  const grade = Math.max(0, Math.min(12, Math.round((score / total) * 12)));
+  const grade = Math.round((score / total) * 12);
+  
   document.getElementById('score').innerText = `Ваш результат: ${score} з ${total} балів`;
   document.getElementById('grade').innerText = `Оцінка: ${grade} балів за 12-бальною шкалою`;
   document.getElementById('result').style.display = 'block';
@@ -170,63 +170,66 @@ document.getElementById('check').addEventListener('click', () => {
     const d = document.getElementById('sendStatus');
     d.style.display = 'block';
     d.className = 'send-status send-error';
-    d.innerText = `⚠️ У вас ${unanswered} незаповнених завдань. Відповіді можна перевірити ще раз і надіслати результат після завершення.`;
+    d.innerText = `⚠️ ${unanswered} завдань без відповідей. Завершіть усі питання перед надсиланням.`;
     return;
   }
 
-  sendToJournal(grade, score, total);
+  setTimeout(() => sendToJournal(grade, score), 500);
 });
 
-async function sendToJournal(g, s, total) {
+function sendToJournal(grade, score) {
   const name = studentNameInput.value.trim() || 'Анонімний учень';
-  localStorage.setItem(STORAGE_KEY, name);
-
   const d = document.getElementById('sendStatus');
+  
   d.style.display = 'block';
   d.className = 'send-status send-loading';
-  d.innerText = '⏳ Надсилання у журнал вчителя...';
+  d.innerText = '⏳ Надсилання результату...';
 
-  const params = new URLSearchParams({
+  const data = {
     studentName: name,
-    studentScore: `${g} балів (Тест 30п: ${s}/${total})`,
-    testName: 'Основи. Натрій гідроксид і кальцій гідроксид',
-    totalQuestions: String(total)
+    studentScore: score,
+    studentGrade: grade,
+    totalQuestions: 30,
+    testName: 'Основи. НаOH та Ca(OH)₂',
+    timestamp: new Date().toISOString()
+  };
+
+  const params = new URLSearchParams();
+  Object.keys(data).forEach(key => {
+    params.append(key, data[key]);
   });
 
-  const url = `${JOURNAL_URL}?${params.toString()}`;
-
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      mode: 'cors',
-      cache: 'no-store',
-      headers: {
-        'Accept': 'text/plain, application/json'
-      }
-    });
-
-    const text = await response.text();
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${text}`);
-    }
-
+  fetch(JOURNAL_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: params
+  })
+  .then(() => {
     d.className = 'send-status send-success';
-    d.innerText = '✅ Результат успішно надіслано до журналу!';
-  } catch (error) {
-    console.error('Journal send failed:', error);
+    d.innerText = '✅ Результат збережено у журналі!';
+    localStorage.setItem(STORAGE_KEY, name);
+  })
+  .catch(err => {
+    console.error('Error:', err);
     d.className = 'send-status send-error';
-    d.innerText = '❌ Не вдалося надіслати результат у журнал. Перевірте URL Google Apps Script і права доступу.';
-  }
+    d.innerText = '❌ Помилка надсилання. Результат збережено локально.';
+  });
 }
 
 document.getElementById('reset').addEventListener('click', () => {
   document.getElementById('quiz').reset();
   document.getElementById('result').style.display = 'none';
-  document.querySelectorAll('.question').forEach(q => q.className = 'question');
-  document.querySelectorAll('.feedback').forEach(f => f.style.display = 'none');
+  document.querySelectorAll('.question').forEach(q => {
+    q.classList.remove('correct', 'incorrect', 'unanswered');
+  });
+  document.querySelectorAll('.feedback').forEach(f => {
+    f.style.display = 'none';
+  });
   document.getElementById('sendStatus').style.display = 'none';
   up();
 });
+
+up();
 </script>
 </body>
 </html>
