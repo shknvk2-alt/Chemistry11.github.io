@@ -65,41 +65,41 @@ const quizData = [
 const quizForm = document.getElementById('quiz');
 quizData.forEach((data, idx) => {
     const qNum = idx + 1;
-    const targetBlock = document.getElementById(`part${data.p}`);
+    const targetBlock = document.getElementById('part' + data.p);
     const qDiv = document.createElement('div');
-    qDiv.className = 'question'; qDiv.id = `q_${qNum}`; qDiv.setAttribute('data-type', data.t); qDiv.setAttribute('data-cor', data.c);
+    qDiv.className = 'question'; qDiv.id = 'q_' + qNum; qDiv.setAttribute('data-type', data.t); qDiv.setAttribute('data-cor', data.c);
     
     let opts = ''; const keys = ['a','b','c','d'];
     if(data.t === 'selects') {
         let selectOpts = '<option value="">Оберіть…</option>';
-        data.o.forEach((o, oIdx) => { selectOpts += `<option value="${keys[oIdx]}">${o}</option>`; });
-        opts = `<select id="sel_${qNum}" onchange="up()">${selectOpts}</select>`;
+        data.o.forEach((o, oIdx) => { selectOpts += '<option value="' + keys[oIdx] + '">' + o + '</option>'; });
+        opts = '<select id="sel_' + qNum + '" onchange="up()">' + selectOpts + '</select>';
     } else {
         data.o.forEach((o, oIdx) => {
             const inputType = data.t === 'radio' ? 'radio' : 'checkbox';
-            opts += `<label class="option"><input type="${inputType}" name="m${qNum}" value="${keys[oIdx]}" onchange="up()"> ${o}</label>`;
+            opts += '<label class="option"><input type="' + inputType + '" name="m' + qNum + '" value="' + keys[oIdx] + '" onchange="up()"> ' + o + '</label>';
         });
     }
-    qDiv.innerHTML = `<div class="qtitle">${qNum}. ${data.q}</div>${opts}<div class="feedback"></div>`;
+    qDiv.innerHTML = '<div class="qtitle">' + qNum + '. ' + data.q + '</div>' + opts + '<div class="feedback"></div>';
     targetBlock.appendChild(qDiv);
 });
 
 function up(){
     let ans = 0;
     for(let i=1;i<=12;i++){
-        const q = document.getElementById(`q_${i}`); if(!q)continue;
+        const q = document.getElementById('q_' + i); if(!q)continue;
         const type = q.getAttribute('data-type');
-        if(type === 'selects'){if(document.getElementById(`sel_${i}`).value) ans++}
-        else{if(document.querySelector(`input[name="m${i}"]:checked`)) ans++}
+        if(type === 'selects'){if(document.getElementById('sel_' + i).value) ans++}
+        else{if(document.querySelector('input[name="m' + i + '"]:checked')) ans++}
     }
-    document.querySelector('.bar').style.width=(ans/12*100)+'%';
-    document.getElementById('progressText').innerText=`Виконано завдань: ${ans} із 12`;
+    document.getElementById('bar').style.width=(ans/12*100)+'%';
+    document.getElementById('progressText').innerText = 'Виконано завдань: ' + ans + ' із 12';
 }
 
 document.getElementById('check').addEventListener('click',()=>{
     let score = 0;
     for(let i=1;i<=12;i++){
-        const q = document.getElementById(`q_${i}`); if(!q)continue;
+        const q = document.getElementById('q_' + i); if(!q)continue;
         const type = q.getAttribute('data-type'), fb = q.querySelector('.feedback'), cor = q.getAttribute('data-cor');
         let isCor = false;
         if(type === 'radio'){
@@ -108,15 +108,15 @@ document.getElementById('check').addEventListener('click',()=>{
             const ch = Array.from(q.querySelectorAll('input:checked')).map(ins=>ins.value);
             const corArr = cor.split(','); isCor = ch.length === corArr.length && ch.every(v=>corArr.includes(v));
         }else if(type === 'selects'){
-            isCor = document.getElementById(`sel_${i}`).value === cor;
+            isCor = document.getElementById('sel_' + i).value === cor;
         }
         if(isCor){q.className='question correct'; fb.innerText='✅ Правильно!'; score++}
         else{q.className='question incorrect'; fb.innerText='❌ Неправильно.'}
         fb.style.display='block';
     }
     const grade = Math.round((score/12)*12);
-    document.getElementById('score').innerText=`Ваш результат: ${score} з 12 балів`;
-    document.getElementById('grade').innerText=`Оцінка: ${grade} балів за 12-бальною шкалою`;
+    document.getElementById('score').innerText = 'Ваш результат: ' + score + ' з 12 балів';
+    document.getElementById('grade').innerText = 'Оцінка: ' + grade + ' балів за 12-бальною шкалою';
     document.getElementById('result').style.display='block';
     document.getElementById('result').scrollIntoView({behavior:'smooth'});
     send(grade,score);
@@ -126,7 +126,7 @@ function send(g,s){
     const name = localStorage.getItem('chemistry_student_name') || "Анонімний учень";
     const scriptUrl = "https://google.com";
     const d = document.getElementById('sendStatus'); d.style.display='block'; d.className='send-status send-loading'; d.innerText='⏳ Надсилання у журнал вчителя...';
-    const url = `${scriptUrl}?studentName=${encodeURIComponent(name)}&studentScore=${encodeURIComponent(g+' балів (Тест 12п: '+s+'/12)')}`;
+    const url = scriptUrl + '?studentName=' + encodeURIComponent(name) + '&studentScore=' + encodeURIComponent(g + ' балів (Тест 12п: ' + s + '/12)');
     fetch(url,{method:'POST',mode:'no-cors'}).then(()=>{d.className='send-status send-success';d.innerText='✅ Результат успішно збережено!';}).catch(()=>{d.innerText='❌ Помилка надсилання.';});
 }
 
