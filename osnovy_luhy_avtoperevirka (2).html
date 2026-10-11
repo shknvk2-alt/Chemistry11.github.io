@@ -1,127 +1,33 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Основи — інтерактивна гра</title>
-  <style>
-    :root {
-      --ink: #19253a;
-      --blue: #2357c6;
-      --line: #d9e1ee;
-      --green: #167044;
-      --red: #a62424;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--ink);
-      font: 16px/1.5 Arial, sans-serif;
-      background: linear-gradient(135deg, #c5f4ff, #dbe8ff, #eee0ff);
-    }
-    main {
-      width: min(850px, 100%);
-      margin: 0 auto;
-      padding: 18px 14px 36px;
-    }
-    header, .panel, .result {
-      background: rgba(255, 255, 255, 0.94);
-      border: 1px solid rgba(255, 255, 255, 0.85);
-      border-radius: 20px;
-      box-shadow: 0 12px 35px rgba(33, 45, 84, 0.12);
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-    .topline {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .pill {
-      background: #eaf0ff;
-      color: #2447a5;
-      border-radius: 999px;
-      padding: 5px 11px;
-      font-size: 13px;
-      font-weight: 800;
-    }
-    h1 { font-size: 24px; margin: 10px 0 5px; }
-    h2 { font-size: 20px; margin: 0 0 10px; }
-    .progress-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    .progress {
-      height: 10px;
-      flex: 1;
-      background: #e5eaf4;
-      border-radius: 99px;
-      overflow: hidden;
-    }
-    .bar {
-      width: 0;
-      height: 100%;
-      background: linear-gradient(90deg, #2b65ff, #8f5ce6);
-      transition: width 0.25s ease;
-    }
-    .question-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .count {
-      font-size: 14px;
-      font-weight: 900;
-      color: #fff;
-      background: #253e8e;
-      border-radius: 8px;
-      padding: 5px 10px;
-    }
-    #prompt { font-size: 20px; font-weight: 800; margin: 0 0 15px; }
-    .options { display: grid; gap: 10px; }
-    label.option {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      padding: 12px;
-      border: 2px solid #e1e7f1;
-      background: #fff;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-    label.option:hover { border-color: #90aaf1; }
-    input { accent-color: #315ed0; transform: scale(1.2); }
-    .feedback {
-      padding: 12px;
-      border-radius: 10px;
-      margin-top: 12px;
-      font-weight: 600;
-      display: none;
-    }
-    .feedback.good {
-      background: #e3f8e9;
-      color: #135c36;
-      border: 1px solid #a6e3b8;
-    }
-    .feedback.bad {
-      background: #fff0ed;
-      color: #85241e;
-      border: 1px solid #ffb8ad;
-    }
-    .controls { display: flex; justify-content: space-between; gap: 10px; margin-top: 16px; }
-    button { font: inherit; font-weight: 800; border: 0; border-radius: 10px; padding: 10px 16px; cursor: pointer; }
-    .primary { background: #244fc0; color: white; }
-    .secondary { background: #e9edf5; color: #25354d; }
-    .check { background: #172f70; color: #fff; }
-    .danger { background: #c64545; color: white; }
-    button:disabled { opacity: 0.4; cursor: not-allowed; }
-    .result { display: none; text-align: center; }
-    .score { font-size: 26px; font-weight: 900; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Основи — інтерактивна гра</title>
+<style>
+:root{--ink:#19253a;--blue:#2357c6;--line:#d9e1ee;--green:#167044;--red:#a62424}*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font:16px/1.5 Arial,sans-serif;background:linear-gradient(135deg,#c5f4ff,#dbe8ff,#eee0ff);transition:background .35s}
+main{width:min(850px,100%);margin:0 auto;padding:18px 14px 36px}
+header,.panel,.result{background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.85);border-radius:20px;box-shadow:0 12px 35px rgba(33,45,84,.12);padding:20px;margin-bottom:16px}
+.topline{display:flex;justify-content:space-between;align-items:center}.pill{background:#eaf0ff;color:#2447a5;border-radius:999px;padding:5px 11px;font-size:13px;font-weight:800}
+h1{font-size:24px;margin:10px 0 5px}h2{font-size:20px;margin:0 0 10px}
+.progress-wrap{display:flex;align-items:center;gap:12px;margin-top:10px}.progress{height:10px;flex:1;background:#e5eaf4;border-radius:99px;overflow:hidden}.bar{width:0;height:100%;background:linear-gradient(90deg, #2b65ff, #8f5ce6);transition:width .25s ease}
+.question-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.count{font-size:14px;font-weight:900;color:#fff;background:#253e8e;border-radius:8px;padding:5px 10px}
+#prompt{font-size:20px;font-weight:800;margin:0 0 15px}.options{display:grid;gap:10px}
+label.option{display:flex;gap:10px;align-items:center;padding:12px;border:2px solid #e1e7f1;background:#fff;border-radius:12px;cursor:pointer}
+label.option:hover{border-color:#90aaf1}input{accent-color:#315ed0;transform:scale(1.2)}
+.feedback{padding:12px;border-radius:10px;margin-top:12px;font-weight:600;display:none}
+.feedback.good{background:#e3f8e9;color:#135c36;border:1px solid #a6e3b8}
+.feedback.bad{background:#fff0ed;color:#85241e;border:1px solid #ffb8ad}
+.controls{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16px;cursor:pointer}
+.primary{background:#244fc0;color:white}.secondary{background:#e9edf5;color:#25354d}.check{background:#172f70;color:#fff}.danger{background:#c64545;color:white}button:disabled{opacity:.4;cursor:not-allowed}
+.result{display:none;text-align:center}.score{font-size:26px;font-weight:900}
+.send-status{font-weight:bold;margin-top:12px;padding:10px;border-radius:8px}
+.send-success{background:#e3f8e9;color:#135c36}
+.send-loading{background:#fff8e6;color:#b78103}
+.send-error{background:#fdeaea;color:#9e2a2a}
+</style>
 </head>
 <body>
   <main>
@@ -161,12 +67,15 @@
       <h2>Тест завершено 🏁</h2>
       <div id="score" class="score"></div>
       <div id="grade" style="font-size:20px;font-weight:800;margin-top:5px;margin-bottom:20px"></div>
-      <button type="button" id="restartBtn" class="primary" style="padding:12px 24px">Почати заново 🔄</button>
+      <div id="sendStatus" class="send-status"></div>
+      <button type="button" id="restartBtn" class="primary" style="padding:12px 24px;margin-top:10px">Почати заново 🔄</button>
     </section>
   </main>
 
   <script>
-    var questions = [
+    const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyptrtJv8WILBClinEPgC1SlNmY41wVgjIPsznBOvh9OLtv85hj2Ze5nkncSxI-tLucg/exec';
+
+    const questions = [
       {
         q: "Що називають основами?",
         options: ["Сполуки металу з киснем", "Речовини, що містять катіони металу та гідроксид-іони", "Солі у воді"],
@@ -199,82 +108,81 @@
       }
     ];
 
-    var currentIdx = 0;
-    var userAnswers = [null, null, null, null, null];
-    var checkedStates = [false, false, false, false, false];
+    let currentIdx = 0;
+    let userAnswers = new Array(questions.length).fill(null);
+    let checkedStates = new Array(questions.length).fill(false);
 
-    var startScreen = document.getElementById('startScreen');
-    var gameSection = document.getElementById('game');
-    var resultSection = document.getElementById('result');
-    var promptEl = document.getElementById('prompt');
-    var answerArea = document.getElementById('answerArea');
-    var feedbackEl = document.getElementById('feedback');
-    var countEl = document.getElementById('count');
-    var bar = document.getElementById('bar');
-    var progressText = document.getElementById('progressText');
+    const startScreen = document.getElementById('startScreen');
+    const gameSection = document.getElementById('game');
+    const resultSection = document.getElementById('result');
+    const promptEl = document.getElementById('prompt');
+    const answerArea = document.getElementById('answerArea');
+    const feedbackEl = document.getElementById('feedback');
+    const countEl = document.getElementById('count');
+    const bar = document.getElementById('bar');
+    const progressText = document.getElementById('progressText');
 
-    var startBtn = document.getElementById('start');
-    var prevBtn = document.getElementById('prev');
-    var nextBtn = document.getElementById('next');
-    var checkBtn = document.getElementById('checkAnswer');
-    var quitBtn = document.getElementById('quitBtn');
-    var restartBtn = document.getElementById('restartBtn');
+    const startBtn = document.getElementById('start');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const checkBtn = document.getElementById('checkAnswer');
+    const quitBtn = document.getElementById('quitBtn');
+    const restartBtn = document.getElementById('restartBtn');
 
-    startBtn.onclick = function() {
+    startBtn.addEventListener('click', function() {
       startScreen.style.display = 'none';
       gameSection.style.display = 'block';
       showQuestion();
-    };
+    });
 
-    restartBtn.onclick = function() {
+    restartBtn.addEventListener('click', function() {
       currentIdx = 0;
-      userAnswers = [null, null, null, null, null];
-      checkedStates = [false, false, false, false, false];
+      userAnswers.fill(null);
+      checkedStates.fill(false);
       resultSection.style.display = 'none';
       gameSection.style.display = 'block';
+      document.getElementById('sendStatus').className = 'send-status';
+      document.getElementById('sendStatus').innerHTML = '';
       showQuestion();
-    };
+    });
 
-    quitBtn.onclick = finishGame;
-
-    prevBtn.onclick = function() {
-      if (currentIdx > 0) {
-        currentIdx--;
-        showQuestion();
-      }
-    };
-
-    nextBtn.onclick = function() {
-      if (currentIdx < questions.length - 1) {
+    quitBtn.addEventListener('click', finishGame);
+    
+    prevBtn.addEventListener('click', function() { 
+      if(currentIdx > 0) { currentIdx--; showQuestion(); } 
+    });
+    
+    nextBtn.addEventListener('click', function() {
+      if(currentIdx < questions.length - 1) {
         currentIdx++;
         showQuestion();
       } else {
         finishGame();
       }
-    };
+    });
 
-    checkBtn.onclick = function() {
-      var selected = document.querySelector('input[name="ans"]:checked');
-      if (!selected) return;
+    checkBtn.addEventListener('click', function() {
+      const selected = document.querySelector('input[name="ans"]:checked');
+      if(!selected) return;
 
-      var val = parseInt(selected.value, 10);
+      const val = parseInt(selected.value, 10);
       userAnswers[currentIdx] = val;
       checkedStates[currentIdx] = true;
       renderFeedback(val);
       updateButtons();
-    };
+    });
 
     function showQuestion() {
-      var q = questions[currentIdx];
+      const q = questions[currentIdx];
       countEl.innerText = 'Питання ' + (currentIdx + 1) + ' із ' + questions.length;
       promptEl.innerText = q.q;
       answerArea.innerHTML = '';
 
       q.options.forEach(function(opt, idx) {
-        var label = document.createElement('label');
+        const label = document.createElement('label');
         label.className = 'option';
 
-        var radio = document.createElement('input');
+        const radio = document.createElement('input');
         radio.type = 'radio';
         radio.name = 'ans';
         radio.value = idx;
@@ -286,14 +194,14 @@
           radio.disabled = true;
         }
 
-        radio.onchange = function() {
-          if (!checkedStates[currentIdx]) {
+        radio.addEventListener('change', function() {
+          if(!checkedStates[currentIdx]) {
             userAnswers[currentIdx] = parseInt(radio.value, 10);
             checkBtn.disabled = false;
           }
-        };
+        });
 
-        var span = document.createElement('span');
+        const span = document.createElement('span');
         span.innerText = opt;
 
         label.appendChild(radio);
@@ -301,13 +209,13 @@
         answerArea.appendChild(label);
       });
 
-      if (checkedStates[currentIdx]) {
+      if(checkedStates[currentIdx]) {
         renderFeedback(userAnswers[currentIdx]);
       } else {
         feedbackEl.style.display = 'none';
       }
 
-      var progress = (currentIdx / questions.length) * 100;
+      const progress = (currentIdx / questions.length) * 100;
       bar.style.width = progress + '%';
       progressText.innerText = currentIdx + ' із ' + questions.length;
 
@@ -315,9 +223,9 @@
     }
 
     function renderFeedback(val) {
-      var q = questions[currentIdx];
+      const q = questions[currentIdx];
       feedbackEl.style.display = 'block';
-      if (val === q.correct) {
+      if(val === q.correct) {
         feedbackEl.className = 'feedback good';
         feedbackEl.innerText = '✅ Правильно! ' + q.why;
       } else {
@@ -328,16 +236,14 @@
 
     function updateButtons() {
       prevBtn.disabled = (currentIdx === 0);
-      
       if (currentIdx === questions.length - 1) {
         nextBtn.innerText = 'Завершити 🏁';
       } else {
         nextBtn.innerText = 'Наступне →';
       }
 
-      var hasSelection = (userAnswers[currentIdx] !== null);
-      
-      if (checkedStates[currentIdx]) {
+      const hasSelection = userAnswers[currentIdx] !== null;
+      if(checkedStates[currentIdx]) {
         checkBtn.style.display = 'none';
         nextBtn.disabled = false;
       } else {
@@ -352,22 +258,44 @@
       bar.style.width = '100%';
       progressText.innerText = questions.length + ' із ' + questions.length;
 
-      var correctCount = 0;
+      let correctCount = 0;
       questions.forEach(function(q, i) {
-        if (userAnswers[i] === q.correct) {
-          correctCount++;
-        }
+        if(userAnswers[i] === q.correct) correctCount++;
       });
 
       document.getElementById('score').innerText = correctCount + ' / ' + questions.length;
 
-      var grade = 'Варто повторити теорію! 🫣';
-      if (correctCount === questions.length) {
+      let grade = 'Варто повторити теорію! 🫣';
+      if(correctCount === questions.length) {
         grade = 'Відмінно! Ви справжній хімік 🧪🔥';
-      } else if (correctCount >= Math.floor(questions.length * 0.7)) {
+      } else if(correctCount >= Math.floor(questions.length * 0.7)) {
         grade = 'Добре! Гарні знання 📈';
       }
       document.getElementById('grade').innerText = grade;
+
+      sendResultsToGoogle(correctCount);
+    }
+
+    function sendResultsToGoogle(score) {
+      const statusEl = document.getElementById('sendStatus');
+      statusEl.className = 'send-status send-loading';
+      statusEl.innerText = 'Надсилання результатів у систему... ⏳';
+
+      fetch(GOOGLE_SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ score: score, total: questions.length, timestamp: new Date().toISOString() })
+      })
+      .then(() => {
+        statusEl.className = 'send-status send-success';
+        statusEl.innerText = 'Результати успішно збережено! ✅';
+      })
+      .catch(err => {
+        console.error(err);
+        statusEl.className = 'send-status send-error';
+        statusEl.innerText = 'Помилка надсилання даних. Перевірте з’єднання. ❌';
+      });
     }
   </script>
 </body>
