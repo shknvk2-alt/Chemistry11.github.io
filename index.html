@@ -4,21 +4,81 @@
     <meta charset="UTF-8">
     <title>Вправи з хімії — 11 клас</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; line-height: 1.6; }
-        h1 { color: #2c3e50; border-bottom: 2px solid #34495e; padding-bottom: 10px; }
+        body { font-family: Arial, sans-serif; max-width: 650px; margin: 40px auto; padding: 20px; line-height: 1.6; background-color: #f8f9fa; }
+        .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h1 { color: #2c3e50; border-bottom: 2px solid #ee5253; padding-bottom: 10px; margin-top: 0; text-align: center; }
         ul { list-style: none; padding: 0; }
-        li { margin: 15px 0; }
-        a { display: block; padding: 15px; background: #3498db; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; text-align: center; }
-        a:hover { background: #2980b9; }
+        li { margin: 12px 0; }
+        a { display: block; padding: 14px; background: #10ac84; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; transition: 0.2s; border-left: 5px solid #0f9b74; }
+        a:hover { background: #0f9b74; transform: translateX(5px); }
+        .input-group { background: #f1f2f6; padding: 15px; border-radius: 6px; margin-bottom: 25px; border-left: 5px solid #ff4757; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; color: #57606f; }
+        input[type="text"] { width: 100%; padding: 11px; border: 1px solid #ced4da; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
+        .hint { font-size: 14px; color: #ff4757; font-weight: bold; margin-top: 8px; display: none; }
     </style>
 </head>
 <body>
+
+<div class="container">
     <h1>🧪 Автоперевірка знань з хімії (11 клас)</h1>
-    <p>Оберіть версію вправи для проходження:</p>
-    <ul>
-        <li><a href="osnovy_luhy_avtoperevirka.html">👉 Основна вправа: Основи та Луги</a></li>
-        <li><a href="osnovy_luhy_avtoperevirka (1).html">👉 Вправа: Версія 1</a></li>
-        <li><a href="osnovy_luhy_avtoperevirka (2).html">👉 Вправа: Версія 2</a></li>
+    
+    <div class="input-group">
+        <label for="studentName">Введіть ваше Прізвище та Ім'я перед початком:</label>
+        <input type="text" id="studentName" placeholder="Наприклад: Іванов Сергій" oninput="saveName()">
+        <div id="nameHint" class="hint">⚠️ Спочатку введіть своє Прізвище та Ім'я! Без цього тест не відкриється, а вчитель не отримає вашу оцінку.</div>
+    </div>
+
+    <p style="font-weight: bold; color: #2c3e50;">Оберіть вправу для проходження:</p>
+    <ul id="exercisesList">
+        <!-- Сюди автоматично виведуться всі ваші вправи -->
     </ul>
+</div>
+
+<script>
+    // ✍️ СПИСОК ВАШИХ ВПРАВ (Просто додавайте сюди нові через кому)
+    // Зліва — точна назва файлу на GitHub, справа — гарна назва для учнів
+    const exercises = {
+        "osnovy_luhy_avtoperevirka.html": "Основна вправа: Основи та Луги",
+        "osnovy_luhy_avtoperevirka (1).html": "Вправа: Основи та Луги (Версія 1)",
+        "osnovy_luhy_avtoperevirka (2).html": "Вправа: Основи та Луги (Версія 2)"
+        // Щоб додати ще одну вправу, просто поставте кому вище і напишіть:
+        // "назва_файлу_на_гітхабі.html": "Назва вправи для учнів"
+    };
+
+    // Автоматично створюємо список на екрані
+    window.onload = function() {
+        const listContainer = document.getElementById('exercisesList');
+        for (const [file, displayName] of Object.entries(exercises)) {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="${file}" onclick="return checkName(event, this)">👉 ${displayName}</a>`;
+            listContainer.appendChild(li);
+        }
+
+        // Якщо учень вже вводив ім'я раніше, заповнюємо його автоматично
+        if(localStorage.getItem('chemistry_student_name')) {
+            document.getElementById('studentName').value = localStorage.getItem('chemistry_student_name');
+        }
+    }
+
+    function saveName() {
+        var name = document.getElementById('studentName').value.trim();
+        localStorage.setItem('chemistry_student_name', name);
+        if(name.length > 0) {
+            document.getElementById('nameHint').style.display = 'none';
+        }
+    }
+
+    function checkName(event, element) {
+        var name = document.getElementById('studentName').value.trim();
+        if(name.length === 0) {
+            event.preventDefault();
+            document.getElementById('nameHint').style.display = 'block';
+            document.getElementById('studentName').focus();
+            return false;
+        }
+        return true;
+    }
+</script>
+
 </body>
-</html>  
+</html>
