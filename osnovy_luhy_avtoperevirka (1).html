@@ -52,9 +52,9 @@ const quizData = [
   {p:1,t:"radio",c:"c",q:"Яка з наведених основ є лугом?",o:["Cu(OH)₂","Fe(OH)₃","NaOH"]},
   {p:1,t:"radio",c:"a",q:"Яка формула кальцій гідроксиду?",o:["Ca(OH)₂","CaOH","Ca₂OH"]},
   {p:1,t:"radio",c:"b",q:"Який індикатор у лужному середовищі стає малиновим?",o:["Метилоранж","Фенолфталеїн","Лакмус стає червоним"]},
-  {p:2,t:"multi",c:"a,c,d",q:"Які твердження про натрій гідроксид правильні?",o:["Це тверда біла речовина за звичайних умов","Він безпечний для шкіри","Добре розчиняється у воді","Є їдкою речовиною, що викликає опіки"]},
-  {p:2,t:"multi",c:"a,b,d",q:"Які твердження про кальцій гідроксид правильні?",o:["Його водну суспензію називають вапняним молоком","Прозорий насичений розчин називають вапняною водою","Він необмежено розчиняється у воді","Його використовують у будівництві"]},
-  {p:2,t:"multi",c:"a,c",q:"Які дії відповідають правилам безпеки під час роботи з лугами?",o:["Працювати в захисних окулярах і рукавичках","Торкатися речовини пальцями","Уникати потрапляння на шкіру та в очі","Пробувати речовини на смак"]},
+  {p:2,t:"multi",c:"a,c,d",q:"Які твердження про натрій гідроксид правильні?",o:["... біла речовина за звичайних умов","Він безпечний для шкіри","Добре розчиняється у воді","Є їдкою речовиною, що викликає опіки"]},
+  {p:2,t:"multi",c:"a,b,d",q:"Які твердження про кальцій гідроксид правильні?",o:["Суспензію називають вапняним молоком","Розчин називають вапняною водою","Він необмежено розчиняється у воді","Його використовують у будівництві"]},
+  {p:2,t:"multi",c:"a,c",q:"Які дії відповідають правилам безпеки?",o:["Працювати в окулярах і рукавичках","Торкатися речовини пальцями","Уникати потрапляння на шкіру та в очі","Пробувати речовини на смак"]},
   {p:3,t:"selects",c:"b",q:"Оберіть характеристику для Натрій гідроксиду (NaOH):",o:["Малорозчинна основа","Добре розчинний у воді луг","Основний компонент крейди"]},
   {p:3,t:"selects",c:"a",q:"Оберіть характеристику для Кальцій гідроксиду (Ca(OH)₂):",o:["Малорозчинна у воді основа","Добре розчинний у воді луг","Речовина, з якої складаються крейда й вапняк"]},
   {p:4,t:"radio",c:"a",q:"Що спостерігають, якщо пропускати вуглекислий газ через вапняну воду?",o:["Розчин мутніє через утворення кальцій карбонату","Розчин стає синім через утворення міді","Виділяється натрій"]},
@@ -91,11 +91,11 @@ function up(){
         if(type === 'selects'){if(document.getElementById(`sel_${i}`).value) ans++}
         else{if(document.querySelector(`input[name="m${i}"]:checked`)) ans++}
     }
-    document.getElementById('bar').style.width=(ans/12*100)+'%';
+    document.querySelector('.bar').style.width=(ans/12*100)+'%';
     document.getElementById('progressText').innerText=`Виконано завдань: ${ans} із 12`;
 }
 
-document.getElementById('check').addEventListener('click',()=> {
+document.getElementById('check').addEventListener('click',()=>{
     let score = 0;
     for(let i=1;i<=12;i++){
         const q = document.getElementById(`q_${i}`); if(!q)continue;
@@ -115,7 +115,7 @@ document.getElementById('check').addEventListener('click',()=> {
     }
     const grade = Math.round((score/12)*12);
     document.getElementById('score').innerText=`Ваш результат: ${score} з 12 балів`;
-    document.getElementById('grade').innerText=`Оцінка: ${grade} балів за 12-бальною шкалою`;
+    document.getElementById('grade').innerText=`Оцінка: ${grade} балів`;
     document.getElementById('result').style.display='block';
     document.getElementById('result').scrollIntoView({behavior:'smooth'});
     send(grade,score);
@@ -126,7 +126,9 @@ function send(g,s){
     const scriptUrl = "https://google.com";
     const d = document.getElementById('sendStatus'); d.style.display='block'; d.className='send-status send-loading'; d.innerText='⏳ Надсилання у журнал вчителя...';
     const url = `${scriptUrl}?studentName=${encodeURIComponent(name)}&studentScore=${encodeURIComponent(g+' балів (Тест 12п: '+s+'/12)')}`;
-    fetch(url,{method:'POST',mode:'no-cors'}).then(()=>{d.className='send-status send-success';d.innerText='✅ Результат успішно збережено!';}).catch(()=>{d.innerText='❌ Помилка надсилання.';});
+    fetch(url,{method:'POST',mode:'no-cors'}).then(()=> {
+        d.className='send-status send-success';d.innerText='✅ Результат успішно збережено!';
+    }).catch(()=>{d.innerText='❌ Помилка надсилання.';});
 }
 
 document.getElementById('reset').addEventListener('click',()=>{
