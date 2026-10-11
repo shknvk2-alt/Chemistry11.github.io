@@ -35,12 +35,11 @@
 </div>
 
 <script>
-    // ✍️ СПИСОК ВАШИХ ВПРАВ 
-    // Назви файлів мають збігатися з GitHub точнісінько до кожного пробілу!
+    // ✍️ СПИСОК ВПРАВ (Назви змінено точно за вашим шаблоном)
     const exercises = {
-        "osnovy_luhy_avtoperevirka.html": "Вправа 1: Основи та Луги (Тест-таблиця)",
-        "osnovy_luhy_avtoperevirka (1).html": "Вправа 2: Основи та Луги (Варіант з рівняннями)",
-        "osnovy_luhy_avtoperevirka (2).html": "Вправа 3: Інтерактивна гра зі звуком"
+        "osnovy_luhy_avtoperevirka.html": "• osnovy_ — містить 30 завдань.",
+        "osnovy_luhy_avtoperevirka (1).html": "• osnovy_ — містить 12 запитань.",
+        "osnovy_luhy_avtoperevirka (2).html": "• osnovy_ — містить 30 запитань (інтерактивна гра)"
     };
 
     // Автоматично створюємо список на екрані з безпечним кодуванням посилань
@@ -48,8 +47,7 @@
         const listContainer = document.getElementById('exercisesList');
         for (const [file, displayName] of Object.entries(exercises)) {
             const li = document.createElement('li');
-            // encodeURI допомагає правильно обробляти пробіли та дужки в назвах файлів
-            li.innerHTML = `<a href="${encodeURI(file)}" onclick="return checkName(event, this)">👉 ${displayName}</a>`;
+            li.innerHTML = `<a href="${encodeURI(file)}" onclick="return checkName(event, this)">${displayName}</a>`;
             listContainer.appendChild(li);
         }
 
