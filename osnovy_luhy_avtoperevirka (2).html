@@ -41,9 +41,8 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
     <header>
       <div class="topline">
         <span class="pill">Інтерактивна гра · 30 запитань</span>
-        <button type="button" id="soundToggle" class="sound">🔊 Звук увімкнено</button>
       </div>
-      <h1>Основи. Луги. Натрій гідроксид і кальцій гідроксид</h1>
+      <h1>🥼 Основи. Луги. Натрій гідроксид і кальцій гідроксид</h1>
       <div class="progress-wrap">
         <div class="progress"><div class="bar" id="bar"></div></div>
         <span id="progressText" style="font-weight:800;font-size:14px">0 із 30</span>
@@ -51,9 +50,9 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
     </header>
 
     <section id="startScreen" class="panel" style="text-align:center;padding:30px 15px">
-      <h2>Готові до хімічного виклику?</h2>
-      <p>Кожне запитання показується окремо. Вірна та невірна відповідь супроводжуються звуковими сигналами.</p>
-      <button type="button" id="start" class="primary" style="font-size:18px;padding:12px 24px">Почати тест</button>
+      <h2>Готові до хімічного виклику? 🚀</h2>
+      <p>Кожне запитання показується окремо. Вірна та невірна відповідь підсвічуються підказками ✅ / ❌.</p>
+      <button type="button" id="start" class="primary" style="font-size:18px;padding:12px 24px">Почати тест 🧪</button>
     </section>
 
     <section id="game" class="panel" style="display:none">
@@ -67,7 +66,7 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
       <div class="controls">
         <button type="button" id="prev" class="secondary">← Назад</button>
         <div>
-          <button type="button" id="checkAnswer" class="check">Перевірити відповідь</button>
+          <button type="button" id="checkAnswer" class="check">Перевірити відповідь ✅</button>
           <button type="button" id="next" class="primary">Наступне →</button>
         </div>
       </div>
@@ -127,7 +126,6 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
       currentSection: 0,
       currentQuestion: 0,
       answers: [],
-      soundOn: true,
       started: false,
       checked: false
     };
@@ -156,23 +154,6 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
       let idx = 0;
       for (let i = 0; i < state.currentSection; i++) idx += sections[i].questions.length;
       return idx + state.currentQuestion;
-    }
-
-    function playTone(isCorrect) {
-      if (!state.soundOn) return;
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!AudioCtx) return;
-      const ctx = new AudioCtx();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = isCorrect ? 'triangle' : 'sawtooth';
-      osc.frequency.value = isCorrect ? 660 : 220;
-      gain.gain.value = 0.04;
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.14);
-      setTimeout(() => ctx.close(), 180);
     }
 
     function updateProgress() {
@@ -206,7 +187,7 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
       const answer = state.answers[getQuestionIndex()];
       const isAnswered = typeof answer === 'string';
       const nextBtn = document.getElementById('next');
-      nextBtn.textContent = state.currentSection === sections.length - 1 && state.currentQuestion === sections[state.currentSection].questions.length - 1 ? 'Завершити' : 'Наступне →';
+      nextBtn.textContent = state.currentSection === sections.length - 1 && state.currentQuestion === sections[state.currentSection].questions.length - 1 ? 'Завершити 🏁' : 'Наступне →';
       document.getElementById('checkAnswer').disabled = !isAnswered;
 
       if (state.checked) {
@@ -236,13 +217,12 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
       const selected = state.answers[getQuestionIndex()];
       if (!selected) {
         feedbackEl.className = 'feedback bad';
-        feedbackEl.textContent = 'Будь ласка, оберіть одну відповідь.';
+        feedbackEl.textContent = 'Будь ласка, оберіть одну відповідь ❗';
         feedbackEl.style.display = 'block';
         return;
       }
       state.checked = true;
       renderQuestion();
-      playTone(selected === q.correct);
     }
 
     function nextQuestion() {
@@ -281,10 +261,10 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
 
     function calculateGrade(score, total) {
       const percent = (score / total) * 100;
-      if (percent >= 90) return 'Відмінно';
-      if (percent >= 75) return 'Добре';
-      if (percent >= 60) return 'Задовільно';
-      return 'Потрібно ще повторити';
+      if (percent >= 90) return 'Відмінно 🎉';
+      if (percent >= 75) return 'Добре 👍';
+      if (percent >= 60) return 'Задовільно 🙂';
+      return 'Потрібно ще повторити 🧠';
     }
 
     function sendResultToGoogleSheet(result) {
@@ -298,7 +278,7 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
       formData.append('answers', JSON.stringify(result.answers || []));
 
       sendStatusEl.className = 'send-status send-loading';
-      sendStatusEl.textContent = 'Надсилаємо результат до Google Таблиці...';
+      sendStatusEl.textContent = 'Надсилаємо результат до Google Таблиці... 📤';
 
       fetch(GOOGLE_SHEET_URL, {
         method: 'POST',
@@ -334,7 +314,7 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
       const total = flatQuestions.length;
       const grade = calculateGrade(correct, total);
       const percent = Math.round((correct / total) * 100);
-      scoreEl.textContent = `${correct} із ${total}`;
+      scoreEl.textContent = `${correct} із ${total} ✅`;
       gradeEl.textContent = grade + ' (' + percent + '%)';
 
       sendResultToGoogleSheet({
@@ -361,11 +341,6 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
     document.getElementById('checkAnswer').addEventListener('click', checkAnswer);
     document.getElementById('next').addEventListener('click', nextQuestion);
     document.getElementById('prev').addEventListener('click', prevQuestion);
-
-    document.getElementById('soundToggle').addEventListener('click', () => {
-      state.soundOn = !state.soundOn;
-      document.getElementById('soundToggle').textContent = state.soundOn ? '🔊 Звук увімкнено' : '🔇 Звук вимкнено';
-    });
 
     progressTextEl.textContent = `0 із ${totalQuestions}`;
   </script>
