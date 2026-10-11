@@ -121,6 +121,48 @@
     button:disabled { opacity: 0.4; cursor: not-allowed; }
     .result { display: none; text-align: center; }
     .score { font-size: 26px; font-weight: 900; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="topline"><span class="pill">Інтерактивна гра</span></div>
+      <h1>🥼 Основи. Луги. Натрій гідроксид і кальцій гідроксид</h1>
+      <div class="progress-wrap">
+        <div class="progress"><div class="bar" id="bar"></div></div>
+        <span id="progressText" style="font-weight:800;font-size:14px">0 із 5</span>
+      </div>
+    </header>
+
+    <section id="startScreen" class="panel" style="text-align:center;padding:30px 15px">
+      <h2>Готові до хімічного виклику? 🚀</h2>
+      <p>Кожне запитання показується окремо. Правильна та неправильна відповідь підсвічуються підказками ✅ / ❌.</p>
+      <button type="button" id="start" class="primary" style="font-size:18px;padding:12px 24px">Почати тест 🧪</button>
+    </section>
+
+    <section id="game" class="panel" style="display:none">
+      <div class="question-meta">
+        <span id="count" class="count">Питання 1</span>
+        <button type="button" id="quitBtn" class="danger" style="padding:6px 12px;font-size:14px">❌ Завершити</button>
+      </div>
+      <p id="prompt"></p>
+      <div id="answerArea" class="options"></div>
+      <div id="feedback" class="feedback"></div>
+      <div class="controls">
+        <button type="button" id="prev" class="secondary">← Назад</button>
+        <div>
+          <button type="button" id="checkAnswer" class="check">Перевірити відповідь ✅</button>
+          <button type="button" id="next" class="primary">Наступне →</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="result" class="result">
+      <h2>Тест завершено 🏁</h2>
+      <div id="score" class="score"></div>
+      <div id="grade" style="font-size:20px;font-weight:800;margin-top:5px;margin-bottom:20px"></div>
+      <button type="button" id="restartBtn" class="primary" style="padding:12px 24px">Почати заново 🔄</button>
+    </section>
   </main>
 
   <script>
