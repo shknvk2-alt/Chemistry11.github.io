@@ -2,20 +2,19 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Основи — 12 запитань</title>
+<title>Основи — 30 завдань</title>
 <style>
 :root{--ink:#203047;--blue:#2457a7;--pale:#eef5ff;--green:#187548;--red:#b42318;--line:#d5deea}
 *{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:var(--ink);font:16px/1.5 Arial,sans-serif}
-main{max-width:800px;margin:24px auto;padding:0 16px 40px}
-header,section,#result{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}
-h1{font-size:24px;margin:0 0 10px}h2{font-size:19px;margin:0 0 10px}
+main{max-width:850px;margin:24px auto;padding:0 16px 40px}
+header,.section,#result{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}
+h1{font-size:24px;margin:0 0 10px}h2{font-size:18px;color:var(--blue);margin:0 0 10px}
 .progress{height:8px;background:#e0e7f0;border-radius:20px;overflow:hidden;margin:12px 0}
 .bar{height:100%;width:0;background:var(--blue);transition:width .2s}
 .question{padding:12px 0;border-top:1px solid #e8edf4}.question:first-of-type{border-top:0}
 .qtitle{font-weight:700;margin-bottom:6px}
 label.option{display:flex;gap:8px;align-items:flex-start;padding:6px;border-radius:6px;cursor:pointer}
 label.option:hover{background:#f4f7fc}input{margin-top:5px;accent-color:var(--blue)}
-select{font:inherit;padding:6px;border:1px solid #b9c6d8;border-radius:6px;width:100%;max-width:400px;margin:5px 0}
 .actions{display:flex;gap:10px;margin:16px 0}
 button{border:0;border-radius:8px;padding:10px 16px;font:inherit;font-weight:700;cursor:pointer}
 .primary{background:var(--blue);color:white}.secondary{background:#e8eef7;color:var(--ink)}
@@ -31,15 +30,14 @@ button{border:0;border-radius:8px;padding:10px 16px;font:inherit;font-weight:700
 <body>
 <main>
 <header>
-  <h1>Основи. Натрій гідроксид і кальцій гідроксид (12 запитань)</h1>
+  <h1>Основи. Натрій гідроксид і кальцій гідроксид (30 завдань)</h1>
   <div class="progress"><div class="bar" id="bar"></div></div>
-  <p id="progressText" style="font-size:14px;margin:0">Виконано завдань: 0 із 12</p>
+  <p id="progressText" style="font-size:14px;margin:0">Виконано завдань: 0 із 30</p>
 </header>
 <form id="quiz">
-  <div class="section" id="part1"><h2>1. Оберіть одну правильну відповідь</h2></div>
-  <div class="section" id="part2"><h2>2. Позначте всі правильні відповіді</h2></div>
-  <div class="section" id="part3"><h2>3. Установіть відповідність</h2></div>
-  <div class="section" id="part4"><h2>4. Властивості та поширення</h2></div>
+  <div class="section" id="part1"><h2>Частина 1. Теорія та Формули</h2></div>
+  <div class="section" id="part2"><h2>Частина 2. Хімічні Властивості</h2></div>
+  <div class="section" id="part3"><h2>Частина 3. Використання та Безпека</h2></div>
 </form>
 <div class="actions"><button type="button" class="primary" id="check">Перевірити відповіді</button><button type="button" class="secondary" id="reset">Почати спочатку</button></div>
 <div id="result" aria-live="polite">
@@ -48,74 +46,70 @@ button{border:0;border-radius:8px;padding:10px 16px;font:inherit;font-weight:700
 </main>
 <script>
 const quizData = [
-  {p:1,t:"radio",c:"b",q:"Які речовини належать до основ?",o:["Сполуки лише з атомів металу й Оксигену","Складні речовини, що містять катіони металу та гідроксид-іони OH⁻","Складні речовини, що містять атоми Гідрогену й кислотний залишок"]},
-  {p:1,t:"radio",c:"c",q:"Яка з наведених основ є лугом?",o:["Cu(OH)₂","Fe(OH)₃","NaOH"]},
-  {p:1,t:"radio",c:"a",q:"Яка формула кальцій гідроксиду?",o:["Ca(OH)₂","CaOH","Ca₂OH"]},
-  {p:1,t:"radio",c:"b",q:"Який індикатор у лужному середовищі стає малиновим?",o:["Метилоранж","Фенолфталеїн","Лакмус стає червоним"]},
-  {p:2,t:"multi",c:"a,c,d",q:"Які твердження про натрій гідроксид правильні?",o:["Це тверда біла речовина за звичайних умов","Він безпечний для шкіри","Добре розчиняється у воді","Є їдкою речовиною, що викликає опіки"]},
-  {p:2,t:"multi",c:"a,b,d",q:"Які твердження про кальцій гідроксид правильні?",o:["Його водну суспензію називають вапняним молоком","Прозорий насичений розчин називають вапняною водою","Він необмежено розчиняється у воді","Його використовують у будівництві"]},
-  {p:2,t:"multi",c:"a,c",q:"Які дії відповідають правилам безпеки під час роботи з лугами?",o:["Працювати в захисних окулярах і рукавичках","Торкатися речовини пальцями","Уникати потрапняння на шкіру та в очі","Пробувати речовини на смак"]},
-  {p:3,t:"selects",c:"b",q:"Оберіть характеристику для Натрій гідроксиду (NaOH):",o:["Малорозчинна основа","Добре розчинний у воді луг","Основний компонент крейди"]},
-  {p:3,t:"selects",c:"a",q:"Оберіть характеристику для Кальцій гідроксиду (Ca(OH)₂):",o:["Малорозчинна у воді основа","Добре розчинний у воді луг","Речовина, з якої складаються крейда й вапняк"]},
-  {p:4,t:"radio",c:"a",q:"Що спостерігають, якщо пропускати вуглекислий газ через вапняну воду?",o:["Розчин мутніє через утворення кальцій карбонату","Розчин стає синім через утворення міді","Виділяється натрій"]},
-  {p:4,t:"radio",c:"c",q:"Де в природі поширені сполуки Кальцію, з яких отримують вапно?",o:["Переважно у складі повітря","Лише в морській воді","У вапняку, крейді та мармурі, основою яких є CaCO₃"]},
-  {p:4,t:"radio",c:"b",q:"Який вислів про натрій гідроксид і кальцій гідроксид правильний?",o:["Обидві речовини можна безпечно куштувати в малих кількостях","Обидві речовини мають лужні властивості, але відрізняються розчинністю","Обидві речовини є кислотами"]}
+  {p:1,c:"b",q:"Що називають основами?",o:["Сполуки металу з Оксигену","Речовини з катіонами металу та гідроксид-іонами OH⁻","Речовини, що містять Гідроген"]},
+  {p:1,c:"a",q:"Яка формула натрій гідроксиду?",o:["NaOH","Na₂O","Na(OH)₂"]},
+  {p:1,c:"b",q:"Яка формула кальцій гідроксиду?",o:["CaOH","Ca(OH)₂","Ca₂OH"]},
+  {p:1,c:"c",q:"Яка з наведених речовин є лугом?",o:["Cu(OH)₂","Fe(OH)₃","NaOH"]},
+  {p:1,c:"a",q:"Яке твердження про Са(ОН)₂ правильне?",o:["... малорозчинна основа","... розчинна сіль","... кислота"]},
+  {p:1,c:"a",q:"Який колір набуває фенолфталеїн у лугах?",o:["Малиновий","Безбарвний","Синій"]},
+  {p:1,c:"a",q:"Що відбувається з червоним лакмусом у лугах?",o:["Стає синім","Червоніє","Жовтіє"]},
+  {p:1,c:"b",q:"Скільки гідроксид-іонів у Ca(OH)₂?",o:["Один","Два","Три"]},
+  {p:1,c:"a",q:"Яка молекулярна маса NaOH?",o:["40","23","56"]},
+  {p:1,c:"a",q:"Яка технічна назва NaOH?",o:["Каустична сода","Гашене вапно","Питна сода"]},
+  {p:2,c:"a",q:"Що характерно для розчинення NaOH у воді?",o:["Виділення тепла","Повне замерзання","Утворення кисню"]},
+  {p:2,c:"a",q:"Які продукти утворюються в реакції NaOH + HCl?",o:["NaCl і H₂O","Na₂O і H₂","Cl₂"]},
+  {p:2,c:"b",q:"Яке рівняння нейтралізації Ca(OH)₂ записано правильно?",o:["Ca(OH)₂ + HCl -> CaCl₂ + H₂O","Ca(OH)₂ + 2HCl -> CaCl₂ + 2H₂O","CaOH + HCl -> CaCl + H₂"]},
+  {p:2,c:"a",q:"Вапняна вода мутніє під дією якого газу?",o:["Вуглекислого (CO₂)","Кисню (O₂)","Водню (H₂)"]},
+  {p:2,c:"a",q:"Що робити при потраплянні лугу на шкіру?",o:["Промити великою кількістю води","Витерти насухо","Залити кислотою"]},
+  {p:2,c:"a",q:"З якими оксидами реагують луги?",o:["З кислотними","З основними","Не реагують"]},
+  {p:2,c:"a",q:"Який осад випаде при взаємодії Ca(OH)₂ з Na₂CO₃?",o:["CaCO₃","NaOH","Осаду не буде"]},
+  {p:2,c:"a",q:"Луги НЕ взаємодіють з:",o:["Барій оксидом (ВаО)","Кислотами","Кислотними оксидами"]},
+  {p:2,c:"a",q:"Який колір має осад Cu(OH)₂?",o:["Блакитний","Червоний","Чорний"]},
+  {p:2,c:"a",q:"Який колір має метилоранж у лугах?",o:["Жовтий","Рожевий","Безбарвний"]},
+  {p:3,c:"a",q:"Як називають прозорий розчин Ca(OH)₂?",o:["Вапняна вода","Каустик","Рідке скло"]},
+  {p:3,c:"a",q:"Яку сполуку називають негашеним вапном?",o:["CaO","Ca(OH)₂","CaCO₃"]},
+  {p:3,c:"a",q:"Що таке «гасіння вапна»?",o:["Взаємодія CaO з водою","Заливання вапняку","Реакція з HCl"]},
+  {p:3,c:"a",q:"Де переважно використовують гашене вапно?",o:["У будівництві","У ракетному паливі","Для плавлення металу"]},
+  {p:3,c:"a",q:"NaOH використовують для виробництва:",o:["Мила та мийних засобів","Азотних добрив","Заліза"]},
+  {p:3,c:"a",q:"Чому NaOH називають «їдким натром»?",o:["Він роз’їдає шкіру й тканини","Він дуже солоний","Він кислий"]},
+  {p:3,c:"a",q:"Яким папірцем виявляють луги?",o:["Червоним лакмусовим","Синім лакмусовим","Звичайним білим"]},
+  {p:3,c:"a",q:"Яка основа утвориться при взаємодії натрію з водою?",o:["NaOH","Ca(OH)₂","Na₂O"]},
+  {p:3,c:"a",q:"Які мінерали складаються з CaCO₃?",o:["Крейда, мармур, вапняк","Граніт і пісок","Сіль"]},
+  {p:3,c:"a",q:"Які засоби безпеки обов’язакові з твердим NaOH?",o:["Окуляри та рукавички","Вогнетривкий костюм","Нічого не потрібно"]}
 ];
 
-const quizForm = document.getElementById('quiz');
 quizData.forEach((data, idx) => {
     const qNum = idx + 1;
     const targetBlock = document.getElementById(`part${data.p}`);
     const qDiv = document.createElement('div');
-    qDiv.className = 'question'; qDiv.id = `q_${qNum}`; qDiv.setAttribute('data-type', data.t); qDiv.setAttribute('data-cor', data.c);
+    qDiv.className = 'question'; qDiv.id = `q_${qNum}`; qDiv.setAttribute('data-cor', data.c);
     
-    let opts = ''; const keys = ['a','b','c','d'];
-    if(data.t === 'selects') {
-        let selectOpts = '<option value="">Оберіть…</option>';
-        data.o.forEach((o, oIdx) => { selectOpts += `<option value="${keys[oIdx]}">${o}</option>`; });
-        opts = `<select id="sel_${qNum}" onchange="up()">${selectOpts}</select>`;
-    } else {
-        data.o.forEach((o, oIdx) => {
-            const inputType = data.t === 'radio' ? 'radio' : 'checkbox';
-            opts += `<label class="option"><input type="${inputType}" name="m${qNum}" value="${keys[oIdx]}" onchange="up()"> ${o}</label>`;
-        });
-    }
+    let opts = ''; const keys = ['a','b','c'];
+    data.o.forEach((o, oIdx) => {
+        opts += `<label class="option"><input type="radio" name="m${qNum}" value="${keys[oIdx]}" onchange="up()"> ${o}</label>`;
+    });
     qDiv.innerHTML = `<div class="qtitle">${qNum}. ${data.q}</div>${opts}<div class="feedback"></div>`;
     targetBlock.appendChild(qDiv);
 });
 
 function up(){
-    let ans = 0;
-    for(let i=1;i<=12;i++){
-        const q = document.getElementById(`q_${i}`); if(!q)continue;
-        const type = q.getAttribute('data-type');
-        if(type === 'selects'){if(document.getElementById(`sel_${i}`).value) ans++}
-        else{if(document.querySelector(`input[name="m${i}"]:checked`)) ans++}
-    }
-    document.querySelector('.bar').style.width=(ans/12*100)+'%';
-    document.getElementById('progressText').innerText=`Виконано завдань: ${ans} із 12`;
+    let ans = 0; for(let i=1;i<=30;i++){if(document.querySelector(`input[name="m${i}"]:checked`)) ans++}
+    document.querySelector('.bar').style.width=(ans/30*100)+'%';
+    document.getElementById('progressText').innerText=`Виконано завдань: ${ans} із 30`;
 }
 
 document.getElementById('check').addEventListener('click',()=>{
     let score = 0;
-    for(let i=1;i<=12;i++){
+    for(let i=1;i<=30;i++){
         const q = document.getElementById(`q_${i}`); if(!q)continue;
-        const type = q.getAttribute('data-type'), fb = q.querySelector('.feedback'), cor = q.getAttribute('data-cor');
-        let isCor = false;
-        if(type === 'radio'){
-            const ch = q.querySelector('input:checked'); isCor = ch && ch.value === cor;
-        }else if(type === 'multi'){
-            const ch = Array.from(q.querySelectorAll('input:checked')).map(ins=>ins.value);
-            const corArr = cor.split(','); isCor = ch.length === corArr.length && ch.every(v=>corArr.includes(v));
-        }else if(type === 'selects'){
-            isCor = document.getElementById(`sel_${i}`).value === cor;
-        }
+        const fb = q.querySelector('.feedback'), ch = q.querySelector('input:checked'), cor = q.getAttribute('data-cor');
+        const isCor = ch && ch.value === cor;
         if(isCor){q.className='question correct'; fb.innerText='✅ Правильно!'; score++}
         else{q.className='question incorrect'; fb.innerText='❌ Неправильно.'}
         fb.style.display='block';
     }
-    const grade = Math.round((score/12)*12);
-    document.getElementById('score').innerText=`Ваш результат: ${score} з 12 балів`;
+    const grade = Math.round((score/30)*12);
+    document.getElementById('score').innerText=`Ваш результат: ${score} з 30 балів`;
     document.getElementById('grade').innerText=`Оцінка: ${grade} балів за 12-бальною шкалою`;
     document.getElementById('result').style.display='block';
     document.getElementById('result').scrollIntoView({behavior:'smooth'});
@@ -126,7 +120,7 @@ function send(g,s){
     const name = localStorage.getItem('chemistry_student_name') || "Анонімний учень";
     const scriptUrl = "https://google.com";
     const d = document.getElementById('sendStatus'); d.style.display='block'; d.className='send-status send-loading'; d.innerText='⏳ Надсилання у журнал вчителя...';
-    const url = `${scriptUrl}?studentName=${encodeURIComponent(name)}&studentScore=${encodeURIComponent(g+' балів (Тест 12п: '+s+'/12)')}`;
+    const url = `${scriptUrl}?studentName=${encodeURIComponent(name)}&studentScore=${encodeURIComponent(g+' балів (Тест 30п: '+s+'/30)')}`;
     fetch(url,{method:'POST',mode:'no-cors'}).then(()=>{d.className='send-status send-success';d.innerText='✅ Результат успішно збережено!';}).catch(()=>{d.innerText='❌ Помилка надсилання.';});
 }
 
