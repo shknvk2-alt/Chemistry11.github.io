@@ -1,288 +1,332 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Основи — інтерактивна гра</title>
-<style>
-:root{--ink:#19253a;--blue:#2357c6;--line:#d9e1ee;--green:#167044;--red:#a62424}*{box-sizing:border-box}
-body{margin:0;min-height:100vh;color:var(--ink);font:16px/1.5 Arial,sans-serif;background:linear-gradient(135deg,#d7f5ff,#e8e2ff,#ffe3ed);transition:background .35s}
-body[data-theme="0"]{background:linear-gradient(135deg,#c5f4ff,#dbe8ff,#eee0ff)}
-body[data-theme="1"]{background:linear-gradient(135deg,#d7f9e8,#e9f7bc,#fff0cf)}
-body[data-theme="2"]{background:linear-gradient(135deg,#ffe0e8,#ffd8c7,#fff1b8)}
-body[data-theme="3"]{background:linear-gradient(135deg,#d9dcff,#e9d7ff,#fbdcf3)}
-body[data-theme="4"]{background:linear-gradient(135deg,#c9f5e9,#cae8ff,#d9e0ff)}
-body[data-theme="5"]{background:linear-gradient(135deg,#fff0c9,#ffdfda,#e4ddff)}
-main{width:min(850px,100%);margin:0 auto;padding:18px 14px 36px}
-header,.panel,.result{background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.85);border-radius:20px;box-shadow:0 12px 35px rgba(33,45,84,.12);padding:20px;margin-bottom:16px}
-.topline{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.pill{display:inline-block;background:#eaf0ff;color:#2447a5;border-radius:999px;padding:5px 11px;font-size:13px;font-weight:800}
-h1{font-size:24px;margin:10px 0 5px}h2{font-size:20px;margin:0 0 10px}
-.progress-wrap{display:flex;align-items:center;gap:12px;margin-top:10px}.progress{height:10px;flex:1;background:#e5eaf4;border-radius:99px;overflow:hidden}.bar{width:0;height:100%;background:linear-gradient(90deg, #2b65ff, #5f7af7, #8f5ce6);transition:width .25s ease}
-.question-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.count{font-size:14px;font-weight:900;color:#fff;background:#253e8e;border-radius:8px;padding:5px 10px}
-#prompt{font-size:20px;font-weight:800;margin:0 0 15px}.options{display:grid;gap:10px}
-label.option{display:flex;gap:10px;align-items:flex-start;padding:12px;border:2px solid #e1e7f1;background:#fff;border-radius:12px;cursor:pointer;transition:.15s ease}
-label.option:hover{border-color:#90aaf1}label.option:has(input:checked){border-color:#416de0;background:#f0f4ff}
-input{margin-top:5px;accent-color:#315ed0;transform:scale(1.1)}
-.feedback{padding:12px;border-radius:10px;margin-top:12px;font-weight:600;display:none}
-.feedback.good{background:#e3f8e9;color:#135c36;border:1px solid #a6e3b8}
-.feedback.bad{background:#fff0ed;color:#85241e;border:1px solid #ffb8ad}
-.controls{display:flex;justify-content:space-between;gap:10px;margin-top:16px;align-items:center}
-button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;transition:.12s ease}
-.primary{background:#244fc0;color:white}.secondary{background:#e9edf5;color:#25354d}.check{background:#172f70;color:#fff}.danger{background:#c64545;color:white}.sound{background:#fff;color:#243b73;border:1px solid #d4dced}button:disabled{opacity:.4;cursor:not-allowed}
-.result{display:none;text-align:center}.score{font-size:26px;font-weight:900}
-.send-status{font-weight:bold;margin-top:12px;padding:10px;border-radius:8px}
-.send-success{background:#e3f8e9;color:#135c36}
-.send-loading{background:#fff8e6;color:#b78103}
-.send-error{background:#fdeaea;color:#9e2a2a}
-#quitBtn{margin-left:auto}
-</style>
-</head>
-<body data-theme="0">
-  <main>
-    <header>
-      <div class="topline">
-        <span class="pill">Інтерактивна гра · 30 запитань</span>
-      </div>
-      <h1>🥼 Основи. Луги. Натрій гідроксид і кальцій гідроксид</h1>
-      <div class="progress-wrap">
-        <div class="progress"><div class="bar" id="bar"></div></div>
-        <span id="progressText" style="font-weight:800;font-size:14px">0 із 30</span>
-      </div>
-    </header>
-
-    <section id="startScreen" class="panel" style="text-align:center;padding:30px 15px">
-      <h2>Готові до хімічного виклику? 🚀</h2>
-      <p>Кожне запитання показується окремо. Правильна та неправильна відповідь підсвічуються підказками ✅ / ❌.</p>
-      <button type="button" id="start" class="primary" style="font-size:18px;padding:12px 24px">Почати тест 🧪</button>
-    </section>
-
-    <section id="game" class="panel" style="display:none">
-      <div class="question-meta">
-        <span id="count" class="count">Питання 1 із 30</span>
-        <span style="font-size:13px;color:#58657a;font-weight:700" id="sectionTitle"></span>
-        <button type="button" id="quitBtn" class="danger" style="padding:6px 12px;font-size:14px">❌ Завершити</button>
-      </div>
-      <p id="prompt"></p>
-      <div id="answerArea" class="options"></div>
-      <div id="feedback" class="feedback"></div>
-      <div class="controls">
-        <button type="button" id="prev" class="secondary">← Назад</button>
-        <div>
-          <button type="button" id="checkAnswer" class="check">Перевірити відповідь ✅</button>
-          <button type="button" id="next" class="primary">Наступне →</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="result" class="result">
-      <h2>Тест завершено 🏁</h2>
-      <div id="score" class="score"></div>
-      <div id="grade" style="font-size:20px;font-weight:800;margin-top:5px"></div>
-      <div id="sendStatus" class="send-status"></div>
-      <button type="button" id="restartBtn" class="primary" style="margin-top:20px;padding:12px 24px">Почати заново 🔄</button>
-    </section>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Основи — інтерактивна гра</title>
+  <style>
+    :root {
+      --ink: #19253a;
+      --blue: #2357c6;
+      --line: #d9e1ee;
+      --green: #167044;
+      --red: #a62424;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font: 16px/1.5 Arial, sans-serif;
+      background: linear-gradient(135deg, #c5f4ff, #dbe8ff, #eee0ff);
+    }
+    main {
+      width: min(850px, 100%);
+      margin: 0 auto;
+      padding: 18px 14px 36px;
+    }
+    header, .panel, .result {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
+      box-shadow: 0 12px 35px rgba(33, 45, 84, 0.12);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .pill {
+      background: #eaf0ff;
+      color: #2447a5;
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    h1 { font-size: 24px; margin: 10px 0 5px; }
+    h2 { font-size: 20px; margin: 0 0 10px; }
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .progress {
+      height: 10px;
+      flex: 1;
+      background: #e5eaf4;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .bar {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #2b65ff, #8f5ce6);
+      transition: width 0.25s ease;
+    }
+    .question-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .count {
+      font-size: 14px;
+      font-weight: 900;
+      color: #fff;
+      background: #253e8e;
+      border-radius: 8px;
+      padding: 5px 10px;
+    }
+    #prompt { font-size: 20px; font-weight: 800; margin: 0 0 15px; }
+    .options { display: grid; gap: 10px; }
+    label.option {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border: 2px solid #e1e7f1;
+      background: #fff;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    label.option:hover { border-color: #90aaf1; }
+    input { accent-color: #315ed0; transform: scale(1.2); }
+    .feedback {
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 12px;
+      font-weight: 600;
+      display: none;
+    }
+    .feedback.good {
+      background: #e3f8e9;
+      color: #135c36;
+      border: 1px solid #a6e3b8;
+    }
+    .feedback.bad {
+      background: #fff0ed;
+      color: #85241e;
+      border: 1px solid #ffb8ad;
+    }
+    .controls { display: flex; justify-content: space-between; gap: 10px; margin-top: 16px; }
+    button { font: inherit; font-weight: 800; border: 0; border-radius: 10px; padding: 10px 16px; cursor: pointer; }
+    .primary { background: #244fc0; color: white; }
+    .secondary { background: #e9edf5; color: #25354d; }
+    .check { background: #172f70; color: #fff; }
+    .danger { background: #c64545; color: white; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .result { display: none; text-align: center; }
+    .score { font-size: 26px; font-weight: 900; }
   </main>
 
   <script>
-    const GOOGLE_SHEET_URL = 'https://google.com';
+    var questions = [
+      {
+        q: "Що називають основами?",
+        options: ["Сполуки металу з киснем", "Речовини, що містять катіони металу та гідроксид-іони", "Солі у воді"],
+        correct: 1,
+        why: "Основи містять катіон металу та гідроксид-іони OH⁻."
+      },
+      {
+        q: "Яка формула натрій гідроксиду?",
+        options: ["NaOH", "Na₂O", "Na(OH)₂"],
+        correct: 0,
+        why: "Натрій одновалентний, тому формула — NaOH."
+      },
+      {
+        q: "Яка формула кальцій гідроксиду?",
+        options: ["CaOH", "Ca(OH)₂", "Ca₂OH"],
+        correct: 1,
+        why: "Кальцій двовалентний, тому потрібні дві OH-групи."
+      },
+      {
+        q: "Яка з наведених речовин є лугом?",
+        options: ["Cu(OH)₂", "Fe(OH)₃", "NaOH"],
+        correct: 2,
+        why: "NaOH — розчинна основа, тобто луг."
+      },
+      {
+        q: "Яке твердження про Ca(OH)₂ правильне?",
+        options: ["Це малорозчинна основа", "Це розчинна сіль", "Це луг, що частково розчиняється в воді"],
+        correct: 2,
+        why: "Кальцій гідроксид є малорозчинним лугом."
+      }
+    ];
 
-    const sections = [
-      {title:'Частина 1. Теорія та формули',questions:[
-        {type:'radio',q:'Що називають основами?',options:[['a','Сполуки металу з киснем'],['b','Речовини, що містять катіони металу та гідроксид-іони'],['c','Солі у воді']],correct:'b',why:'Основи — це гідроксиди металів, що містять гідроксид-іони OH⁻.'},
-        {type:'radio',q:'Яка формула натрій гідроксиду?',options:[['a','NaOH'],['b','Na₂O'],['c','Na(OH)₂']],correct:'a',why:'Натрій одновалентний, тому формула — NaOH.'},
-        {type:'radio',q:'Яка формула кальцій гідроксиду?',options:[['a','CaOH'],['b','Ca(OH)₂'],['c','Ca₂OH']],correct:'b',why:'Кальцій двовалентний, тому потрібні два OH-групи.'},
-        {type:'radio',q:'Яка з наведених речовин є лугом?',options:[['a','Cu(OH)₂'],['b','Fe(OH)₃'],['c','NaOH']],correct:'c',why:'NaOH — розчинна основа, тобто луг.'},
-        {type:'radio',q:'Яке твердження про Ca(OH)₂ правильне?',options:[['a','Це малорозчинна основа'],['b','Це розчинна сіль'],['c','Це луг, що частково розчиняється в воді']],correct:'c',why:'Кальцій гідроксид є малорозчинним лугом.'},
-        {type:'radio',q:'Який колір набуває фенолфталеїн у лугах?',options:[['a','Малиновий'],['b','Безбарвний'],['c','Синій']],correct:'a',why:'Фенолфталеїн у лужному середовищі стає малиновим.'},
-        {type:'radio',q:'Що відбувається з червоним лакмусом у лугах?',options:[['a','Стає синім'],['b','Червоніє'],['c','Жовтіє']],correct:'a',why:'Лакмус у лужному середовищі синіє.'},
-        {type:'radio',q:'Скільки гідроксид-іонів у Ca(OH)₂?',options:[['a','Один'],['b','Два'],['c','Три']],correct:'b',why:'У формулі Ca(OH)₂ є дві групи OH⁻.'},
-        {type:'radio',q:'Яка молекулярна маса NaOH?',options:[['a','40'],['b','23'],['c','56']],correct:'a',why:'23 + 16 + 1 = 40.'},
-        {type:'radio',q:'Яка технічна назва NaOH?',options:[['a','Каустична сода'],['b','Гашене вапно'],['c','Питна сода']],correct:'a',why:'NaOH називають каустичною содою.'}
-      ]},
-      {title:'Частина 2. Хімічні властивості',questions:[
-        {type:'radio',q:'Що характерно для розчинення NaOH у воді?',options:[['a','Виділення тепла'],['b','Повне замерзання'],['c','Утворення газу']],correct:'a',why:'Розчинення лугів в воді супроводжується виділенням тепла.'},
-        {type:'radio',q:'Які продукты утворюються в реакції NaOH + HCl?',options:[['a','NaCl і H₂O'],['b','Na₂O і H₂'],['c','Cl₂ і NaOH']],correct:'a',why:'Це реакція нейтралізації: утворюються сіль і вода.'},
-        {type:'radio',q:'Яке рівняння нейтралізації Ca(OH)₂?',options:[['a','Ca(OH)₂ + 2HCl → CaCl₂ + 2H₂O'],['b','Ca(OH)₂ + HCl → CaCl + H₂O'],['c','Ca + 2HCl → CaCl₂ + H₂']],correct:'a',why:'Для нейтралізації двовалентного кальцію потрібно 2 молекули HCl.'},
-        {type:'radio',q:'З якими оксидами реагують луги?',options:[['a','Основними'],['b','Кислотними'],['c','Несолетворними']],correct:'b',why:'Луги взаємодіють з кислотними оксидами з утворенням солі та води.'},
-        {type:'radio',q:'Яка сіль утвориться при реакції CO₂ з надлишком NaOH?',options:[['a','Na₂CO₃'],['b','NaHCO₃'],['c','Na₂O']],correct:'a',why:'При надлишку лугу утворюється середня сіль — натрій карбонат.'},
-        {type:'radio',q:'Чи реагує NaOH з мідним купоросом (CuSO₄)?',options:[['a','Ні'],['b','Так, випадає блакитний осад'],['c','Так, виділяється газ']],correct:'b',why:'Утворюється нерозчинна основа Cu(OH)₂ блакитного кольору.'},
-        {type:'radio',q:'При якій умові луг реагує з сіллю в розчині?',options:[['a','Якщо утворюється осад або газ'],['b','Завжди реагує'],['c','Тільки при нагріванні вище 200°C']],correct:'a',why:'Це реакція обміну, обов’язковою умовою є утворення осаду чи газу.'},
-        {type:'radio',q:'Який газ виділяється при взаємодії лугу з солями амонію?',options:[['a','Аміак (NH₃)'],['b','Водень (H₂)'],['c','Кисень (O₂)']],correct:'a',why:'Реакція солей амонію з лугами є якісною на іони амонію: виділяється аміак.'},
-        {type:'radio',q:'Який оксид НЕ реагуватиме з натрій гідроксидом?',options:[['a','SO₃'],['b','CaO'],['c','P₂O₅']],correct:'b',why:'CaO — основний оксид, основи з основними оксидами не реагують.'},
-{type:'radio',q:'Що утвориться при термічному розкладі Ca(OH)₂?',options:[['a','CaO і H₂O'],['b','Ca і O₂'],['c','Луги не розкладаються']],correct:'a',why:'Малорозчинні гідроксиди при нагріванні розкладаються на оксид і воду.'}
-]},
-{title:'Частина 3. Практичне застосування',questions:[
-{type:'radio',q:'Що таке «вапняна вода»?',options:[['a','Прозорий розчин Ca(OH)₂'],['b','Суспензія крейди'],['c','Морська вода']],correct:'a',why:'Прозорий фільтрований розчин кальцій гідроксиду називають вапняною водою.'},
-{type:'radio',q:'Для чого використовують вапняну воду в лабораторії?',options:[['a','Для виявлення CO₂'],['b','Для добування кисню'],['c','Як індикатор кислот']],correct:'a',why:'CO₂ викликає помутніння вапняної води через утворення CaCO₃.'},
-{type:'radio',q:'Яка технічна назва суспензії Ca(OH)₂ у воді?',options:[['a','Вапняне молоко'],['b','Каустик'],['c','Рідке скло']],correct:'a',why:'Суспензію кальцій гідроксиду називають вапняним молоком.'},
-{type:'radio',q:'Де застосовують гашене вапно в будівництві?',options:[['a','Для приготування будівельних розчинів'],['b','Як замінник цементу'],['c','Для плавлення металу']],correct:'a',why:'Вапно входить до складу штукатурних та кладочних розчинів.'},
-{type:'radio',q:'Чому натрій гідроксид називають їдким натром?',options:[['a','Він роз’їдає шкіру та органічні речовини'],['b','Він має кислий смак'],['c','Він неприємно пахне']],correct:'a',why:'NaOH є дуже агресивним лугом, що викликає важкі хімічні опіки.'},
-{type:'radio',q:'Яка галузь використовує найбільше NaOH для виробництва мила?',options:[['a','Миловарна та хімічна'],['b','Металургійна'],['c','Харчова']],correct:'a',why:'Гідролізом жирів за допомогою NaOH отримують тверде мило.'},
-{type:'radio',q:'Що використовують для нейтралізації пролитого лугу на шкіру?',options:[['a','Слабкий розчин борної або оцтової кислоти'],['b','Концентровану сульфатну кислоту'],['c','Мильний розчин']],correct:'a',why:'Луг нейтралізують слабкою органічною кислотою, а потім промивають водою.'},
-{type:'radio',q:'Який процес називають «гасінням вапна»?',options:[['a','Взаємодію паленого вапна (CaO) з водою'],['b','Заморожування розчину'],['c','Пропускання через нього струму']],correct:'a',why:'CaO + H₂O → Ca(OH)₂. Процес супроводжується виділенням великої кількості тепла.'},
-{type:'radio',q:'Який pH характерний для концентрованих розчинів лугів?',options:[['a','pH > 7'],['b','pH = 7'],['c','pH < 7']],correct:'a',why:'Лужне середовище має значення водневого показника більше 7.'},
-{type:'radio',q:'Чи можна зберігати розчини лугів у скляному посуді з притертими скняними пробками?',options:[['a','Ні, пробка може «прикипіти» через утворення силікатів'],['b','Так, це найкращий спосіб'],['c','Можна, але тільки на сонці']],correct:'a',why:'Луги повільно реагують зі склом, утворюючи силікати, які міцно склеюють скляні деталі.'}
-]}
-];
-let allQuestions = [];
-sections.forEach(s => {
-s.questions.forEach(q => {
-allQuestions.push(Object.assign({}, q, { sectionTitle: s.title }));
-});
-});
-let currentIdx = 0;
-let userAnswers = new Array(allQuestions.length).fill(null);
-let checkedStates = new Array(allQuestions.length).fill(false);
-const startScreen = document.getElementById('startScreen');
-const gameSection = document.getElementById('game');
-const resultSection = document.getElementById('result');
-const promptEl = document.getElementById('prompt');
-const answerArea = document.getElementById('answerArea');
-const feedbackEl = document.getElementById('feedback');
-const countEl = document.getElementById('count');
-const sectionTitleEl = document.getElementById('sectionTitle');
-const bar = document.getElementById('bar');
-const progressText = document.getElementById('progressText');
-const startBtn = document.getElementById('start');
-const prevBtn = document.getElementById('prev');
-const nextBtn = document.getElementById('next');
-const checkBtn = document.getElementById('checkAnswer');
-const quitBtn = document.getElementById('quitBtn');
-const restartBtn = document.getElementById('restartBtn');
-startBtn.addEventListener('click', () => {
-startScreen.style.display = 'none';
-gameSection.style.display = 'block';
-showQuestion();
-});
-restartBtn.addEventListener('click', () => {
-currentIdx = 0;
-userAnswers.fill(null);
-checkedStates.fill(false);
-resultSection.style.display = 'none';
-gameSection.style.display = 'block';
-document.getElementById('sendStatus').className = 'send-status';
-document.getElementById('sendStatus').innerHTML = '';
-showQuestion();
-});
-quitBtn.addEventListener('click', finishGame);
-prevBtn.addEventListener('click', () => { if(currentIdx > 0) { currentIdx--; showQuestion(); } });
-nextBtn.addEventListener('click', () => {
-if(currentIdx < allQuestions.length - 1) {
-currentIdx++;
-showQuestion();
-} else {
-finishGame();
-}
-});
-checkBtn.addEventListener('click', () => {
-const q = allQuestions[currentIdx];
-const selected = document.querySelector('input[name="ans"]:checked');
-if(!selected) return;
-userAnswers[currentIdx] = selected.value;
-checkedStates[currentIdx] = true;
-renderFeedback(q, selected.value);
-updateButtons();
-});
-function showQuestion() {
-const q = allQuestions[currentIdx];
-document.body.setAttribute('data-theme', Math.floor(currentIdx / 5) % 6);
-countEl.innerText = 'Питання ' + (currentIdx + 1) + ' із ' + allQuestions.length;
-sectionTitleEl.innerText = q.sectionTitle;
-promptEl.innerText = q.q;
-answerArea.innerHTML = '';
-q.options.forEach(opt => {
-const label = document.createElement('label');
-label.className = 'option';
-const radio = document.createElement('input');
-radio.type = 'radio';
-radio.name = 'ans';
-radio.value = opt[1];
-if (userAnswers[currentIdx] === opt[1]) {
-radio.checked = true;
-}
-if (checkedStates[currentIdx]) {
-radio.disabled = true;
-}
-radio.addEventListener('change', () => {
-if(!checkedStates[currentIdx]) {
-userAnswers[currentIdx] = radio.value;
-checkBtn.disabled = false;
-}
-});
-const span = document.createElement('span');
-span.innerText = opt[0].toUpperCase() + ') ' + opt[1];
-label.appendChild(radio);
-label.appendChild(span);
-answerArea.appendChild(label);
-});
-if(checkedStates[currentIdx]) {
-renderFeedback(q, userAnswers[currentIdx]);
-} else {
-feedbackEl.style.display = 'none';
-}
-const progress = (currentIdx / allQuestions.length) * 100;
-bar.style.width = progress + '%';
-progressText.innerText = currentIdx + ' із ' + allQuestions.length;
-updateButtons();
-}
-function renderFeedback(q, val) {
-feedbackEl.style.display = 'block';
-if(val === q.correct) {
-feedbackEl.className = 'feedback good';
-feedbackEl.innerText = '✅ Правильно! ' + q.why;
-} else {
-const correctOpt = q.options.find(o => o[0] === q.correct);
-feedbackEl.className = 'feedback bad';
-feedbackEl.innerText = '❌ Неправильно. Правильна відповідь: ' + correctOpt[0].toUpperCase() + ') ' + correctOpt[1] + '. ' + q.why;
-}
-}
-function updateButtons() {
-prevBtn.disabled = currentIdx === 0;
-nextBtn.innerText = currentIdx === allQuestions.length - 1 ? 'Завершити 🏁' : 'Наступне →';
-const hasSelection = userAnswers[currentIdx] !== null;
-if(checkedStates[currentIdx]) {
-checkBtn.style.display = 'none';
-nextBtn.disabled = false;
-} else {
-checkBtn.style.display = 'inline-block';
-checkBtn.disabled = !hasSelection;
-}
-}
-function finishGame() {
-gameSection.style.display = 'none';
-resultSection.style.display = 'block';
-bar.style.width = '100%';
-progressText.innerText = allQuestions.length + ' із ' + allQuestions.length;
-let correctCount = 0;
-allQuestions.forEach((q, i) => {
-if(userAnswers[i] === q.correct) correctCount++;
-});
-document.getElementById('score').innerText = correctCount + ' / ' + allQuestions.length;
-let grade = 'Спробуйте ще раз! 🫣';
-if(correctCount >= 27) grade = 'Відмінно! Ви справжній хімік 🧪🔥';
-else if(correctCount >= 20) grade = 'Добре! Гарні знання лугів 📈';
-else if(correctCount >= 12) grade = 'Задовільно. Варто повторити теорію 📚';
-document.getElementById('grade').innerText = grade;
-sendResultsToGoogle(correctCount);
-}
-function sendResultsToGoogle(score) {
-const statusEl = document.getElementById('sendStatus');
-statusEl.className = 'send-status send-loading';
-statusEl.innerText = 'Надсилання результатів у систему... ⏳';
-fetch(GOOGLE_SHEET_URL, {
-method: 'POST',
-mode: 'no-cors',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({ score: score, total: allQuestions.length, timestamp: new Date().toISOString() })
-})
-.then(() => {
-statusEl.className = 'send-status send-success';
-statusEl.innerText = 'Результати успішно збережено! ✅';
-})
-.catch(err => {
-console.error(err);
-statusEl.className = 'send-status send-error';
-statusEl.innerText = 'Помилка надсилання даних. Перевірте з’єднання. ❌';
-});
-}
+    var currentIdx = 0;
+    var userAnswers = [null, null, null, null, null];
+    var checkedStates = [false, false, false, false, false];
+
+    var startScreen = document.getElementById('startScreen');
+    var gameSection = document.getElementById('game');
+    var resultSection = document.getElementById('result');
+    var promptEl = document.getElementById('prompt');
+    var answerArea = document.getElementById('answerArea');
+    var feedbackEl = document.getElementById('feedback');
+    var countEl = document.getElementById('count');
+    var bar = document.getElementById('bar');
+    var progressText = document.getElementById('progressText');
+
+    var startBtn = document.getElementById('start');
+    var prevBtn = document.getElementById('prev');
+    var nextBtn = document.getElementById('next');
+    var checkBtn = document.getElementById('checkAnswer');
+    var quitBtn = document.getElementById('quitBtn');
+    var restartBtn = document.getElementById('restartBtn');
+
+    startBtn.onclick = function() {
+      startScreen.style.display = 'none';
+      gameSection.style.display = 'block';
+      showQuestion();
+    };
+
+    restartBtn.onclick = function() {
+      currentIdx = 0;
+      userAnswers = [null, null, null, null, null];
+      checkedStates = [false, false, false, false, false];
+      resultSection.style.display = 'none';
+      gameSection.style.display = 'block';
+      showQuestion();
+    };
+
+    quitBtn.onclick = finishGame;
+
+    prevBtn.onclick = function() {
+      if (currentIdx > 0) {
+        currentIdx--;
+        showQuestion();
+      }
+    };
+
+    nextBtn.onclick = function() {
+      if (currentIdx < questions.length - 1) {
+        currentIdx++;
+        showQuestion();
+      } else {
+        finishGame();
+      }
+    };
+
+    checkBtn.onclick = function() {
+      var selected = document.querySelector('input[name="ans"]:checked');
+      if (!selected) return;
+
+      var val = parseInt(selected.value, 10);
+      userAnswers[currentIdx] = val;
+      checkedStates[currentIdx] = true;
+      renderFeedback(val);
+      updateButtons();
+    };
+
+    function showQuestion() {
+      var q = questions[currentIdx];
+      countEl.innerText = 'Питання ' + (currentIdx + 1) + ' із ' + questions.length;
+      promptEl.innerText = q.q;
+      answerArea.innerHTML = '';
+
+      q.options.forEach(function(opt, idx) {
+        var label = document.createElement('label');
+        label.className = 'option';
+
+        var radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'ans';
+        radio.value = idx;
+
+        if (userAnswers[currentIdx] === idx) {
+          radio.checked = true;
+        }
+        if (checkedStates[currentIdx]) {
+          radio.disabled = true;
+        }
+
+        radio.onchange = function() {
+          if (!checkedStates[currentIdx]) {
+            userAnswers[currentIdx] = parseInt(radio.value, 10);
+            checkBtn.disabled = false;
+          }
+        };
+
+        var span = document.createElement('span');
+        span.innerText = opt;
+
+        label.appendChild(radio);
+        label.appendChild(span);
+        answerArea.appendChild(label);
+      });
+
+      if (checkedStates[currentIdx]) {
+        renderFeedback(userAnswers[currentIdx]);
+      } else {
+        feedbackEl.style.display = 'none';
+      }
+
+      var progress = (currentIdx / questions.length) * 100;
+      bar.style.width = progress + '%';
+      progressText.innerText = currentIdx + ' із ' + questions.length;
+
+      updateButtons();
+    }
+
+    function renderFeedback(val) {
+      var q = questions[currentIdx];
+      feedbackEl.style.display = 'block';
+      if (val === q.correct) {
+        feedbackEl.className = 'feedback good';
+        feedbackEl.innerText = '✅ Правильно! ' + q.why;
+      } else {
+        feedbackEl.className = 'feedback bad';
+        feedbackEl.innerText = '❌ Неправильно. Правильна відповідь: ' + q.options[q.correct] + '. ' + q.why;
+      }
+    }
+
+    function updateButtons() {
+      prevBtn.disabled = (currentIdx === 0);
+      
+      if (currentIdx === questions.length - 1) {
+        nextBtn.innerText = 'Завершити 🏁';
+      } else {
+        nextBtn.innerText = 'Наступне →';
+      }
+
+      var hasSelection = (userAnswers[currentIdx] !== null);
+      
+      if (checkedStates[currentIdx]) {
+        checkBtn.style.display = 'none';
+        nextBtn.disabled = false;
+      } else {
+        checkBtn.style.display = 'inline-block';
+        checkBtn.disabled = !hasSelection;
+      }
+    }
+
+    function finishGame() {
+      gameSection.style.display = 'none';
+      resultSection.style.display = 'block';
+      bar.style.width = '100%';
+      progressText.innerText = questions.length + ' із ' + questions.length;
+
+      var correctCount = 0;
+      questions.forEach(function(q, i) {
+        if (userAnswers[i] === q.correct) {
+          correctCount++;
+        }
+      });
+
+      document.getElementById('score').innerText = correctCount + ' / ' + questions.length;
+
+      var grade = 'Варто повторити теорію! 🫣';
+      if (correctCount === questions.length) {
+        grade = 'Відмінно! Ви справжній хімік 🧪🔥';
+      } else if (correctCount >= Math.floor(questions.length * 0.7)) {
+        grade = 'Добре! Гарні знання 📈';
+      }
+      document.getElementById('grade').innerText = grade;
+    }
+  </script>
+</body>
+</html>
