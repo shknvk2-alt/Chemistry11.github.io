@@ -7,7 +7,7 @@
 :root{--ink:#203047;--blue:#2457a7;--pale:#eef5ff;--green:#187548;--red:#b42318;--line:#d5deea}
 *{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:var(--ink);font:16px/1.5 Arial,sans-serif}
 main{max-width:800px;margin:24px auto;padding:0 16px 40px}
-header,.section,#result{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}
+header,section,#result{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}
 h1{font-size:24px;margin:0 0 10px}h2{font-size:18px;color:var(--blue);margin:0 0 10px}
 .progress{height:8px;background:#e0e7f0;border-radius:20px;overflow:hidden;margin:12px 0}
 .bar{height:100%;width:0;background:var(--blue);transition:width .2s}
@@ -116,7 +116,7 @@ document.getElementById('check').addEventListener('click',()=>{
     }
     const grade = Math.round((score/12)*12);
     document.getElementById('score').innerText = 'Ваш результат: ' + score + ' з 12 балів';
-    document.getElementById('grade').innerText = 'Оцінка: ' + grade + ' балів за 12-бальною шкалою';
+    document.getElementById('grade').innerText = 'Оцінка: ' + grade + ' балів';
     document.getElementById('result').style.display='block';
     document.getElementById('result').scrollIntoView({behavior:'smooth'});
     send(grade,score);
@@ -126,8 +126,6 @@ function send(g,s){
     const name = localStorage.getItem('chemistry_student_name') || "Анонімний учень";
     const scriptUrl = "https://google.com";
     const d = document.getElementById('sendStatus'); d.style.display='block'; d.className='send-status send-loading'; d.innerText='⏳ Надсилання у журнал вчителя...';
-    
-    // Додаємо тип квізу для сортування за стовпчиками
     const url = scriptUrl + '?studentName=' + encodeURIComponent(name) + '&studentScore=' + encodeURIComponent(g + ' балів') + '&quizType=12';
     fetch(url,{method:'POST',mode:'no-cors'}).then(()=>{d.className='send-status send-success';d.innerText='✅ Результат успішно збережено!';}).catch(()=>{d.innerText='❌ Помилка надсилання.';});
 }
