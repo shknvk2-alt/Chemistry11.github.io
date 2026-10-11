@@ -159,24 +159,32 @@ function render(){
  el('checkAnswer').disabled=!!checked[current];el('checkAnswer').textContent=checked[current]?'Відповідь перевірено':'Перевірити відповідь';
  hideFeedback();if(checked[current]){feedback.hidden=false;feedback.className='feedback '+(outcomes[current]?'good':'bad');feedback.textContent=outcomes[current]?'Правильно! '+(q.why||''):`Неправильно. Правильна відповідь: ${correctText(q)}. ${q.why||''}`}
  progress();sound('question',current);window.scrollTo({top:0,behavior:'smooth'});
+// Надсилання результатів
+sendResultsToGoogle(grade, correctCount);
 }
-function startGame(){started=true;ensureAudio();startScreen.hidden=true;game.hidden=false;result.style.display='none';sound('click');render()}
-el('start').addEventListener('click',startGame);
-el('soundToggle').addEventListener('click',()=>{muted=!muted;el('soundToggle').textContent=muted?'🔇 Звук вимкнено':'🔊 Звук увімкнено';el('soundToggle').setAttribute('aria-pressed',String(muted));if(!muted){ensureAudio();sound('click')}});
-el('checkAnswer').addEventListener('click',()=>{if(!isAnswered(current)){feedback.hidden=false;feedback.className='feedback neutral';feedback.textContent='Спочатку оберіть відповідь.';sound('wrong',current);return}showFeedback()});
-el('prev').addEventListener('click',()=>{if(current>0){sound('click');current--;render()}});
-el('next').addEventListener('click',()=>{if(current<total-1){sound('click');current++;render()}else finishTest()});
-function finishTest(){
- let points=0;const missed=[];
- allQuestions.forEach((q,i)=>{const ok=normalizedAnswer(q,answers[i])===correctValue(q);outcomes[i]=ok;checked[i]=true;if(ok)points++;else missed.push({i,q})});
- const grade=Math.max(1,Math.min(12,Math.round(points/total*12)));
- el('score').textContent=`${points} із ${total} балів`;el('grade').textContent=`Орієнтовна оцінка: ${grade} із 12`;el('comment').textContent=points===total?'Чудово! Усі відповіді правильні.':points/total>=.8?'Дуже добре. Перегляньте пояснення до завдань, де були помилки.':points/total>=.5?'Повторіть теми, де припустилися помилок, і спробуйте ще раз.':'Рекомендуємо повторити формули, властивості, реакції та використання лугів.';
- const box=el('mistakes');box.replaceChildren();if(missed.length){const h=document.createElement('h3');h.textContent='Питання для повторення';box.appendChild(h);const ul=document.createElement('ol');missed.forEach(({i,q})=>{const li=document.createElement('li');li.style.marginBottom='12px';li.textContent=q.q+' Правильна відповідь: '+correctText(q)+'. '+(q.why||'');ul.appendChild(li)});box.appendChild(ul)}else{const p=document.createElement('p');p.textContent='Усі відповіді правильні — помилок немає.';box.appendChild(p)}
- game.hidden=true;result.style.display='block';sound('finish');window.scrollTo({top:0,behavior:'smooth'});
+
+function sendResultsToGoogle(grade, score) {
+    const studentName = localStorage.getItem('chemistry_student_name') || "Анонімний учень";
+    // ВСТАВЛЕНО ВАШЕ ПОСИЛАННЯ:
+    const scriptUrl = "https://google.com";
+
+    const statusDiv = document.getElementById('sendStatus');
+    statusDiv.style.display = 'block';
+    statusDiv.className = 'send-status send-loading';
+    statusDiv.innerText = '⏳ Надсилання результатів у журнал вчителя...';
+
+    const urlWithParams = `${scriptUrl}?studentName=${encodeURIComponent(studentName)}&studentScore=${encodeURIComponent(grade + ' балів (Гра: ' + score + '/' + allQuestions.length + ')')}`;
+
+    fetch(urlWithParams, { method: 'POST', mode: 'no-cors' })
+    .then(() => {
+        statusDiv.className = 'send-status send-success';
+        statusDiv.innerText = '✅ Результат успішно збережено в журналі вчителя!';
+    })
+    .catch(err => {
+        console.error(err);
+        statusDiv.innerText = '❌ Помилка збереження. Зробіть скріншот оцінки.';
+    });
 }
-el('restart').addEventListener('click',()=>{answers.fill(null);checked.fill(false);outcomes.fill(null);current=0;result.style.display='none';startScreen.hidden=false;game.hidden=true;progress();window.scrollTo({top:0,behavior:'smooth'});sound('click')});
-el('review').addEventListener('click',()=>{result.style.display='none';game.hidden=false;current=0;render()});
-progress();
 </script>
 </body>
 </html>
