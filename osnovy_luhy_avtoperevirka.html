@@ -103,56 +103,60 @@ studentNameInput.addEventListener('input', () => {
   localStorage.setItem(STORAGE_KEY, studentNameInput.value.trim());
 });
 
-quizData.forEach((data, idx) => {
-  const qNum = idx + 1;
-  const targetBlock = document.getElementById(`part${data.p}`);
-  const qDiv = document.createElement('div');
-  qDiv.className = 'question';
-  qDiv.id = `q_${qNum}`;
-  qDiv.setAttribute('data-cor', data.c);
+function buildQuiz() {
+  quizData.forEach((data, idx) => {
+    const qNum = idx + 1;
+    const targetBlock = document.getElementById(`part${data.p}`);
+    const qDiv = document.createElement('div');
+    qDiv.className = 'question';
+    qDiv.id = `q_${qNum}`;
+    qDiv.setAttribute('data-cor', data.c);
 
-  let opts = '';
-  const keys = ['a','b','c'];
-  data.o.forEach((o, oIdx) => {
-    opts += `<label class="option"><input type="radio" name="m${qNum}" value="${keys[oIdx]}" onchange="up()"> ${o}</label>`;
+    let opts = '';
+    const keys = ['a','b','c'];
+    data.o.forEach((o, oIdx) => {
+      opts += `<label class="option"><input type="radio" name="m${qNum}" value="${keys[oIdx]}" onchange="upProgress()"> ${o}</label>`;
+    });
+
+    qDiv.innerHTML = `<div class="qtitle">${qNum}. ${data.q}</div>${opts}<div class="feedback"></div>`;
+    targetBlock.appendChild(qDiv);
   });
+}
 
-  qDiv.innerHTML = `<div class="qtitle">${qNum}. ${data.q}</div>${opts}<div class="feedback"></div>`;
-  targetBlock.appendChild(qDiv);
-});
-
-function up(){
+function upProgress(){
   let ans = 0;
   for (let i = 1; i <= quizData.length; i++) {
     if (document.querySelector(`input[name="m${i}"]:checked`)) ans++;
   }
-  const percent = Math.round((ans / quizData.length) * 100);
+  const percent = (ans / quizData.length) * 100;
   document.querySelector('.bar').style.width = percent + '%';
   document.getElementById('progressText').innerText = `Виконано завдань: ${ans} із ${quizData.length}`;
 }
 
-document.getElementById('check').addEventListener('click', function() {
+document.getElementById('check').addEventListener('click', () => {
   let score = 0;
   let unanswered = 0;
 
   for (let i = 1; i <= quizData.length; i++) {
     const q = document.getElementById(`q_${i}`);
-    if (!q) continue;
-
     const fb = q.querySelector('.feedback');
     const ch = q.querySelector('input:checked');
     const cor = q.getAttribute('data-cor');
-    
+
     if (!ch) {
-      q.classList.add('unanswered');
+      q.className = 'question unanswered';
       fb.innerText = '⚠️ Не відповіли';
+      fb.style.display = 'block';
       unanswered++;
-    } else if (ch.value === cor) {
-      q.classList.add('correct');
+      continue;
+    }
+
+    if (ch.value === cor) {
+      q.className = 'question correct';
       fb.innerText = '✅ Правильно!';
       score++;
     } else {
-      q.classList.add('incorrect');
+      q.className = 'question incorrect';
       fb.innerText = '❌ Неправильно';
     }
     fb.style.display = 'block';
@@ -160,76 +164,69 @@ document.getElementById('check').addEventListener('click', function() {
 
   const total = quizData.length;
   const grade = Math.round((score / total) * 12);
-  
+
   document.getElementById('score').innerText = `Ваш результат: ${score} з ${total} балів`;
   document.getElementById('grade').innerText = `Оцінка: ${grade} балів за 12-бальною шкалою`;
   document.getElementById('result').style.display = 'block';
-  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+  document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
 
   if (unanswered > 0) {
     const d = document.getElementById('sendStatus');
     d.style.display = 'block';
     d.className = 'send-status send-error';
-    d.innerText = `⚠️ ${unanswered} завдань без відповідей. Завершіть усі питання перед надсиланням.`;
+    d.innerText = `⚠️ ${unanswered} завдань без відповіді. Заповніть всі питання перед відправленням.`;
     return;
   }
 
-  setTimeout(() => sendToJournal(grade, score), 500);
+  sendToJournal(grade, score);
 });
 
-function sendToJournal(grade, score) {
+async function sendToJournal(grade, score) {
   const name = studentNameInput.value.trim() || 'Анонімний учень';
   const d = document.getElementById('sendStatus');
-  
+
   d.style.display = 'block';
   d.className = 'send-status send-loading';
-  d.innerText = '⏳ Надсилання результату...';
+  d.innerText = '⏳ Надсилання у журнал...';
 
-  const data = {
+  const params = new URLSearchParams({
     studentName: name,
-    studentScore: score,
-    studentGrade: grade,
-    totalQuestions: 30,
-    testName: 'Основи. НаOH та Ca(OH)₂',
-    timestamp: new Date().toISOString()
-  };
-
-  const params = new URLSearchParams();
-  Object.keys(data).forEach(key => {
-    params.append(key, data[key]);
+    studentScore: `${score}/${quizData.length}`,
+    studentGrade: String(grade),
+    testName: 'Основи. Натрій гідроксид і кальцій гідроксид',
+    totalQuestions: String(quizData.length)
   });
 
-  fetch(JOURNAL_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    body: params
-  })
-  .then(() => {
+  try {
+    const response = await fetch(`${JOURNAL_URL}?${params.toString()}`, {
+      method: 'GET',
+      mode: 'cors'
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
     d.className = 'send-status send-success';
-    d.innerText = '✅ Результат збережено у журналі!';
-    localStorage.setItem(STORAGE_KEY, name);
-  })
-  .catch(err => {
-    console.error('Error:', err);
+    d.innerText = '✅ Результат успішно збережено у журналі.';
+  } catch (err) {
+    console.error(err);
     d.className = 'send-status send-error';
-    d.innerText = '❌ Помилка надсилання. Результат збережено локально.';
-  });
+    d.innerText = '❌ Помилка надсилання в журнал. Перевірте URL Google Apps Script.';
+  }
 }
 
 document.getElementById('reset').addEventListener('click', () => {
   document.getElementById('quiz').reset();
   document.getElementById('result').style.display = 'none';
-  document.querySelectorAll('.question').forEach(q => {
-    q.classList.remove('correct', 'incorrect', 'unanswered');
-  });
-  document.querySelectorAll('.feedback').forEach(f => {
-    f.style.display = 'none';
-  });
+  document.querySelectorAll('.question').forEach(q => q.className = 'question');
+  document.querySelectorAll('.feedback').forEach(f => f.style.display = 'none');
   document.getElementById('sendStatus').style.display = 'none';
-  up();
+  upProgress();
 });
 
-up();
+buildQuiz();
+upProgress();
 </script>
 </body>
 </html>
