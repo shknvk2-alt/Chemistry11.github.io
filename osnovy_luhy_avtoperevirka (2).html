@@ -52,7 +52,7 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
 
     <section id="startScreen" class="panel" style="text-align:center;padding:30px 15px">
       <h2>Готові до хімічного виклику? 🚀</h2>
-      <p>Кожне запитання показується окремо. Вірна та невірна відповідь підсвічуються підказками ✅ / ❌.</p>
+      <p>Кожне запитання показується окремо. Правильна та неправильна відповідь підсвічуються підказками ✅ / ❌.</p>
       <button type="button" id="start" class="primary" style="font-size:18px;padding:12px 24px">Почати тест 🧪</button>
     </section>
 
@@ -102,271 +102,181 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
       {title:'Частина 2. Хімічні властивості',questions:[
         {type:'radio',q:'Що характерно для розчинення NaOH у воді?',options:[['a','Виділення тепла'],['b','Повне замерзання'],['c','Утворення газу']],correct:'a',why:'Розчинення лугів в воді супроводжується виділенням тепла.'},
         {type:'radio',q:'Які продукти утворюються в реакції NaOH + HCl?',options:[['a','NaCl і H₂O'],['b','Na₂O і H₂'],['c','Cl₂ і NaOH']],correct:'a',why:'Це реакція нейтралізації: утворюються сіль і вода.'},
-        {type:'radio',q:'Яке рівняння нейтралізації Ca(OH)₂ записано правильно?',options:[['a','Ca(OH)₂ + HCl → CaCl₂ + H₂O'],['b','Ca(OH)₂ + 2HCl → CaCl₂ + 2H₂O'],['c','Ca(OH)₂ + H₂SO₄ → CaSO₄ + H₂']],correct:'b',why:'Для нейтралізації двох гідроксильних груп потрібно 2HCl.'},
-        {type:'radio',q:'Вапняна вода мутніє під дією якого газу?',options:[['a','Вуглекислого (CO₂)'],['b','Кисню (O₂)'],['c','Водню (H₂)']],correct:'a',why:'CO₂ реагує з Ca(OH)₂, утворюючи CaCO₃ — осад.'},
-        {type:'radio',q:'Що робити при потраплянні лугу на шкіру?',options:[['a','Промити великою кількістю води'],['b','Витерти насухо'],['c','Змазати соняшниковою олією']],correct:'a',why:'Промивання водою зменшує концентрацію лугу.'},
-        {type:'radio',q:'З якими оксидами реагують луги?',options:[['a','З кислотними'],['b','З основними'],['c','Не реагують']],correct:'a',why:'Луги реагують з кислотними оксидами, утворюючи сіль і воду.'},
-        {type:'radio',q:'Який осад випаде при взаємодії Ca(OH)₂ з Na₂CO₃?',options:[['a','CaCO₃'],['b','NaOH'],['c','Осаду не буде']],correct:'a',why:'Кальцій карбонат утворює білий осад.'},
-        {type:'radio',q:'Луги НЕ взаємодіють з:',options:[['a','Барій оксидом (BaO)'],['b','Кислотами'],['c','Кислотними оксидами']],correct:'a',why:'Луги реагують з кислотами і кислотними оксидами, а не з основним оксидом BaO.'},
-        {type:'radio',q:'Який колір має осад Cu(OH)₂?',options:[['a','Блакитний'],['b','Червоний'],['c','Чорний']],correct:'a',why:'Гідроксид міді(II) має блакитний осад.'},
-        {type:'radio',q:'Який колір має метилоранж у лужному середовищі?',options:[['a','Жовтий'],['b','Рожевий'],['c','Безбарвний']],correct:'a',why:'Метилоранж у лужному середовищі жовтий.'}
-      ]},
-      {title:'Частина 3. Використання та безпека',questions:[
-        {type:'radio',q:'Як називають прозорий розчин Ca(OH)₂?',options:[['a','Вапняна вода'],['b','Каустик'],['c','Рідке скло']],correct:'a',why:'Прозорий розчин кальцій гідроксиду називають вапняною водою.'},
-        {type:'radio',q:'Яку сполуку називають негашеним вапном?',options:[['a','CaO'],['b','Ca(OH)₂'],['c','CaCO₃']],correct:'a',why:'CaO — негашене вапно.'},
-        {type:'radio',q:'Що таке «гасіння вапна»?',options:[['a','Взаємодія CaO з водою'],['b','Заливання вапняку'],['c','Реакція з HCl']],correct:'a',why:'Гасіння вапна — це взаємодія оксиду кальцію з водою.'},
-        {type:'radio',q:'Де переважно використовують гашене вапно?',options:[['a','У будівництві'],['b','У ракетному паливі'],['c','Для очищення води']],correct:'a',why:'Гашене вапно застосовують у будівництві та штукатурці.'},
-        {type:'radio',q:'NaOH використовують для виробництва:',options:[['a','Мила та мийних засобів'],['b','Азотних добрив'],['c','Заліза']],correct:'a',why:'NaOH застосовують у виробництві мила та мийних засобів.'},
-        {type:'radio',q:'Чому NaOH називають «їдким натром»?',options:[['a','Він роз'їдає шкіру й тканини'],['b','Він дуже солоний'],['c','Він має сильний запах']],correct:'a',why:'NaOH — сильна лугова речовина, яка руйнує тканини.'},
-        {type:'radio',q:'Який із наведених варіантів є лугом?',options:[['a','CaO'],['b','KOH'],['c','H₂SO₄']],correct:'b',why:'Гідроксид калію — луг.'},
-        {type:'radio',q:'Що відбувається з лакмусовим папірцем у лужному середовищі?',options:[['a','Становиться синім'],['b','Червоніє'],['c','Залишається без змін']],correct:'a',why:'Лакмус синіє в лужному середовищі.'},
-        {type:'radio',q:'Яка формула гідроксиду калію?',options:[['a','KOH'],['b','K₂O'],['c','K(OH)₂']],correct:'a',why:'Калій одновалентний: KOH.'},
-        {type:'radio',q:'Чому в лабораторії луги зберігають у закритих посудинах?',options:[['a','Бо вони поглинають вуглекислий газ і воду з повітря'],['b','Бо вони дуже легко загораються'],['c','Бо вони є газами']],correct:'a',why:'Луги реагують з CO₂ і вмістом вологи з повітря.'}
-      ]}
-    ];
-
-    const state = {
-      currentSection: 0,
-      currentQuestion: 0,
-      answers: [],
-      started: false,
-      checked: false
-    };
-
-    const startScreen = document.getElementById('startScreen');
-    const gameSection = document.getElementById('game');
-    const resultSection = document.getElementById('result');
-    const promptEl = document.getElementById('prompt');
-    const answerArea = document.getElementById('answerArea');
-    const feedbackEl = document.getElementById('feedback');
-    const countEl = document.getElementById('count');
-    const sectionTitleEl = document.getElementById('sectionTitle');
-    const progressTextEl = document.getElementById('progressText');
-    const barEl = document.getElementById('bar');
-    const scoreEl = document.getElementById('score');
-    const gradeEl = document.getElementById('grade');
-    const sendStatusEl = document.getElementById('sendStatus');
-
-    const totalQuestions = sections.reduce((sum, section) => sum + section.questions.length, 0);
-
-    function getCurrentQuestion() {
-      return sections[state.currentSection].questions[state.currentQuestion];
-    }
-
-    function getQuestionIndex() {
-      let idx = 0;
-      for (let i = 0; i < state.currentSection; i++) idx += sections[i].questions.length;
-      return idx + state.currentQuestion;
-    }
-
-    function updateProgress() {
-      const completed = getQuestionIndex();
-      const value = (completed / totalQuestions) * 100;
-      barEl.style.width = value + '%';
-      progressTextEl.textContent = `${completed} із ${totalQuestions}`;
-    }
-
-    function renderQuestion() {
-      const q = getCurrentQuestion();
-      const questionNumber = getQuestionIndex() + 1;
-      countEl.textContent = `Питання ${questionNumber} із ${totalQuestions}`;
-      sectionTitleEl.textContent = sections[state.currentSection].title;
-      promptEl.textContent = q.q;
-      answerArea.innerHTML = '';
-
-      q.options.forEach(([key, text]) => {
-        const label = document.createElement('label');
-        label.className = 'option';
-        const checked = state.answers[getQuestionIndex()] === key ? 'checked' : '';
-        label.innerHTML = `<input type="radio" name="answer" value="${key}" ${checked} /><span>${key}) ${text}</span>`;
-        label.addEventListener('change', () => {
-          state.answers[getQuestionIndex()] = key;
-          feedbackEl.style.display = 'none';
-          state.checked = false;
-        });
-        answerArea.appendChild(label);
-      });
-
-      const answer = state.answers[getQuestionIndex()];
-      const isAnswered = typeof answer === 'string';
-      const nextBtn = document.getElementById('next');
-      nextBtn.textContent = state.currentSection === sections.length - 1 && state.currentQuestion === sections[state.currentSection].questions.length - 1 ? 'Завершити 🏁' : 'Наступне →';
-      document.getElementById('checkAnswer').disabled = !isAnswered;
-
-      if (state.checked) {
-        const correct = q.correct;
-        const selected = state.answers[getQuestionIndex()];
-        const isRight = selected === correct;
-        feedbackEl.className = 'feedback ' + (isRight ? 'good' : 'bad');
-        feedbackEl.textContent = isRight
-          ? `✅ Правильно! ${q.why}`
-          : `❌ Неправильно. Правильна відповідь: ${correct.toUpperCase()}. ${q.why}`;
-        feedbackEl.style.display = 'block';
-      } else {
-        feedbackEl.style.display = 'none';
-      }
-
-      updateProgress();
-    }
-
-    function goToQuestion(sectionIndex, questionIndex) {
-      state.currentSection = sectionIndex;
-      state.currentQuestion = questionIndex;
-      renderQuestion();
-    }
-
-    function checkAnswer() {
-      const q = getCurrentQuestion();
-      const selected = state.answers[getQuestionIndex()];
-      if (!selected) {
-        feedbackEl.className = 'feedback bad';
-        feedbackEl.textContent = 'Будь ласка, оберіть одну відповідь ❗';
-        feedbackEl.style.display = 'block';
-        return;
-      }
-      state.checked = true;
-      renderQuestion();
-    }
-
-    function nextQuestion() {
-      const qIndex = getQuestionIndex();
-      if (!state.started) return;
-      if (!state.checked && typeof state.answers[qIndex] === 'string') {
-        checkAnswer();
-        return;
-      }
-      if (state.currentSection < sections.length - 1 || state.currentQuestion < sections[state.currentSection].questions.length - 1) {
-        if (state.currentQuestion < sections[state.currentSection].questions.length - 1) {
-          state.currentQuestion += 1;
-        } else {
-          state.currentSection += 1;
-          state.currentQuestion = 0;
-        }
-        state.checked = false;
-        renderQuestion();
-      } else {
-        finishQuiz();
-      }
-    }
-
-    function prevQuestion() {
-      if (state.currentQuestion > 0) {
-        state.currentQuestion -= 1;
-        state.checked = false;
-        renderQuestion();
-      } else if (state.currentSection > 0) {
-        state.currentSection -= 1;
-        state.currentQuestion = sections[state.currentSection].questions.length - 1;
-        state.checked = false;
-        renderQuestion();
-      }
-    }
-
-    function calculateGrade(score, total) {
-      const percent = (score / total) * 100;
-      if (percent >= 90) return 'Відмінно 🎉';
-      if (percent >= 75) return 'Добре 👍';
-      if (percent >= 60) return 'Задовільно 🙂';
-      return 'Потрібно ще повторити 🧠';
-    }
-
-    function sendResultToGoogleSheet(result) {
-      const formData = new FormData();
-      formData.append('studentName', result.studentName || 'Анонімний учень');
-      formData.append('quizType', String(result.quizType || 'game'));
-      formData.append('score', String(result.score || 0));
-      formData.append('total', String(result.total || 0));
-      formData.append('percent', String(result.percent || 0));
-      formData.append('grade', result.grade || '');
-      formData.append('answers', JSON.stringify(result.answers || []));
-
-      sendStatusEl.className = 'send-status send-loading';
-      sendStatusEl.textContent = 'Надсилаємо результат до Google Таблиці... 📤';
-
-      fetch(GOOGLE_SHEET_URL, {
-        method: 'POST',
-        body: formData
-      })
-        .then(response => {
-          if (!response.ok) throw new Error('HTTP ' + response.status);
-          return response.text();
-        })
-        .then(text => {
-          sendStatusEl.className = 'send-status send-success';
-          sendStatusEl.textContent = '✅ Результат успішно збережено у Google Таблиці!';
-          console.log('Google Sheets OK:', text);
-        })
-        .catch(error => {
-          sendStatusEl.className = 'send-status send-error';
-          sendStatusEl.textContent = '❌ Помилка при надіслані результату. Спробуйте пізніше.';
-          console.error('Google Sheets send error:', error);
-        });
-    }
-
-    function finishQuiz() {
-      gameSection.style.display = 'none';
-      resultSection.style.display = 'block';
-
-      let correct = 0;
-      const flatQuestions = sections.flatMap(section => section.questions);
-      for (let i = 0; i < flatQuestions.length; i++) {
-        const selected = state.answers[i];
-        if (selected === flatQuestions[i].correct) correct += 1;
-      }
-
-      const total = flatQuestions.length;
-      const grade = calculateGrade(correct, total);
-      const percent = Math.round((correct / total) * 100);
-      scoreEl.textContent = `${correct} із ${total} ✅`;
-      gradeEl.textContent = grade + ' (' + percent + '%)';
-
-      sendResultToGoogleSheet({
-        studentName: localStorage.getItem('chemistry_student_name') || 'Анонімний учень',
-        quizType: 'game',
-        score: correct,
-        total: total,
-        percent: percent,
-        grade: grade,
-        answers: state.answers
-      });
-    }
-
-    function resetQuiz() {
-      state.currentSection = 0;
-      state.currentQuestion = 0;
-      state.answers = new Array(totalQuestions).fill(undefined);
-      state.started = false;
-      state.checked = false;
-      startScreen.style.display = 'block';
-      gameSection.style.display = 'none';
-      resultSection.style.display = 'none';
-      progressTextEl.textContent = `0 із ${totalQuestions}`;
-      barEl.style.width = '0%';
-    }
-
-    document.getElementById('start').addEventListener('click', () => {
-      startScreen.style.display = 'none';
-      gameSection.style.display = 'block';
-      resultSection.style.display = 'none';
-      state.started = true;
-      state.checked = false;
-      state.answers = new Array(totalQuestions).fill(undefined);
-      goToQuestion(0, 0);
-    });
-
-    document.getElementById('quitBtn').addEventListener('click', () => {
-      if (confirm('Ви впевнені, що хочете завершити тест? Результат буде розраховано за відповідями, які ви вже дали.')) {
-        finishQuiz();
-      }
-    });
-
-    document.getElementById('restartBtn').addEventListener('click', resetQuiz);
-
-    document.getElementById('checkAnswer').addEventListener('click', checkAnswer);
-    document.getElementById('next').addEventListener('click', nextQuestion);
-    document.getElementById('prev').addEventListener('click', prevQuestion);
-
-    progressTextEl.textContent = `0 із ${totalQuestions}`;
-  </script>
-</body>
-</html>
+        {type:'radio',q:'Яке рівняння нейтралізації Ca(OH)₂?',options:[['a','Ca(OH)₂ + 2HCl → CaCl₂ + 2H₂O'],['b','Ca(OH)₂ + HCl → CaCl + H₂O'],['c','Ca + 2HCl → CaCl₂ + H₂']],correct:'a',why:'Для нейтралізації двовалентного кальцію потрібно 2 молекули HCl.'},
+        {type:'radio',q:'З якими оксидами реагують луги?',options:[['a','Основними'],['b','Кислотними'],['c','Несолетворними']],correct:'b',why:'Луги взаємодіють з кислотними оксидами з утворенням солі та води.'},
+        {type:'radio',q:'Яка сіль утвориться при реакції CO₂ з надлишком NaOH?',options:[['a','Na₂CO₃'],['b','NaHCO₃'],['c','Na₂O']],correct:'a',why:'При надлишку лугу утворюється середня сіль — натрій карбонат.'},
+        {type:'radio',q:'Чи реагує NaOH з мідним купоросом (CuSO₄)?',options:[['a','Ні'],['b','Так, випадає блакитний осад'],['c','Так, виділяється газ']],correct:'b',why:'Утворюється нерозчинна основа Cu(OH)₂ блакитного кольору.'},
+        {type:'radio',q:'При якій умові луг реагує з сіллю в розчині?',options:[['a','Якщо утворюється осад або газ'],['b','Завжди реагує'],['c','Тільки при нагріванні вище 200°C']],correct:'a',why:'Це реакція обміну, обов’язковою умовою є утворення осаду чи газу.'},
+        {type:'radio',q:'Який газ виділяється при взаємодії лугу з солями амонію?',options:[['a','Аміак (NH₃)'],['b','Водень (H₂)'],['c','Кисень (O₂)']],correct:'a',why:'Реакція солей амонію з лугами є якісною на іони амонію: виділяється аміак.'},
+        {type:'radio',q:'Який оксид НЕ реагуватиме з натрій гідроксидом?',options:[['a','SO₃'],['b','CaO'],['c','P₂O₅']],correct:'b',why:'CaO — основний оксид, основи з основними оксидами не реагують.'},
+{type:'radio',q:'Що утвориться при термічному розкладі Ca(OH)₂?',options:[['a','CaO і H₂O'],['b','Ca і O₂'],['c','Луги не розкладаються']],correct:'a',why:'Малорозчинні гідроксиди при нагріванні розкладаються на оксид і воду.'}
+]},
+{title:'Частина 3. Практичне застосування',questions:[
+{type:'radio',q:'Що таке «вапняна вода»?',options:[['a','Прозорий розчин Ca(OH)₂'],['b','Суспензія крейди'],['c','Морська вода']],correct:'a',why:'Прозорий фільтрований розчин кальцій гідроксиду називають вапняною водою.'},
+{type:'radio',q:'Для чого використовують вапняну воду в лабораторії?',options:[['a','Для виявлення CO₂'],['b','Для добування кисню'],['c','Як індикатор кислот']],correct:'a',why:'CO₂ викликає помутніння вапняної води через утворення CaCO₃.'},
+{type:'radio',q:'Яка технічна назва суспензії Ca(OH)₂ у воді?',options:[['a','Вапняне молоко'],['b','Каустик'],['c','Рідке скло']],correct:'a',why:'Суспензію кальцій гідроксиду називають вапняним молоком.'},
+{type:'radio',q:'Де застосовують гашене вапно в будівництві?',options:[['a','Для приготування будівельних розчинів'],['b','Як замінник цементу'],['c','Для плавлення металу']],correct:'a',why:'Вапно входить до складу штукатурних та кладочних розчинів.'},
+{type:'radio',q:'Чому натрій гідроксид називають їдким натром?',options:[['a','Він роз’їдає шкіру та органічні речовини'],['b','Він має кислий смак'],['c','Він неприємно пахне']],correct:'a',why:'NaOH є дуже агресивним лугом, що викликає важкі хімічні опіки.'},
+{type:'radio',q:'Яка галузь використовує найбільше NaOH для виробництва мила?',options:[['a','Миловарна та хімічна'],['b','Металургійна'],['c','Харчова']],correct:'a',why:'Гідролізом жирів за допомогою NaOH отримують тверде мило.'},
+{type:'radio',q:'Що використовують для нейтралізації пролитого лугу на шкіру?',options:[['a','Слабкий розчин борної або оцтової кислоти'],['b','Концентровану сульфатну кислоту'],['c','Мильний розчин']],correct:'a',why:'Луг нейтралізують слабкою органічною кислотою, а потім промивають водою.'},
+{type:'radio',q:'Який процес називають «гасінням вапна»?',options:[['a','Взаємодію паленого вапна (CaO) з водою'],['b','Заморожування розчину'],['c','Пропускання через нього струму']],correct:'a',why:'CaO + H₂O → Ca(OH)₂. Процес супроводжується виділенням великої кількості тепла.'},
+{type:'radio',q:'Який pH характерний для концентрованих розчинів лугів?',options:[['a','pH > 7'],['b','pH = 7'],['c','pH < 7']],correct:'a',why:'Лужне середовище має значення водневого показника більше 7.'},
+{type:'radio',q:'Чи можна зберігати розчини лугів у скляному посуді з притертими скляними пробками?',options:[['a','Ні, пробка може «прикипіти» через утворення силікатів'],['b','Так, це найкращий спосіб'],['c','Можна, але тільки на сонці']],correct:'a',why:'Луги повільно реагують зі склом, утворюючи силікати, які міцно склеюють скляні деталі.'}
+]}
+];
+let allQuestions = [];
+sections.forEach(s => {
+s.questions.forEach(q => {
+allQuestions.push({...q, sectionTitle: s.title});
+});
+});
+let currentIdx = 0;
+let userAnswers = new Array(allQuestions.length).fill(null);
+let checkedStates = new Array(allQuestions.length).fill(false);
+const startScreen = document.getElementById('startScreen');
+const gameSection = document.getElementById('game');
+const resultSection = document.getElementById('result');
+const promptEl = document.getElementById('prompt');
+const answerArea = document.getElementById('answerArea');
+const feedbackEl = document.getElementById('feedback');
+const countEl = document.getElementById('count');
+const sectionTitleEl = document.getElementById('sectionTitle');
+const bar = document.getElementById('bar');
+const progressText = document.getElementById('progressText');
+const startBtn = document.getElementById('start');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+const checkBtn = document.getElementById('checkAnswer');
+const quitBtn = document.getElementById('quitBtn');
+const restartBtn = document.getElementById('restartBtn');
+startBtn.addEventListener('click', () => {
+startScreen.style.display = 'none';
+gameSection.style.display = 'block';
+showQuestion();
+});
+restartBtn.addEventListener('click', () => {
+currentIdx = 0;
+userAnswers.fill(null);
+checkedStates.fill(false);
+resultSection.style.display = 'none';
+gameSection.style.display = 'block';
+document.getElementById('sendStatus').className = 'send-status';
+document.getElementById('sendStatus').innerHTML = '';
+showQuestion();
+});
+quitBtn.addEventListener('click', finishGame);
+prevBtn.addEventListener('click', () => { if(currentIdx > 0) { currentIdx--; showQuestion(); } });
+nextBtn.addEventListener('click', () => {
+if(currentIdx < allQuestions.length - 1) {
+currentIdx++;
+showQuestion();
+} else {
+finishGame();
+}
+});
+checkBtn.addEventListener('click', () => {
+const q = allQuestions[currentIdx];
+const selected = document.querySelector('input[name="ans"]:checked');
+if(!selected) return;
+userAnswers[currentIdx] = selected.value;
+checkedStates[currentIdx] = true;
+renderFeedback(q, selected.value);
+updateButtons();
+});
+function showQuestion() {
+const q = allQuestions[currentIdx];
+document.body.setAttribute('data-theme', Math.floor(currentIdx / 5) % 6);
+countEl.innerText = 'Питання ' + (currentIdx + 1) + ' із ' + allQuestions.length;
+sectionTitleEl.innerText = q.sectionTitle;
+promptEl.innerText = q.q;
+let html = '';
+q.options.forEach(opt => {
+const isChecked = userAnswers[currentIdx] === opt[0];
+const isDisabled = checkedStates[currentIdx] ? 'disabled' : '';
+const checkedAttr = isChecked ? 'checked' : '';
+html += '' +
+'<input type="radio" name="ans" value="' + opt[0] + '" ' + checkedAttr + ' ' + isDisabled + '>' +
+'' + opt[0].toUpperCase() + ') ' + opt[1] + '' +
+'';
+});
+answerArea.innerHTML = html;
+const inputs = answerArea.querySelectorAll('input');
+inputs.forEach(input => {
+input.addEventListener('change', () => {
+if(!checkedStates[currentIdx]) {
+userAnswers[currentIdx] = input.value;
+checkBtn.disabled = false;
+}
+});
+});
+if(checkedStates[currentIdx]) {
+renderFeedback(q, userAnswers[currentIdx]);
+} else {
+feedbackEl.style.display = 'none';
+}
+const progress = (currentIdx / allQuestions.length) * 100;
+bar.style.width = progress + '%';
+progressText.innerText = currentIdx + ' із ' + allQuestions.length;
+updateButtons();
+}
+function renderFeedback(q, val) {
+feedbackEl.style.display = 'block';
+if(val === q.correct) {
+feedbackEl.className = 'feedback good';
+feedbackEl.innerHTML = '✅ Правильно! ' + q.why;
+} else {
+const correctOpt = q.options.find(o => o[0] === q.correct);
+feedbackEl.className = 'feedback bad';
+feedbackEl.innerHTML = '❌ Неправильно. Правильна відповідь: ' + correctOpt[0].toUpperCase() + ') ' + correctOpt[1] + '.
+' + q.why + '';
+}
+}
+function updateButtons() {
+prevBtn.disabled = currentIdx === 0;
+nextBtn.innerText = currentIdx === allQuestions.length - 1 ? 'Завершити 🏁' : 'Наступне →';
+const hasSelection = userAnswers[currentIdx] !== null;
+if(checkedStates[currentIdx]) {
+checkBtn.style.display = 'none';
+nextBtn.disabled = false;
+} else {
+checkBtn.style.display = 'inline-block';
+checkBtn.disabled = !hasSelection;
+}
+}
+function finishGame() {
+gameSection.style.display = 'none';
+resultSection.style.display = 'block';
+bar.style.width = '100%';
+progressText.innerText = allQuestions.length + ' із ' + allQuestions.length;
+let correctCount = 0;
+allQuestions.forEach((q, i) => {
+if(userAnswers[i] === q.correct) correctCount++;
+});
+document.getElementById('score').innerText = correctCount + ' / ' + allQuestions.length;
+let grade = 'Спробуйте ще раз! 🫣';
+if(correctCount >= 27) grade = 'Відмінно! Ви справжній хімік 🧪🔥';
+else if(correctCount >= 20) grade = 'Добре! Гарні знання лугів 📈';
+else if(correctCount >= 12) grade = 'Задовільно. Варто повторити теорію 📚';
+document.getElementById('grade').innerText = grade;
+sendResultsToGoogle(correctCount);
+}
+function sendResultsToGoogle(score) {
+const statusEl = document.getElementById('sendStatus');
+statusEl.className = 'send-status send-loading';
+statusEl.innerText = 'Надсилання результатів у систему... ⏳';
+fetch(GOOGLE_SHEET_URL, {
+method: 'POST',
+mode: 'no-cors',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ score: score, total: allQuestions.length, timestamp: new Date().toISOString() })
+})
+.then(() => {
+statusEl.className = 'send-status send-success';
+statusEl.innerText = 'Результати успішно збережено! ✅';
+})
+.catch(err => {
+console.error(err);
+statusEl.className = 'send-status send-error';
+statusEl.innerText = 'Помилка надсилання даних. Перевірте з’єднання. ❌';
+});
+}
