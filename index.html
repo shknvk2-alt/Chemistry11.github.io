@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Основи. Луги. NaOH і Ca(OH)₂ — інтерактивний тест</title>
+<style>
+:root{--ink:#19253a;--blue:#2357c6;--line:#d9e1ee;--green:#167044;--red:#a62424}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font:16px/1.5 system-ui,-apple-system,Arial,sans-serif;background:linear-gradient(135deg,#d7f5ff,#e8e2ff,#ffe3ed);transition:background .35s ease}
+body[data-theme="0"]{background:linear-gradient(135deg,#c5f4ff,#dbe8ff,#eee0ff)}
+body[data-theme="1"]{background:linear-gradient(135deg,#d7f9e8,#e9f7bc,#fff0cf)}
+body[data-theme="2"]{background:linear-gradient(135deg,#ffe0e8,#ffd8c7,#fff1b8)}
+body[data-theme="3"]{background:linear-gradient(135deg,#d9dcff,#e9d7ff,#fbdcf3)}
+body[data-theme="4"]{background:linear-gradient(135deg,#c9f5e9,#cae8ff,#d9e0ff)}
+body[data-theme="5"]{background:linear-gradient(135deg,#fff0c9,#ffdfda,#e4ddff)}
+main{width:min(900px,100%);margin:0 auto;padding:18px 14px 36px}
+header,.panel,.result{background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.85);border-radius:20px;box-shadow:0 12px 35px rgba(33,45,84,.12)}
+header{padding:18px 22px;margin-bottom:16px}.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.pill{display:inline-block;background:#eaf0ff;color:#2447a5;border-radius:999px;padding:5px 11px;font-size:13px;font-weight:800;letter-spacing:.02em}
+h1{font-size:clamp(23px,4vw,32px);line-height:1.15;margin:12px 0 8px}h2{font-size:clamp(19px,3vw,25px);line-height:1.25;margin:0 0 13px}
+.intro,.small{color:#536178}.intro{margin:0}.small{font-size:14px;margin:8px 0 0}
+.progress-wrap{display:flex;align-items:center;gap:12px;margin-top:16px}.progress{height:10px;flex:1;background:#e5eaf4;border-radius:99px;overflow:hidden}.bar{width:0;height:100%;background:linear-gradient(90deg,#356be6,#9b50dc,#ed5599);transition:width .25s}
+.progress-label{font-size:14px;font-weight:800;white-space:nowrap}
+.panel{padding:clamp(18px,4vw,32px);min-height:330px}.question-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.count{font-size:14px;font-weight:900;color:#fff;background:#253e8e;border-radius:9px;padding:7px 11px}.kind{font-size:13px;color:#58657a;text-align:right}
+#prompt{font-size:clamp(21px,3.5vw,29px);font-weight:800;line-height:1.3;margin:0 0 22px}.options{display:grid;gap:10px}
+label.option{display:flex;gap:12px;align-items:flex-start;padding:13px 15px;border:2px solid #e1e7f1;background:#fff;border-radius:13px;cursor:pointer;transition:border-color .15s,transform .15s,background .15s;min-height:52px}
+label.option:hover{border-color:#90aaf1;transform:translateY(-1px)}label.option:has(input:checked){border-color:#416de0;background:#f0f4ff}input{margin-top:5px;accent-color:#315ed0;flex-shrink:0;transform:scale(1.15)}
+select{font:inherit;width:100%;padding:13px;border:2px solid #dbe3ef;border-radius:12px;background:#fff;color:var(--ink)}
+.feedback{padding:14px 15px;border-radius:12px;margin-top:16px;font-weight:600}.feedback.good{background:#e3f8e9;color:#135c36;border:1px solid #a6e3b8}.feedback.bad{background:#fff0ed;color:#85241e;border:1px solid #ffb8ad}.feedback.neutral{background:#edf3ff;color:#26447d}
+.controls{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px}.left-controls,.right-controls{display:flex;gap:9px;flex-wrap:wrap}button{font:inherit;font-weight:800;border:0;border-radius:11px;padding:12px 17px;cursor:pointer;transition:transform .12s,filter .12s}button:hover{filter:brightness(.97);transform:translateY(-1px)}button:disabled{opacity:.4;cursor:not-allowed;transform:none}.primary{background:#244fc0;color:white}.secondary{background:#e9edf5;color:#25354d}.check{background:#172f70;color:#fff}.sound{background:#fff;color:#243b73;border:1px solid #d4dced;padding:8px 12px}
+.start-screen{text-align:center;padding:35px 22px}.start-icon{font-size:44px;line-height:1.2;margin:4px 0 16px}.start-screen p{max-width:620px;margin:0 auto 20px;color:#536178}.start-screen .primary{font-size:18px;padding:14px 24px}.result{display:none;padding:clamp(20px,4vw,32px);margin-top:16px}.score{font-size:clamp(25px,5vw,38px);font-weight:950}.grade{font-size:23px;font-weight:900;margin-top:5px}.summary-list{margin:16px 0 0;padding-left:22px}
+@media(max-width:550px){main{padding:10px 9px 25px}header{padding:15px}.panel{min-height:0}.question-meta{align-items:flex-start}.controls{align-items:stretch}.left-controls,.right-controls{width:100%}.controls button{flex:1}.progress-label{font-size:12px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body data-theme="0">
+<main>
+<header>
+ <div class="topline"><span class="pill">Інтерактивна гра · 30 запитань</span><button type="button" id="soundToggle" class="sound" aria-pressed="false">🔊 Звук увімкнено</button></div>
+ <h1>Основи. Луги. Натрій гідроксид і кальцій гідроксид</h1>
+ <p class="intro">На екрані показується лише одне запитання. Оберіть відповідь, прослухайте звуковий сигнал, перевірте її та переходьте далі.</p>
+ <div class="progress-wrap"><div class="progress"><div class="bar" id="bar"></div></div><span class="progress-label" id="progressText">0 із 30</span></div>
+</header>
+<section id="startScreen" class="panel start-screen">
+ <div class="start-icon" aria-hidden="true">🧪</div>
+ <h2>Готові до хімічного виклику?</h2>
+ <p>У тесті 30 запитань про формули, властивості, реакції, поширення й використання лугів. Правильна та неправильна відповідь супроводжуються різними звуками. Музика створюється браузером, тому інтернет не потрібен.</p>
+ <button type="button" id="start" class="primary">Почати тест</button>
+ <p class="small">Звук можна вимкнути кнопкою у верхній частині екрана.</p>
+</section>
+<section id="game" class="panel" hidden>
+ <div class="question-meta"><span id="count" class="count">Питання 1 із 30</span><span id="kind" class="kind">Одна правильна відповідь</span></div>
+ <h2 id="sectionTitle" class="small" style="font-size:14px;font-weight:800;margin-bottom:8px"></h2>
+ <p id="prompt"></p>
+ <div id="answerArea" class="options"></div>
+ <div id="feedback" hidden></div>
+ <div class="controls">
+  <div class="left-controls"><button type="button" id="prev" class="secondary">← Назад</button></div>
+  <div class="right-controls"><button type="button" id="checkAnswer" class="check">Перевірити відповідь</button><button type="button" id="next" class="primary">Наступне →</button></div>
+ </div>
+</section>
+<section id="result" class="result" aria-live="polite">
+ <div class="start-icon" aria-hidden="true">🏁</div><h2>Тест завершено</h2><div id="score" class="score"></div><div id="grade" class="grade"></div><p id="comment"></p><div id="mistakes"></div>
+ <div class="controls"><button type="button" id="restart" class="primary">Пройти ще раз</button><button type="button" id="review" class="secondary">Переглянути відповіді</button></div>
+</section>
+</main>
+<script>
+const sections = [
+ {title:'Частина 1. Основи, формули та індикатори', questions:[
+  {type:'radio',q:'Що називають основами?',options:[['a','Складні речовини, що складаються з атомів металу й Оксигену'],['b','Складні речовини, що містять катіони металу та гідроксид-іони OH⁻'],['c','Речовини, що складаються лише з атомів Гідрогену й Оксигену']],correct:'b',why:'Основи складаються з катіонів металу (або йонів амонію) та гідроксид-іонів OH⁻.'},
+  {type:'radio',q:'Яка формула натрій гідроксиду?',options:[['a','NaOH'],['b','Na₂O'],['c','Na(OH)₂']],correct:'a',why:'Натрій має заряд +1, тому формула гідроксиду — NaOH.'},
+  {type:'radio',q:'Яка формула кальцій гідроксиду?',options:[['a','CaOH'],['b','Ca(OH)₂'],['c','Ca₂OH']],correct:'b',why:'Йон Ca²⁺ сполучається з двома гідроксид-іонами OH⁻: Ca(OH)₂.'},
+  {type:'radio',q:'Яка з наведених речовин є лугом?',options:[['a','Cu(OH)₂'],['b','Fe(OH)₃'],['c','NaOH']],correct:'c',why:'Натрій гідроксид добре розчиняється у воді, тому належить до лугів.'},
+  {type:'radio',q:'Яке твердження про кальцій гідроксид правильне?',options:[['a','Це малорозчинна у воді основа'],['b','Це кислота'],['c','Це сіль']],correct:'a',why:'Ca(OH)₂ — основа, яка малорозчинна у воді; її розчинена частина надає воді лужних властивостей.'},
+  {type:'radio',q:'Який колір набуває фенолфталеїн у лужному середовищі?',options:[['a','Малиновий'],['b','Безбарвний завжди'],['c','Жовтий']],correct:'a',why:'У лужному середовищі фенолфталеїн стає малиновим.'},
+  {type:'radio',q:'Що відбувається з червоним лакмусом у лужному середовищі?',options:[['a','Стає синім'],['b','Стає чорним'],['c','Знебарвлюється завжди']],correct:'a',why:'Луги змінюють червоний лакмус на синій.'},
+  {type:'radio',q:'Скільки гідроксид-іонів OH⁻ міститься у формульній одиниці Ca(OH)₂?',options:[['a','Один'],['b','Два'],['c','Три']],correct:'b',why:'Індекс 2 за дужками стосується всієї групи OH, отже їх дві.'}
+ ]},
+ {title:'Частина 2. Властивості та хімічні реакції', questions:[
+  {type:'multi',q:'Оберіть правильні твердження про натрій гідроксид (NaOH).',options:[['a','За звичайних умов це тверда біла речовина'],['b','Добре розчиняється у воді'],['c','Може спричиняти тяжкі хімічні опіки'],['d','Безпечний для шкіри й очей']],correct:['a','b','c'],why:'NaOH — біла тверда, добре розчинна у воді їдка речовина. Вона небезпечна для шкіри та очей.'},
+  {type:'radio',q:'Що характерно для розчинення натрій гідроксиду у воді?',options:[['a','Виділяється теплота'],['b','Утворюється кисень'],['c','Розчин обов’язково замерзає']],correct:'a',why:'Розчинення NaOH у воді супроводжується значним виділенням теплоти.'},
+  {type:'radio',q:'Який загальний результат реакції кислоти з основою?',options:[['a','Сіль і вода'],['b','Лише кисень'],['c','Метал і водень завжди']],correct:'a',why:'Це реакція нейтралізації: кислота + основа → сіль + вода.'},
+  {type:'radio',q:'Які речовини утворюються в реакції NaOH + HCl?',options:[['a','NaCl і H₂O'],['b','Na₂O і H₂'],['c','Na₂CO₃ і O₂']],correct:'a',why:'Рівняння: NaOH + HCl → NaCl + H₂O.'},
+  {type:'radio',q:'Яке рівняння нейтралізації кальцій гідроксиду хлоридною кислотою записано правильно?',options:[['a','Ca(OH)₂ + HCl → CaCl₂ + H₂O'],['b','Ca(OH)₂ + 2HCl → CaCl₂ + 2H₂O'],['c','CaOH + HCl → CaCl + H₂']],correct:'b',why:'Зрівняне рівняння: Ca(OH)₂ + 2HCl → CaCl₂ + 2H₂O.'},
+  {type:'radio',q:'Що спостерігають, коли вуглекислий газ пропускають через вапняну воду?',options:[['a','Розчин мутніє через утворення осаду CaCO₃'],['b','Розчин стає фіолетовим'],['c','Виділяється натрій']],correct:'a',why:'CO₂ реагує з Ca(OH)₂ з утворенням малорозчинного кальцій карбонату: CO₂ + Ca(OH)₂ → CaCO₃↓ + H₂O.'},
+  {type:'multi',q:'Яких правил потрібно дотримуватися під час роботи з лугами в кабінеті хімії?',options:[['a','Користуватися захисними окулярами й відповідними рукавичками'],['b','Не допускати потрапляння речовини на шкіру та в очі'],['c','Пробувати речовину на смак'],['d','Виконувати вказівки вчителя й правила лабораторної безпеки']],correct:['a','b','d'],why:'Луги їдкі. Потрібні засоби захисту та дотримання інструкцій; куштувати реактиви заборонено.'},
+  {type:'radio',q:'Що потрібно зробити, якщо розчин лугу потрапив на шкіру?',options:[['a','Негайно промивати уражене місце великою кількістю проточної води й повідомити вчителя'],['b','Витерти насухо та продовжити роботу'],['c','Нанести іншу хімічну речовину для нейтралізації без вказівки вчителя']],correct:'a',why:'Потрібно негайно промивати шкіру великою кількістю води та повідомити вчителя; далі діяти за правилами безпеки.'}
+ ]},
+ {title:'Частина 3. Поширення та одержання', questions:[
+  {type:'radio',q:'У яких природних породах поширений кальцій карбонат CaCO₃?',options:[['a','У крейді, вапняку та мармурі'],['b','У чистому повітрі як основний газ'],['c','Лише у кам’яній солі']],correct:'a',why:'Крейда й вапняк переважно складаються з CaCO₃; мармур утворився внаслідок перетворення карбонатних порід.'},
+  {type:'radio',q:'Як промислово добувають натрій гідроксид?',options:[['a','Електролізом водного розчину натрій хлориду'],['b','Подрібненням крейди'],['c','Змішуванням кухонної солі з піском']],correct:'a',why:'NaOH промислово отримують, зокрема, електролізом водного розчину NaCl.'},
+  {type:'radio',q:'Яка речовина утворюється під час взаємодії кальцій оксиду з водою?',options:[['a','Ca(OH)₂'],['b','CaCl₂'],['c','NaOH']],correct:'a',why:'CaO + H₂O → Ca(OH)₂. Реакція супроводжується виділенням теплоти.'},
+  {type:'radio',q:'Як називають кальцій оксид CaO у побуті та будівництві?',options:[['a','Негашене вапно'],['b','Гашене вапно'],['c','Вапняна вода']],correct:'a',why:'Кальцій оксид CaO — негашене вапно; після взаємодії з водою утворюється гашене вапно Ca(OH)₂.'},
+  {type:'radio',q:'Що називають гашеним вапном?',options:[['a','Кальцій гідроксид Ca(OH)₂'],['b','Натрій гідроксид NaOH'],['c','Кальцій карбонат CaCO₃']],correct:'a',why:'Гашене вапно — кальцій гідроксид Ca(OH)₂.'},
+  {type:'radio',q:'Чим є вапняна вода?',options:[['a','Прозорим насиченим водним розчином Ca(OH)₂'],['b','Суспензією піску у воді'],['c','Розчином натрій гідроксиду']],correct:'a',why:'Вапняна вода — прозорий насичений розчин кальцій гідроксиду.'},
+  {type:'radio',q:'Що називають вапняним молоком?',options:[['a','Водну суспензію кальцій гідроксиду'],['b','Прозорий розчин натрій хлориду'],['c','Розплав кальцій карбонату']],correct:'a',why:'Вапняне молоко — суспензія частинок Ca(OH)₂ у воді; вона каламутна.'}
+ ]},
+ {title:'Частина 4. Використання та застосування знань', questions:[
+  {type:'multi',q:'Для чого використовують натрій гідроксид у промисловості?',options:[['a','Виробництво мила'],['b','Виробництво паперу'],['c','У деяких засобах для очищення труб'],['d','Як харчову приправу для вільного додавання']],correct:['a','b','c'],why:'NaOH застосовують у виробництві мила й паперу та в деяких засобах для очищення труб. Він їдкий і не призначений для безконтрольного використання.'},
+  {type:'multi',q:'Оберіть можливі сфери використання кальцій гідроксиду.',options:[['a','Будівельні розчини та побілка'],['b','Зменшення кислотності ґрунтів за відповідних агрономічних рекомендацій'],['c','Очищення води в окремих технологічних процесах'],['d','Виготовлення електричних дротів із чистої міді']],correct:['a','b','c'],why:'Ca(OH)₂ використовують у будівництві, для вапнування кислих ґрунтів і в деяких процесах очищення води.'},
+  {type:'radio',q:'Для чого в лабораторії використовують вапняну воду?',options:[['a','Для виявлення вуглекислого газу'],['b','Для виявлення кисню за допомогою тліючої скіпки'],['c','Для вимірювання маси речовини']],correct:'a',why:'Помутніння вапняної води є якісною ознакою наявності CO₂.'},
+  {type:'radio',q:'Чому Ca(OH)₂ застосовують для зменшення кислотності ґрунтів?',options:[['a','Він нейтралізує надлишкову кислотність'],['b','Він перетворює ґрунт на чистий пісок'],['c','Він додає до ґрунту вуглекислий газ']],correct:'a',why:'Кальцій гідроксид є основою, яка нейтралізує кислотність. Норми вапнування визначають за властивостями ґрунту.'},
+  {type:'radio',q:'Яке твердження правильно порівнює розчинність NaOH і Ca(OH)₂ у воді?',options:[['a','NaOH добре розчинний, а Ca(OH)₂ малорозчинний'],['b','Ca(OH)₂ добре розчинний, а NaOH нерозчинний'],['c','Обидві речовини зовсім не розчиняються']],correct:'a',why:'Натрій гідроксид добре розчинний у воді; кальцій гідроксид — малорозчинний.'},
+  {type:'radio',q:'Яка з наведених речовин НЕ є основою?',options:[['a','NaOH'],['b','Ca(OH)₂'],['c','CaCO₃']],correct:'c',why:'CaCO₃ — кальцій карбонат, сіль; NaOH і Ca(OH)₂ належать до основ.'},
+  {type:'select',q:'Оберіть правильне рівняння гасіння вапна.',options:[['','Оберіть відповідь…'],['a','CaO + H₂O → Ca(OH)₂'],['b','NaOH + HCl → NaCl + H₂'],['c','CaCO₃ → NaOH + CO₂']],correct:'a',why:'Негашене вапно CaO реагує з водою з утворенням гашеного вапна Ca(OH)₂.'}
+ ]}
+];
+const allQuestions=sections.flatMap((s,si)=>s.questions.map(q=>({...q,sectionTitle:s.title,sectionIndex:si})));
+const total=allQuestions.length;
+let current=0, started=false, audioContext=null, muted=false;
+const answers=Array(total).fill(null), checked=Array(total).fill(false), outcomes=Array(total).fill(null);
+const body=document.body;
+const el=id=>document.getElementById(id);
+const startScreen=el('startScreen'),game=el('game'),result=el('result'),answerArea=el('answerArea'),feedback=el('feedback');
+
+function ensureAudio(){
+ if(muted)return null;
+ try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;if(!audioContext)audioContext=new AC();if(audioContext.state==='suspended')audioContext.resume();return audioContext}catch(e){return null}
+}
+function tone(freq,when,duration,type='sine',volume=.07){
+ const ctx=ensureAudio();if(!ctx)return;
+ const osc=ctx.createOscillator(),gain=ctx.createGain();osc.type=type;osc.frequency.setValueAtTime(freq,when);gain.gain.setValueAtTime(.0001,when);gain.gain.exponentialRampToValueAtTime(volume,when+.015);gain.gain.exponentialRampToValueAtTime(.0001,when+duration);osc.connect(gain);gain.connect(ctx.destination);osc.start(when);osc.stop(when+duration+.03);
+}
+function sound(kind,index=current){
+ if(muted)return;const ctx=ensureAudio();if(!ctx)return;const t=ctx.currentTime+.015;
+ if(kind==='question'){const f=440+(index%7)*32;tone(f,t,.11,'sine',.045);tone(f*1.25,t+.1,.13,'sine',.035)}
+ else if(kind==='select'){tone(620,t,.055,'triangle',.025)}
+ else if(kind==='correct'){tone(523.25,t,.13,'sine',.065);tone(659.25,t+.12,.15,'sine',.065);tone(783.99,t+.25,.22,'sine',.06)}
+ else if(kind==='wrong'){tone(330,t,.18,'triangle',.055);tone(247,t+.16,.22,'triangle',.045)}
+ else if(kind==='finish'){tone(523.25,t,.13,'sine',.06);tone(659.25,t+.12,.13,'sine',.06);tone(783.99,t+.24,.13,'sine',.06);tone(1046.5,t+.36,.3,'sine',.06)}
+ else if(kind==='click'){tone(450,t,.05,'sine',.02)}
+}
+function normalizedAnswer(q,val){if(q.type==='multi')return Array.isArray(val)?val.slice().sort().join(','):'';return val==null?'':String(val)}
+function correctValue(q){return Array.isArray(q.correct)?q.correct.slice().sort().join(','):String(q.correct)}
+function isAnswered(i){const v=answers[i];if(allQuestions[i].type==='multi')return Array.isArray(v)&&v.length>0;return v!==null&&v!==''}
+function progress(){const done=answers.filter((v,i)=>isAnswered(i)).length;el('bar').style.width=(done/total*100)+'%';el('progressText').textContent=`${done} із ${total} відповідей`}
+function correctText(q){if(Array.isArray(q.correct))return q.options.filter(([v])=>q.correct.includes(v)).map(([,t])=>t).join('; ');const opt=q.options.find(([v])=>v===q.correct);return opt?opt[1]:''}
+function saveFromUI(){const q=allQuestions[current];if(q.type==='radio'){const inp=answerArea.querySelector('input:checked');answers[current]=inp?inp.value:null}else if(q.type==='multi'){answers[current]=[...answerArea.querySelectorAll('input:checked')].map(x=>x.value)}else{answers[current]=answerArea.querySelector('select').value||null}checked[current]=false;outcomes[current]=null;el('checkAnswer').disabled=false;el('checkAnswer').textContent='Перевірити відповідь';hideFeedback();progress()}
+function hideFeedback(){feedback.hidden=true;feedback.className='feedback';feedback.textContent=''}
+function showFeedback(){const q=allQuestions[current];const ok=normalizedAnswer(q,answers[current])===correctValue(q);checked[current]=true;outcomes[current]=ok;feedback.hidden=false;feedback.className='feedback '+(ok?'good':'bad');feedback.textContent=ok?'Правильно! '+(q.why||''):`Не зовсім. Правильна відповідь: ${correctText(q)}. ${q.why||''}`;sound(ok?'correct':'wrong',current);el('checkAnswer').textContent='Відповідь перевірено';el('checkAnswer').disabled=true;return ok}
+function render(){
+ const q=allQuestions[current];body.dataset.theme=String(current%6);el('count').textContent=`Питання ${current+1} із ${total}`;el('sectionTitle').textContent=q.sectionTitle;el('prompt').textContent=q.q;
+ el('kind').textContent=q.type==='multi'?'Оберіть усі правильні відповіді':q.type==='select'?'Оберіть один варіант':'Одна правильна відповідь';
+ answerArea.replaceChildren();
+ if(q.type==='select'){
+  const sel=document.createElement('select');sel.setAttribute('aria-label','Оберіть відповідь');
+  q.options.forEach(([value,label])=>{const opt=document.createElement('option');opt.value=value;opt.textContent=label;sel.appendChild(opt)});
+  sel.value=answers[current]||'';sel.addEventListener('change',()=>{saveFromUI();sound('select',current)});answerArea.appendChild(sel);
+ }else{
+  q.options.forEach(([value,label])=>{
+   const lab=document.createElement('label');lab.className='option';const input=document.createElement('input');input.type=q.type==='radio'?'radio':'checkbox';input.name='answer_'+current;input.value=value;
+   if(q.type==='radio')input.checked=answers[current]===value;else input.checked=Array.isArray(answers[current])&&answers[current].includes(value);
+   const span=document.createElement('span');span.textContent=label;lab.append(input,span);
+   input.addEventListener('change',()=>{saveFromUI();sound('select',current)});answerArea.appendChild(lab);
+  });
+ }
+ el('prev').disabled=current===0;el('next').textContent=current===total-1?'Завершити тест ✓':'Наступне →';
+ el('checkAnswer').disabled=!!checked[current];el('checkAnswer').textContent=checked[current]?'Відповідь перевірено':'Перевірити відповідь';
+ hideFeedback();if(checked[current]){feedback.hidden=false;feedback.className='feedback '+(outcomes[current]?'good':'bad');feedback.textContent=outcomes[current]?'Правильно! '+(q.why||''):`Неправильно. Правильна відповідь: ${correctText(q)}. ${q.why||''}`}
+ progress();sound('question',current);window.scrollTo({top:0,behavior:'smooth'});
+}
+function startGame(){started=true;ensureAudio();startScreen.hidden=true;game.hidden=false;result.style.display='none';sound('click');render()}
+el('start').addEventListener('click',startGame);
+el('soundToggle').addEventListener('click',()=>{muted=!muted;el('soundToggle').textContent=muted?'🔇 Звук вимкнено':'🔊 Звук увімкнено';el('soundToggle').setAttribute('aria-pressed',String(muted));if(!muted){ensureAudio();sound('click')}});
+el('checkAnswer').addEventListener('click',()=>{if(!isAnswered(current)){feedback.hidden=false;feedback.className='feedback neutral';feedback.textContent='Спочатку оберіть відповідь.';sound('wrong',current);return}showFeedback()});
+el('prev').addEventListener('click',()=>{if(current>0){sound('click');current--;render()}});
+el('next').addEventListener('click',()=>{if(current<total-1){sound('click');current++;render()}else finishTest()});
+function finishTest(){
+ let points=0;const missed=[];
+ allQuestions.forEach((q,i)=>{const ok=normalizedAnswer(q,answers[i])===correctValue(q);outcomes[i]=ok;checked[i]=true;if(ok)points++;else missed.push({i,q})});
+ const grade=Math.max(1,Math.min(12,Math.round(points/total*12)));
+ el('score').textContent=`${points} із ${total} балів`;el('grade').textContent=`Орієнтовна оцінка: ${grade} із 12`;el('comment').textContent=points===total?'Чудово! Усі відповіді правильні.':points/total>=.8?'Дуже добре. Перегляньте пояснення до завдань, де були помилки.':points/total>=.5?'Повторіть теми, де припустилися помилок, і спробуйте ще раз.':'Рекомендуємо повторити формули, властивості, реакції та використання лугів.';
+ const box=el('mistakes');box.replaceChildren();if(missed.length){const h=document.createElement('h3');h.textContent='Питання для повторення';box.appendChild(h);const ul=document.createElement('ol');missed.forEach(({i,q})=>{const li=document.createElement('li');li.style.marginBottom='12px';li.textContent=q.q+' Правильна відповідь: '+correctText(q)+'. '+(q.why||'');ul.appendChild(li)});box.appendChild(ul)}else{const p=document.createElement('p');p.textContent='Усі відповіді правильні — помилок немає.';box.appendChild(p)}
+ game.hidden=true;result.style.display='block';sound('finish');window.scrollTo({top:0,behavior:'smooth'});
+}
+el('restart').addEventListener('click',()=>{answers.fill(null);checked.fill(false);outcomes.fill(null);current=0;result.style.display='none';startScreen.hidden=false;game.hidden=true;progress();window.scrollTo({top:0,behavior:'smooth'});sound('click')});
+el('review').addEventListener('click',()=>{result.style.display='none';game.hidden=false;current=0;render()});
+progress();
+</script>
+</body>
+</html>
