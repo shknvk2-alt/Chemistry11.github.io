@@ -194,6 +194,43 @@ document.getElementById('reset').addEventListener('click',()=>{
  quiz.reset(); questions.forEach(q=>{q.classList.remove('correct','incorrect');let f=q.querySelector('.feedback');if(f)f.remove()});
  result.style.display='none';updateProgress();window.scrollTo({top:0,behavior:'smooth'});
 });
+// ==========================================
+// ДОПИС ДЛЯ ЖУРНАЛУ ОЦІНОК (ВСТАВИТИ СЮДИ)
+// ==========================================
+function sendResultsToGoogle(grade, score, total) {
+    const studentName = localStorage.getItem('chemistry_student_name') || "Анонімний учень";
+    const scriptUrl = "https://google.com";
+
+    // Шукаємо або створюємо блок для статусу надсилання
+    let statusDiv = document.getElementById('sendStatus');
+    if (!statusDiv) {
+        statusDiv = document.createElement('div');
+        statusDiv.id = 'sendStatus';
+        statusDiv.style = "font-weight:bold; margin:15px 0; padding:12px; border-radius:8px; text-align:center;";
+        const resultSection = document.getElementById('result') || document.body;
+        resultSection.appendChild(statusDiv);
+    }
+    
+    statusDiv.style.display = 'block';
+    statusDiv.style.background = '#fff8e6';
+    statusDiv.style.color = '#b78103';
+    statusDiv.innerText = '⏳ Надсилання результатів у журнал вчителя...';
+
+    const urlWithParams = `${scriptUrl}?studentName=${encodeURIComponent(studentName)}&studentScore=${encodeURIComponent(grade + ' балів (' + score + '/' + total + ')')}`;
+
+    fetch(urlWithParams, { method: 'POST', mode: 'no-cors' })
+    .then(() => {
+        statusDiv.style.background = '#e3f8e9';
+        statusDiv.style.color = '#135c36';
+        statusDiv.innerText = '✅ Результат успішно збережено в журналі вчителя!';
+    })
+    .catch(err => {
+        console.error(err);
+        statusDiv.style.background = '#fff0ed';
+        statusDiv.style.color = '#85241e';
+        statusDiv.innerText = '❌ Помилка збереження. Зробіть скріншот оцінки.';
+    });
+}
 </script>
 </body>
 </html>
