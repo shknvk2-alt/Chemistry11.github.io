@@ -95,7 +95,6 @@ function up(){
     document.getElementById('bar').style.width=(ans/12*100)+'%';
     document.getElementById('progressText').innerText = 'Виконано завдань: ' + ans + ' із 12';
 }
-
 document.getElementById('check').addEventListener('click',()=>{
     let score = 0;
     for(let i=1;i<=12;i++){
@@ -119,21 +118,36 @@ document.getElementById('check').addEventListener('click',()=>{
     document.getElementById('grade').innerText = 'Оцінка: ' + grade + ' балів';
     document.getElementById('result').style.display='block';
     document.getElementById('result').scrollIntoView({behavior:'smooth'});
-    send(grade,score);
+    send(score, 'game');
 });
 
-function send(g,s){
-    const name = localStorage.getItem('chemistry_student_name') || "Анонімний учень";
-    const scriptUrl = "https://google.com";
-    const d = document.getElementById('sendStatus'); d.style.display='block'; d.className='send-status send-loading'; d.innerText='⏳ Надсилання у журнал вчителя...';
-    const url = scriptUrl + '?studentName=' + encodeURIComponent(name) + '&studentScore=' + encodeURIComponent(g + ' балів') + '&quizType=12';
-    fetch(url,{method:'POST',mode:'no-cors'}).then(()=>{d.className='send-status send-success';d.innerText='✅ Результат успішно збережено!';}).catch(()=>{d.innerText='❌ Помилка надсилання.';});
+function send(score, typeName = 'game'){
+    const name = localStorage.getItem('chemistry_student_name') || 'Анонімний учень';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbwiATMV6faFrSbqS6QcrBi7gHOHT3B6ccOF0-KAPUC8cv5VdE6-FNJKF6Vwe6MdTd2skg/exec';
+
+    const d = document.getElementById('sendStatus');
+    d.style.display = 'block';
+    d.className = 'send-status send-loading';
+    d.innerText = '⏳ Надсилання у журнал вчителя...';
+
+    const url =
+        scriptUrl +
+        '?studentName=' + encodeURIComponent(name) +
+        '&studentScore=' + encodeURIComponent(String(score)) +
+        '&quizType=' + encodeURIComponent(typeName);
+
+    fetch(url, {method: 'POST', mode: 'no-cors'})
+      .then(() => {
+          d.className = 'send-status send-success';
+          d.innerText = '✅ Результат успішно збережено!';
+      })
+      .catch(() => {
+          d.className = 'send-status';
+          d.style.background = '#fff0ee';
+          d.style.color = '#b42318';
+          d.innerText = '❌ Не вдалося надіслати результат.';
+      });
 }
-
-document.getElementById('reset').addEventListener('click',()=>{
-    document.getElementById('quiz').reset(); document.getElementById('result').style.display='none';
-    document.querySelectorAll('.question').forEach(q=>q.className='question'); document.querySelectorAll('.feedback').forEach(f=>f.style.display='none'); up();
-});
 </script>
 </body>
 </html>
