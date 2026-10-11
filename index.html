@@ -18,22 +18,16 @@
     </style>
 </head>
 <body>
-
 <div class="container">
     <h1>🧪 Автоперевірка знань з хімії (11 клас)</h1>
-    
     <div class="input-group">
         <label for="studentName">Введіть ваше Прізвище та Ім'я перед початком:</label>
         <input type="text" id="studentName" placeholder="Наприклад: Іванов Сергій" oninput="saveName()">
-        <div id="nameHint" class="hint">⚠️ Спочатку введіть своє Прізвище та Ім'я! Без цього тест не відкриється, а вчитель не отримає вашу оцінку.</div>
+        <div id="nameHint" class="hint">⚠️ Спочатку введіть Прізвище та Ім'я! Без цього вправи не відкриються.</div>
     </div>
-
     <p style="font-weight: bold; color: #2c3e50;">Оберіть вправу для проходження:</p>
-    <ul id="exercisesList">
-        <!-- Сюди автоматично виведуться вправи -->
-    </ul>
+    <ul id="exercisesList"></ul>
 </div>
-
 <script>
     const exercises = {
         "osnovy_luhy_avtoperevirka (1).html": "• osnovy_ — містить 12 запитань.",
@@ -45,34 +39,27 @@
         const listContainer = document.getElementById('exercisesList');
         for (const [file, displayName] of Object.entries(exercises)) {
             const li = document.createElement('li');
-            li.innerHTML = `<a href="${encodeURI(file)}" onclick="return checkName(event, this)">${displayName}</a>`;
+            li.innerHTML = `<a href="${encodeURI(file)}" onclick="return checkName(event)">${displayName}</a>`;
             listContainer.appendChild(li);
         }
-
         if(localStorage.getItem('chemistry_student_name')) {
             document.getElementById('studentName').value = localStorage.getItem('chemistry_student_name');
         }
     }
 
-    function saveName() {
-        var name = document.getElementById('studentName').value.trim();
-        localStorage.setItem('chemistry_student_name', name);
-        if(name.length > 0) {
-            document.getElementById('nameHint').style.display = 'none';
-        }
+    function saveName() { 
+        localStorage.setItem('chemistry_student_name', document.getElementById('studentName').value.trim()); 
     }
 
-    function checkName(event, element) {
+    function checkName(event) {
         var name = document.getElementById('studentName').value.trim();
         if(name.length === 0) {
-            event.preventDefault();
-            document.getElementById('nameHint').style.display = 'block';
-            document.getElementById('studentName').focus();
+            event.preventDefault(); 
+            document.getElementById('nameHint').style.display = 'block'; 
             return false;
         }
         return true;
     }
 </script>
-
 </body>
 </html>
