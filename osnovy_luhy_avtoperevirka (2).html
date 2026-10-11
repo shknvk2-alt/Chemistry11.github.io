@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Основи — інтерактивна гра</title>
 <style>
 :root{--ink:#19253a;--blue:#2357c6;--line:#d9e1ee;--green:#167044;--red:#a62424}*{box-sizing:border-box}
@@ -84,7 +85,7 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
   </main>
 
   <script>
-    const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyiB8IlMdR9ZAdnDoUMsFn4wju8divAt911SZkZN-unTdwl1tw7k3jvmqSK5w_pCvl9ZQ/exec';
+    const GOOGLE_SHEET_URL = 'https://google.com';
 
     const sections = [
       {title:'Частина 1. Теорія та формули',questions:[
@@ -101,7 +102,7 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
       ]},
       {title:'Частина 2. Хімічні властивості',questions:[
         {type:'radio',q:'Що характерно для розчинення NaOH у воді?',options:[['a','Виділення тепла'],['b','Повне замерзання'],['c','Утворення газу']],correct:'a',why:'Розчинення лугів в воді супроводжується виділенням тепла.'},
-        {type:'radio',q:'Які продукти утворюються в реакції NaOH + HCl?',options:[['a','NaCl і H₂O'],['b','Na₂O і H₂'],['c','Cl₂ і NaOH']],correct:'a',why:'Це реакція нейтралізації: утворюються сіль і вода.'},
+        {type:'radio',q:'Які продукты утворюються в реакції NaOH + HCl?',options:[['a','NaCl і H₂O'],['b','Na₂O і H₂'],['c','Cl₂ і NaOH']],correct:'a',why:'Це реакція нейтралізації: утворюються сіль і вода.'},
         {type:'radio',q:'Яке рівняння нейтралізації Ca(OH)₂?',options:[['a','Ca(OH)₂ + 2HCl → CaCl₂ + 2H₂O'],['b','Ca(OH)₂ + HCl → CaCl + H₂O'],['c','Ca + 2HCl → CaCl₂ + H₂']],correct:'a',why:'Для нейтралізації двовалентного кальцію потрібно 2 молекули HCl.'},
         {type:'radio',q:'З якими оксидами реагують луги?',options:[['a','Основними'],['b','Кислотними'],['c','Несолетворними']],correct:'b',why:'Луги взаємодіють з кислотними оксидами з утворенням солі та води.'},
         {type:'radio',q:'Яка сіль утвориться при реакції CO₂ з надлишком NaOH?',options:[['a','Na₂CO₃'],['b','NaHCO₃'],['c','Na₂O']],correct:'a',why:'При надлишку лугу утворюється середня сіль — натрій карбонат.'},
@@ -121,13 +122,13 @@ button{font:inherit;font-weight:800;border:0;border-radius:10px;padding:10px 16p
 {type:'radio',q:'Що використовують для нейтралізації пролитого лугу на шкіру?',options:[['a','Слабкий розчин борної або оцтової кислоти'],['b','Концентровану сульфатну кислоту'],['c','Мильний розчин']],correct:'a',why:'Луг нейтралізують слабкою органічною кислотою, а потім промивають водою.'},
 {type:'radio',q:'Який процес називають «гасінням вапна»?',options:[['a','Взаємодію паленого вапна (CaO) з водою'],['b','Заморожування розчину'],['c','Пропускання через нього струму']],correct:'a',why:'CaO + H₂O → Ca(OH)₂. Процес супроводжується виділенням великої кількості тепла.'},
 {type:'radio',q:'Який pH характерний для концентрованих розчинів лугів?',options:[['a','pH > 7'],['b','pH = 7'],['c','pH < 7']],correct:'a',why:'Лужне середовище має значення водневого показника більше 7.'},
-{type:'radio',q:'Чи можна зберігати розчини лугів у скляному посуді з притертими скляними пробками?',options:[['a','Ні, пробка може «прикипіти» через утворення силікатів'],['b','Так, це найкращий спосіб'],['c','Можна, але тільки на сонці']],correct:'a',why:'Луги повільно реагують зі склом, утворюючи силікати, які міцно склеюють скляні деталі.'}
+{type:'radio',q:'Чи можна зберігати розчини лугів у скляному посуді з притертими скняними пробками?',options:[['a','Ні, пробка може «прикипіти» через утворення силікатів'],['b','Так, це найкращий спосіб'],['c','Можна, але тільки на сонці']],correct:'a',why:'Луги повільно реагують зі склом, утворюючи силікати, які міцно склеюють скляні деталі.'}
 ]}
 ];
 let allQuestions = [];
 sections.forEach(s => {
 s.questions.forEach(q => {
-allQuestions.push({...q, sectionTitle: s.title});
+allQuestions.push(Object.assign({}, q, { sectionTitle: s.title }));
 });
 });
 let currentIdx = 0;
@@ -189,25 +190,31 @@ document.body.setAttribute('data-theme', Math.floor(currentIdx / 5) % 6);
 countEl.innerText = 'Питання ' + (currentIdx + 1) + ' із ' + allQuestions.length;
 sectionTitleEl.innerText = q.sectionTitle;
 promptEl.innerText = q.q;
-let html = '';
+answerArea.innerHTML = '';
 q.options.forEach(opt => {
-const isChecked = userAnswers[currentIdx] === opt[0];
-const isDisabled = checkedStates[currentIdx] ? 'disabled' : '';
-const checkedAttr = isChecked ? 'checked' : '';
-html += '' +
-'<input type="radio" name="ans" value="' + opt[0] + '" ' + checkedAttr + ' ' + isDisabled + '>' +
-'' + opt[0].toUpperCase() + ') ' + opt[1] + '' +
-'';
-});
-answerArea.innerHTML = html;
-const inputs = answerArea.querySelectorAll('input');
-inputs.forEach(input => {
-input.addEventListener('change', () => {
+const label = document.createElement('label');
+label.className = 'option';
+const radio = document.createElement('input');
+radio.type = 'radio';
+radio.name = 'ans';
+radio.value = opt[1];
+if (userAnswers[currentIdx] === opt[1]) {
+radio.checked = true;
+}
+if (checkedStates[currentIdx]) {
+radio.disabled = true;
+}
+radio.addEventListener('change', () => {
 if(!checkedStates[currentIdx]) {
-userAnswers[currentIdx] = input.value;
+userAnswers[currentIdx] = radio.value;
 checkBtn.disabled = false;
 }
 });
+const span = document.createElement('span');
+span.innerText = opt[0].toUpperCase() + ') ' + opt[1];
+label.appendChild(radio);
+label.appendChild(span);
+answerArea.appendChild(label);
 });
 if(checkedStates[currentIdx]) {
 renderFeedback(q, userAnswers[currentIdx]);
@@ -223,12 +230,11 @@ function renderFeedback(q, val) {
 feedbackEl.style.display = 'block';
 if(val === q.correct) {
 feedbackEl.className = 'feedback good';
-feedbackEl.innerHTML = '✅ Правильно! ' + q.why;
+feedbackEl.innerText = '✅ Правильно! ' + q.why;
 } else {
 const correctOpt = q.options.find(o => o[0] === q.correct);
 feedbackEl.className = 'feedback bad';
-feedbackEl.innerHTML = '❌ Неправильно. Правильна відповідь: ' + correctOpt[0].toUpperCase() + ') ' + correctOpt[1] + '.
-' + q.why + '';
+feedbackEl.innerText = '❌ Неправильно. Правильна відповідь: ' + correctOpt[0].toUpperCase() + ') ' + correctOpt[1] + '. ' + q.why;
 }
 }
 function updateButtons() {
